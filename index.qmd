@@ -1,5 +1,5 @@
 ---
-title: "R-delisi"
+title: "R Delisi"
 ---
 
 Hoş geldiniz!
