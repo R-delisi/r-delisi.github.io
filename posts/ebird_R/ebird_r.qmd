@@ -1,10 +1,10 @@
 ---
-title: "R ve Kuşlar - Ebird Verilerinin R ile Analizi 1"
+title: "R ve Kuşlar - Ebird Verilerinin R ile Analizi I"
 author: "Mehmet Göktuğ Öztürk"
 format: html
 ---
 
-## *Merhabalar, blogun ilk yazısına hoş geldiniz. Temel bilgiler içeren yazılar da olacak ancak blog içeriklerinin büyük çoğunluğunun bu gibi vaka örneklerinden oluşacağını düşünüyorum. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.*
+## Merhabalar, blogun ilk yazısına hoş geldiniz. Temel bilgiler içeren yazılar da olacak ancak blog içeriklerinin büyük çoğunluğunun bu gibi vaka örneklerinden oluşacağını düşünüyorum. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.
 
 İlk blog yazısıyla alakalı aklımda benzer bir plan vardı ancak geçtiğimiz haftalarda (yazıyı yazmamın üstünden aylar geçti :) ), yüksek lisansımı yaptığım labdaki sunumumun ardından, bu yazıyı yazmaya karar verdim. Bu blog yazısında, özetle, R'da kuş verilerini nasıl işleyeceğimize değineceğim. Kuşlara doğrudan ilginiz olmasa dahi, temel bazı mekânsal analizleri öğrenmek için faydalı bir yazı olacak.
 
