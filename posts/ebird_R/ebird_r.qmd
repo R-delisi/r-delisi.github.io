@@ -2,11 +2,20 @@
 title: "R ve Kuşlar - Ebird Verilerinin R ile Analizi I"
 author: "Mehmet Göktuğ Öztürk"
 format: html
+date: 2023-09-27
+categories:
+  - R
+  - gis
+  - r-spatial
+  - case_study
+image: figs/preview.png
 ---
 
-## Merhabalar, blogun ilk yazısına hoş geldiniz. Temel bilgiler içeren yazılar da olacak ancak blog içeriklerinin büyük çoğunluğunun bu gibi vaka örneklerinden oluşacağını düşünüyorum. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.
+![](figs/preview.png)
 
-İlk blog yazısıyla alakalı aklımda benzer bir plan vardı ancak geçtiğimiz haftalarda (yazıyı yazmamın üstünden aylar geçti :) ), yüksek lisansımı yaptığım labdaki sunumumun ardından, bu yazıyı yazmaya karar verdim. Bu blog yazısında, özetle, R'da kuş verilerini nasıl işleyeceğimize değineceğim. Kuşlara doğrudan ilginiz olmasa dahi, temel bazı mekânsal analizleri öğrenmek için faydalı bir yazı olacak.
+**Merhabalar, blogun ilk yazısına hoş geldiniz. Temel bilgiler içeren yazılar da olacak ancak blog içeriklerinin çoğunun bu gibi vaka örneklerinden oluşacağını düşünüyorum. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
+
+Bu blog yazısında, özetle, R'da kuş verilerini nasıl işleyeceğimize değineceğim. Kuşlara doğrudan ilginiz olmasa dahi, temel bazı mekânsal analizleri öğrenmek için faydalı bir yazı olacak.
 
 Burada iki temel sorumuz var:
 
@@ -16,10 +25,6 @@ Burada iki temel sorumuz var:
 Bu yazıda yalnızca birinci soruya odaklanacağız. İkinci soru için ikinci yazıyı bekleyiniz lütfen. :)
 
 ------------------------------------------------------------------------
-
-## 1. Türkiye'de, illere göre toplam kuş türü sayısı nasıl bir dağılım gösteriyor?
-
-Bu soruya cevap verebilmek için öncelikle iki temel veriye ihtiyacımız var. Bunlardan birisi **kuş**, diğeri ise **Türkiye'deki iller**. Eğer elimizdeki kuş verisinde her bir tür için kaydedildiği il bilgisi varsa, illere göre kuş türlerini gruplayıp, kuş türü sayısını bulacak şekilde özetleyebiliriz. Bu, aşina olanlar için, Excel'deki pivot table'a benziyor. Ancak bu yöntemle mekânsal bir veri elde edemeyiz. Bu işlemin ardından kuş verisinin, Türkiye illeri katmanına, il isimlerine göre bağlanması gerekir. Hâlihazırda kuşların kaydedildiği noktaların koordinatları olduğundan, mekânsal olarak işleyeceğiz. Zaten koordinata göre toplanan verilerin mekansâl olarak işlenmesi daha güvenli.
 
 ### Yazının Akışı
 
@@ -66,13 +71,15 @@ library(rgeoboundaries) # tr il sinirlarina erismek icin
 library(tmap) # guzel haritalar cizmek icin 
 ```
 
-Kuş verisi olarak, Türkiye ve dünyadaki en kapsamlı kuş gözlem veri tabanı olan [eBird](https://ebird.org)'ü kullanacağız. eBird, dünyadaki en büyük kuş veri tabanı. Kuş gözlemcileri araziye çıktıklarında gözlemledikleri kuşları bu veri tabanına kaydediyor, bilime ve doğa korumaya katkı sağlayabiliyorlar. 2015 yılında ulusal veri tabanımız Kuşbank'ın eBird'e taşınmasından beri Türkiye kuşlarını konu alan en kapsamlı veri tabanı aynı zamanda.
+### 2. Kuş verisinin yüklenip bu yazı için gerekli olan alt kümesinin alınması
+
+İlk soruya cevap verebilmek için öncelikle iki temel veriye ihtiyacımız var. Bunlardan birisi **kuş**, diğeri ise **Türkiye'deki iller**. 
+
+Kuş verisi olarak, Türkiye ve dünyadaki en kapsamlı kuş gözlem veri tabanı olan [eBird](https://ebird.org)'ü kullanacağız. Kuş gözlemcileri araziye çıktıklarında gözlemledikleri kuşları bu veri tabanına kaydediyor, bilime ve doğa korumaya katkı sağlayabiliyorlar. 2015 yılında ulusal veri tabanımız Kuşbank'ın eBird'e taşınmasından beri Türkiye kuşlarını konu alan en kapsamlı veri tabanı aynı zamanda.
 
 eBird verilerini siteye üye olup, en altta, **Bilim** başlığı altındaki **Veri indirme talebi** sayfasından ya da [{rebird}](https://docs.ropensci.org/rebird/) paketini kullanarak indirebilirsiniz. Ben, site üzerinden tüm Türkiye verilerini talep ederek indirdim.
 
-### 2. Kuş verisinin yüklenip bu yazı için gerekli olan alt kümesinin alınması
-
-İndirdiğimiz eBird verilerini R'a yükleyelim. eBird verileri txt dosyası olduğundan {tidyverse} paket evreni içindeki bir fonksiyon olan read_delim()'i kullandık. Base R'daki read.table() fonksiyonu da kullanılabilir. Veri biraz büyük olduğundan yüklenmesi ve işlenmesi yavaş olabilir.
+İndirdiğimiz eBird verilerini R'a yükleyelim. eBird verileri txt dosyası olduğundan [{tidyverse}](https://www.tidyverse.org/) paket evreni içindeki bir fonksiyon olan [read_delim()](https://readr.tidyverse.org/reference/read_delim.html)'i kullandık. Base R'daki [read.table()](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/read.table) fonksiyonu da kullanılabilir. Veri biraz büyük olduğundan yüklenmesi ve işlenmesi yavaş olabilir.
 
 ```{r}
 #| output: false
@@ -83,13 +90,13 @@ ebird <- read_delim("./ebird/ebd_TR_relApr-2023.txt")
 print(ebird)
 ```
 
-print() fonksiyonu ile verinin genel yapısını gördük. 2,403,720 gözlem (satır) ve 50 değişkene (sütun) sahip bir tibble ({tidyverse}'e özel bir data frame şekli, bence daha kullanışlı). Değişken sayısı fazla olduğu için print() fonksiyonu yeterince kullanışlı. Bu sebeple, R'a yüklediğimiz eBird veri tablosunun tüm sütunlarını ve onların yapılarını görmek için glimpse() fonksiyonunu kullanacağız. Bu fonksiyon, base R'daki str() fonksiyonuna benziyor ancak tibble veri yapısıyla kullanılırken daha sade ve kullanışlı bence. Özetle, bu fonksiyonu, print() fonksiyonunun transpoze edilmiş hâli olarak görebilirsiniz.
+[print()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/print) fonksiyonu ile verinin genel yapısını gördük. 2,403,720 gözlem (satır) ve 50 değişkene (sütun) sahip bir tibble ({tidyverse}'e özel bir data frame şekli, bence daha kullanışlı). Değişken sayısı fazla olduğu için print() fonksiyonu yeterince kullanışlı. Bu sebeple, R'a yüklediğimiz eBird veri tablosunun tüm sütunlarını ve onların yapılarını görmek için [glimpse()](https://dplyr.tidyverse.org/reference/glimpse.html) fonksiyonunu kullanacağız. Bu fonksiyon, base R'daki [str()](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/str) fonksiyonuna benziyor ancak tibble veri yapısıyla kullanılırken daha sade ve kullanışlı bence. Özetle, bu fonksiyonu, print() fonksiyonunun transpoze edilmiş hâli olarak görebilirsiniz.
 
 ```{r}
 glimpse(ebird)
 ```
 
-Burada sütunları çok daha rahat bir şekilde görebiliyoruz. Şu an için işimize yaramayacak olan bir sürü sütun var. Bu sebeple işimize yarayacak olanları seçelim. Ardından da sadece tür kategorisindeki gözlemleri seçmek için *species*'e göre filtreleyelim.
+Burada sütunları çok daha rahat bir şekilde görebiliyoruz. Şu an için işimize yaramayacak olan bir sürü sütun var. Bu sebeple işimize yarayacak olanları seçelim. Ardından da sadece tür kaydı olan gözlemleri seçmek için *species*'e göre filtreleyelim.
 
 ```{r}
 ebird_subset <- ebird |>
@@ -102,7 +109,7 @@ ebird_subset
 glimpse(ebird_subset)
 ```
 
-Gördüğünüz gibi verinin işimize yarayacak bir alt kümesini aldık.
+Gördüğünüz gibi verinin işimize yarayacak bir alt kümesini aldık, kalabalıktan kurtulduk.
 
 Artık ilk yüklediğimiz veriyi (ebird) R'dan silebiliriz. Veri, tüm TR'yi kapsadığı için 2 milyondan fazla gözlem içeriyor. Büyük veri setleri RAM'in şişmesine ve R'ın çökmesine sebep olabilir. Bu sebeple artık işimize yaramayacak olan verileri environment'ten kaldırıyoruz.
 
@@ -112,9 +119,9 @@ rm(ebird)
 
 ### 3. Kuş verisinin mekânsallıştırılması
 
-Ebird verimizi yükleyip, işimize yarayacak olan alt kümesini aldıktan sonra sıra geldi verimizi mekânsallaştırmaya. Verimizi, uygun mekânsal veri tipine dönüştürüp, mekânsal analizlerde kullanılabilecek bir hâle getireceğiz. Bunun için, R'da vektör verileri işlemek için geliştirilen {sf} paketini kullanacağız.
+Ebird verimizi yükleyip, işimize yarayacak olan alt kümesini aldıktan sonra sıra geldi verimizi mekânsallaştırmaya. Verimizi, uygun mekânsal veri tipine dönüştürüp, mekânsal analizlerde kullanılabilecek bir hâle getireceğiz. Bunun için, R'da vektör verileri işlemek için geliştirilen [{sf}](https://r-spatial.github.io/sf/) paketini kullanacağız.
 
-Lat long verisini ve koordinat sistemini tanımlayarak Ebird verisini sf objesine çevirdik.
+Lat long verisini ve koordinat sistemini tanımlayarak eBird verisini sf objesine çevirdik.
 
 ```{r}
 ebird_sf <- st_as_sf(
@@ -125,7 +132,7 @@ ebird_sf
 
 Gördüğünüz gibi veri tablosuyla beraber artık geometri tipi (POINT), veri boyutu (dimension), verinin coğrafi sınırlarını belirten bounding box koordinatları ve bir CRS'e (koordinat referans sistemi) sahibiz. Bundan sonra mekânsal analizleri rahatça yapabiliriz.
 
-Dikkat ederseniz her bir satırda, bir koordinat çiftinden oluşan koordinat verisi var. Bu, her bir satırın ve bu satırdaki tüm bilgilerin, bir geometriyle ilişkili olduğunu gösteriyor. Bu geometri de, gemoetri tipinde belirtildiği ya da bir koordinat çiftinin varlığından anlayabileceğimiz gibi nokta. Yani 2,298,920 tane noktamız var ve her bir nokta bir gözlemle ilişkili.
+Dikkat ederseniz her bir satırda, bir koordinat çiftinden oluşan koordinat verisi var. Bu, her bir satırın ve bu satırdaki tüm bilgilerin, bir geometriyle ilişkili olduğunu gösteriyor. Bu geometri de, geometri tipinde belirtildiği ya da bir koordinat çiftinin varlığından anlayabileceğimiz gibi nokta. Yani 2,298,920 tane noktamız var ve her bir nokta bir gözlemle ilişkili.
 
 ### 4. TR il katmanının yüklenmesi
 
@@ -136,13 +143,13 @@ tr_il <- gb_adm1(country = "Turkey", type = "SSCGS") # type = "SSCGS" argumaniyl
 tr_il
 ```
 
-Base R plot fonksiyonu ile tr_il objemizi çizelim.
+Base R [plot()](https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/plot.default) fonksiyonu ile tr_il objemizi çizelim.
 
 ```{r}
 plot(tr_il)
 ```
 
-Gördüğünüz gibi sf objesi için plot() fonksiyonu, tüm değişkenleri çiziyor. Sadece shapeName değişkenini seçip, eksenleri ve başlığı ekleyerek daha iyi bir Türkiye il sınırları haritası çizelim.
+Gördüğünüz gibi sf objesi için plot() fonksiyonu, tüm değişkenleri (sütunları) çiziyor. Sadece shapeName değişkenini seçip, eksenleri ve başlığı ekleyerek daha iyi bir Türkiye il sınırları haritası çizelim.
 
 ```{r}
 plot(tr_il[, "shapeName"], graticule = TRUE, axes = TRUE, main = "Türkiye Haritası")
@@ -150,13 +157,13 @@ plot(tr_il[, "shapeName"], graticule = TRUE, axes = TRUE, main = "Türkiye Harit
 
 Hop! Çok daha iyi!
 
-Şimdi de {tmap} paketinin içindeki qtm() fonksiyonu ile çizelim.
+Şimdi de [{tmap}](https://r-tmap.github.io/tmap/) paketinin içindeki [qtm()](https://r-tmap.github.io/tmap/reference/qtm.html) fonksiyonu ile çizelim.
 
 ```{r}
 qtm(tr_il)
 ```
 
-Daha az yazarak gayet güzel bir sonuç elde ettik. Yukarıda da gördüğünüz gibi harita çizmek için farklı yöntemler mevcut. Ben genelde {ggplot2} ve {tmap} paketlerini tercih ediyorum. Tercih size kalmış.
+Daha az yazarak gayet güzel bir sonuç elde ettik. Yukarıda da gördüğünüz gibi harita çizmek için farklı yöntemler mevcut. Ben genelde [{ggplot2}](https://ggplot2.tidyverse.org/) ve {tmap} paketlerini tercih ediyorum. Tercih size kalmış.
 
 Şimdi, kuş verimizin, Türkiye'deki dağılımına bakalım. 2 milyondan fazla satırı olan bir verinin grafiğini çizmek muhtemelen R'ın çökmesine sebep olacaktır. Bu yüzden bu verinin de bir alt kümesini alacağız.
 
@@ -176,7 +183,9 @@ ggplot() +
 
 500000 kuş gözlem verisinin Türkiye'deki dağılımı bu şekildeymiş. Batı'da ve büyükşehirlerin yakınlarında daha çok gözlem var. Hazır bu şekilde görselleştirmişken merak ettiğim 2 türün de dağılımına bir bakalım. Tür ismine göre filtreleyip çiziyoruz.
 
--   Sakallı Akbaba
+#### Sakallı Akbaba
+
+![Album of Abyssinian birds and mammals | Chicago :Field Museum of Natural History,1930. | [Kaynak](https://biodiversitylibrary.org/page/2836721)](figs/bearded.jpg)
 
 ```{r}
 sakalli <- ebird_sf |> 
@@ -191,7 +200,11 @@ ggplot() +
 
 Gördüğünüz gibi sakallı akbabanın Türkiye'deki dağılımı Köroğlu Dağları, Aladağlar, Kaçkar Dağları, Akdağ gibi dağlık alanlarda yoğunlaşıyor.
 
-Bir de kızıl akbaba için bakalım.
+#### Kızıl Akbaba
+
+![Coloured figures of the birds of the British Islands. v.1 | London :R. H. Porter,1885-1897. | [Kaynak](https://biodiversitylibrary.org/page/34514933)](figs/griffon.jpg)
+
+Şimdi de kızıl akbaba için bakalım.
 
 ```{r}
 kizil <- ebird_sf |> 
@@ -235,7 +248,7 @@ eBird veri tabanında Türkiye'den kayıtlı 503 tür varmış. eBird'ün intern
 
 ### 6. Her bir il sınırı içinde kalan tür sayısının hesaplanması
 
-Şimdi, Türkiye'deki her bir ilin poligonu içerisindeki noktaları sayacağız. Bu da bize her bir ildeki toplam tür sayısını verecek. Öncelikle st_intersects() fonksiyonu ile her bir il ile kesişen noktaları belirliyoruz. Ardından lengths() fonksiyonu ile her bir ilde kaç adet nokta olduğunu hesaplıyoruz ve bunu, tr_il verisine yeni bir sütun olarak ekliyoruz. Temelde çok basit bir işlem ama başta anlamak zor olabiliyor.
+Şimdi, Türkiye'deki her bir ilin poligonu içerisindeki noktaları sayacağız. Bu da bize her bir ildeki toplam tür sayısını verecek. Öncelikle [st_intersects()](https://r-spatial.github.io/sf/reference/geos_binary_pred.html) fonksiyonu ile her bir il ile kesişen noktaları belirliyoruz. Ardından [lengths()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lengths) fonksiyonu ile her bir ilde kaç adet nokta olduğunu hesaplıyoruz ve bunu, tr_il verisine yeni bir sütun olarak ekliyoruz. Temelde çok basit bir işlem ama başta anlamak zor olabiliyor.
 
 ```{r}
 tr_il$bird_count <- lengths(st_intersects(tr_il, ebird_grouped))
