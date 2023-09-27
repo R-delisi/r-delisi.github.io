@@ -1,5 +1,4 @@
 ---
-subtitle: "Açık ve Tekrarlanabilir Bilim"
 listing:
   feed: true
   contents: posts
