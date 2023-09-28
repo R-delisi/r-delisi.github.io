@@ -261,7 +261,7 @@ breaks <- classInt::classIntervals(
 ```
 
 ```{r}
-ggplot() +                                      # grafigi baslatiyor
+ggplot() +                                     # grafigi baslatiyor
   geom_sf(
     data = tr_il,                              # tr katmanini ekliyoruz
     aes(fill = bird_count),                    # renkleri kus turu sayisina gore seciyoruz
