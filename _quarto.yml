@@ -4,6 +4,7 @@ project:
 
 website:
   title: "R Delisi"
+  description: "Açık ve Tekrarlanabilir Bilim"
   navbar:
     background: "#000000"
     foreground: "#FFFFFF"
@@ -21,18 +22,26 @@ website:
         href: "https://github.com/mehmetgoktug"
       - icon: 'linkedin'
         href: "https://www.linkedin.com/in/mehmetgoktug/"
+  page-footer: 
+    center: R Delisi - 2023
   twitter-card:
     creator: "@mehmet_goktu"
     site: "@mehmet_goktu"
+  open-graph:
+    locale: tr_TR
+  comments:
+    utterances:
+      repo: 'R-delisi/r-delisi.github.io'
 
 format:
   html:
     theme: 
       light: flatly
       dark: darkly
+    mainfont: Inconsolata
+    fontsize: 1rem
     css: styles.css
     toc: true
-    highlight-style: nord
 
 
 

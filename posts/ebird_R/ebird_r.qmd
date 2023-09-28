@@ -3,6 +3,7 @@ title: "R ve Kuşlar - Ebird Verilerinin R ile Analizi I"
 author: "Mehmet Göktuğ Öztürk"
 format: html
 date: 2023-09-27
+description: "R ile Kuş Verilerinin Analizi"
 categories:
   - R
   - gis
@@ -10,6 +11,8 @@ categories:
   - case_study
 image: figs/preview.png
 ---
+
+
 
 ![](figs/preview.png)
 
@@ -185,7 +188,7 @@ ggplot() +
 
 #### Sakallı Akbaba
 
-![Album of Abyssinian birds and mammals | Chicago :Field Museum of Natural History,1930. | [Kaynak](https://biodiversitylibrary.org/page/2836721)](figs/bearded.jpg)
+![[Album of Abyssinian birds and mammals | Chicago :Field Museum of Natural History,1930.](https://biodiversitylibrary.org/page/2836721)](figs/bearded.jpg)
 
 ```{r}
 sakalli <- ebird_sf |> 
@@ -202,7 +205,7 @@ Gördüğünüz gibi sakallı akbabanın Türkiye'deki dağılımı Köroğlu Da
 
 #### Kızıl Akbaba
 
-![Coloured figures of the birds of the British Islands. v.1 | London :R. H. Porter,1885-1897. | [Kaynak](https://biodiversitylibrary.org/page/34514933)](figs/griffon.jpg)
+![[Coloured figures of the birds of the British Islands. v.1 | London :R. H. Porter,1885-1897.](https://biodiversitylibrary.org/page/34514933)](figs/griffon.jpg)
 
 Şimdi de kızıl akbaba için bakalım.
 
