@@ -25,11 +25,8 @@ website:
         href: "https://www.linkedin.com/in/mehmetgoktug/"
   page-footer: 
     center: R Delisi - 2023
-  twitter-card:
-    creator: "@mehmet_goktu"
-    site: "@mehmet_goktu"
-  open-graph:
-    locale: tr_TR
+  twitter-card: true
+  open-graph: true
   comments:
     utterances:
       repo: 'R-delisi/r-delisi.github.io'
