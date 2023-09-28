@@ -95,6 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../favicon.jpeg" rel="icon" type="image/jpeg">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -261,10 +262,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <p><img src="figs/preview.png" class="img-fluid"></p>
 <p><strong>Merhabalar, blogun ilk yazısına hoş geldiniz. Temel bilgiler içeren yazılar da olacak ancak blog içeriklerinin çoğunun bu gibi vaka örneklerinden oluşacağını düşünüyorum. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.</strong></p>
-<p>Bu blog yazısında, özetle, R’da kuş verilerini nasıl işleyeceğimize değineceğim. Kuşlara doğrudan ilginiz olmasa dahi, temel bazı mekânsal analizleri öğrenmek için faydalı bir yazı olacak.</p>
-<p>Burada iki temel sorumuz var:</p>
+<p>Lisansa başladığım yıllarda arazi çalışmaları için can atan, lablardan ve her türlü veri işinden kaçan biriydim. Doğayı gözlemlemeyi; kuş ve memeli arazilerine gitmeyi çok seviyor, bu konularda yapacağım bilimsel çalışmaları düşlüyordum. Ancak korkunun ecele faydası yokmuş. Doğadaki gözlemlerimizden anlamlı bilgiler çıkartmanın yolu veriden geçiyormuş. 😅 Veriyi, münasebetimiz arttıkça sevmeye başladım. Ama öyle zorunluluktan sevmek falan değil. İçine girdikçe ne kadar haz veren bir uğraş olduğunu keşfettim. İstatistik ve veri analizi, rakamlardan ibaret değil, hayatın her yerinde. Onu sevelim, koruyalım. :) Neyse lafı fazla uzatmadan konuya döneyim.</p>
+<p>Bu blog yazısında, R programlama dilini kullanarak kuş verilerinin nasıl işlendiğini göstereceğim. Yazının uzunluğu korkutmasın! Sadece azıcık bir ilgi ve temel R ile GIS bilgisi yeterli olacak. Kuşlara ilginiz olmasa bile, bu yazının bazı temel mekânsal analizleri öğrenmek için faydalı olacağını düşünüyorum. Takıldığınız her noktada çekinmeden yorum yapabilirsiniz.</p>
+<p>Size iki ana soru sunuyorum:</p>
 <ol type="1">
-<li>Türkiye’de, illere göre toplam kuş türü sayısı nasıl bir dağılım gösteriyor?</li>
+<li>Türkiye’deki iller bazında kuş türü çeşitliliği nasıl bir dağılıma sahip?</li>
 <li>Bilindiği gibi Kızılcahamam, Türkiye’deki en önemli kara akbaba - <em>Aegypius monachus</em> popülasyonlarından birisini barındırıyor. Bu türün, Kızılcahamam ilçe sınırları içerisinde nasıl bir dağılımı vardır? Türün dağılımıyla çevresel faktörler arasındaki ilişki <strong>kabaca</strong> nasıldır?</li>
 </ol>
 <p>Bu yazıda yalnızca birinci soruya odaklanacağız. İkinci soru için ikinci yazıyı bekleyiniz lütfen. :)</p>
@@ -310,10 +312,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <td style="text-align: left;">rgeoboundaries</td>
 <td style="text-align: left;">Mülki idare sınırlarını indirmek için</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">tmap</td>
-<td style="text-align: left;">Güzel haritalar çizmek için</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -322,23 +320,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"tidyverse"</span>)) <span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"sf"</span>)) <span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"rgeoboundaries"</span>)) <span class="fu">install.packages</span>(<span class="st">"rgeoboundaries"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"tmap"</span>)) <span class="fu">install.packages</span>(<span class="st">"tmap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"rgeoboundaries"</span>)) <span class="fu">install.packages</span>(<span class="st">"rgeoboundaries"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Eğer paketler kuruluysa library() fonksiyonu ile yükleyebiliriz.</p>
+<p>Eğer paketler kuruluysa, bu paketleri library() fonksiyonu ile yükleyebiliriz.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># bircok veri isini kolaylastirmak icin</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="co"># r'da mekansal vektor verileri islemek icin</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgeoboundaries) <span class="co"># tr il sinirlarina erismek icin</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap) <span class="co"># guzel haritalar cizmek icin </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgeoboundaries) <span class="co"># tr il sinirlarina erismek icin</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="kuş-verisinin-yüklenip-bu-yazı-için-gerekli-olan-alt-kümesinin-alınması" class="level3">
 <h3 class="anchored" data-anchor-id="kuş-verisinin-yüklenip-bu-yazı-için-gerekli-olan-alt-kümesinin-alınması">2. Kuş verisinin yüklenip bu yazı için gerekli olan alt kümesinin alınması</h3>
-<p>İlk soruya cevap verebilmek için öncelikle iki temel veriye ihtiyacımız var. Bunlardan birisi <strong>kuş</strong>, diğeri ise <strong>Türkiye’deki iller</strong>.</p>
-<p>Kuş verisi olarak, Türkiye ve dünyadaki en kapsamlı kuş gözlem veri tabanı olan <a href="https://ebird.org">eBird</a>’ü kullanacağız. Kuş gözlemcileri araziye çıktıklarında gözlemledikleri kuşları bu veri tabanına kaydediyor, bilime ve doğa korumaya katkı sağlayabiliyorlar. 2015 yılında ulusal veri tabanımız Kuşbank’ın eBird’e taşınmasından beri Türkiye kuşlarını konu alan en kapsamlı veri tabanı aynı zamanda.</p>
-<p>eBird verilerini siteye üye olup, en altta, <strong>Bilim</strong> başlığı altındaki <strong>Veri indirme talebi</strong> sayfasından ya da <a href="https://docs.ropensci.org/rebird/">{rebird}</a> paketini kullanarak indirebilirsiniz. Ben, site üzerinden tüm Türkiye verilerini talep ederek indirdim.</p>
-<p>İndirdiğimiz eBird verilerini R’a yükleyelim. eBird verileri txt dosyası olduğundan <a href="https://www.tidyverse.org/">{tidyverse}</a> paket evreni içindeki bir fonksiyon olan <a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim()</a>’i kullandık. Base R’daki <a href="https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/read.table">read.table()</a> fonksiyonu da kullanılabilir. Veri biraz büyük olduğundan yüklenmesi ve işlenmesi yavaş olabilir.</p>
+<p>Yazımızdaki ilk soruya cevap verebilmek için iki temel veriye ihtiyacımız var. Bunlar <strong>kuş</strong> ve <strong>Türkiye’nin il sınırları</strong> verileri.</p>
+<p>Kuş verisini <a href="https://ebird.org">eBird</a> veri tabanından alacağız. eBird, Türkiye ve dünyadaki en kapsamlı kuş gözlem veri tabanı. Kuş gözlemcileri araziye çıktıklarında gözlemledikleri kuşları bu veri tabanına kaydediyor, bu şekilde bilime ve doğa korumaya katkı sağlayabiliyorlar.</p>
+<p>eBird verilerini siteye üye olduktan sonra, en altta, <strong>Bilim</strong> başlığı altındaki <strong>Veri indirme talebi</strong> sayfasından ya da <a href="https://docs.ropensci.org/rebird/">{rebird}</a> paketini kullanarak indirebilirsiniz. Ben, site üzerinden tüm Türkiye verilerini indirdim.</p>
+<p>İlk adım olarak indirdiğimiz eBird verisini R’a yükleyelim. Bu veri txt formatında olduğu için, <a href="https://www.tidyverse.org/">{tidyverse}</a> paket grubuna ait <a href="https://readr.tidyverse.org/reference/read_delim.html">read_delim()</a> fonksiyonunu kullandık. Base R’daki <a href="https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/read.table">read.table()</a> fonksiyonu da bu iş için kullanılabilir. Veri biraz büyük olduğundan yüklenmesi ve işlenmesi biraz zaman alabilir.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ebird <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"./ebird/ebd_TR_relApr-2023.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -367,7 +363,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #   COUNTRY &lt;chr&gt;, `COUNTRY CODE` &lt;chr&gt;, STATE &lt;chr&gt;, `STATE CODE` &lt;chr&gt;, …</code></pre>
 </div>
 </div>
-<p><a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/print">print()</a> fonksiyonu ile verinin genel yapısını gördük. 2,403,720 gözlem (satır) ve 50 değişkene (sütun) sahip bir tibble ({tidyverse}’e özel bir data frame şekli, bence daha kullanışlı). Değişken sayısı fazla olduğu için print() fonksiyonu yeterince kullanışlı. Bu sebeple, R’a yüklediğimiz eBird veri tablosunun tüm sütunlarını ve onların yapılarını görmek için <a href="https://dplyr.tidyverse.org/reference/glimpse.html">glimpse()</a> fonksiyonunu kullanacağız. Bu fonksiyon, base R’daki <a href="https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/str">str()</a> fonksiyonuna benziyor ancak tibble veri yapısıyla kullanılırken daha sade ve kullanışlı bence. Özetle, bu fonksiyonu, print() fonksiyonunun transpoze edilmiş hâli olarak görebilirsiniz.</p>
+<p>Verimizi R’a yükledikten sonra <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/print">print()</a> fonksiyonu ile veri setimizin temel yapısına bir göz attık. 2,403,720 gözlem (satır) ve 50 değişkene (sütun) sahip bir tibble karşımıza çıktı. tibble, {tidyverse}’e özel klasik data.frame’den daha kullanışlı bir veri yapısıdır. Özel bir data.frame diyebiliriz. Ancak bu kadar fazla değişkenimiz varken print() fonksiyonu yeterince işlevsel değil. Verinin büyük bir kısmını göremiyoruz. Bu sebeple, R’a yüklediğimiz veri tablosunun tüm sütunlarını ve onların yapılarını görmek için <a href="https://dplyr.tidyverse.org/reference/glimpse.html">glimpse()</a> fonksiyonunu kullanacağız. Bu fonksiyon, base R’daki <a href="https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/str">str()</a> fonksiyonuna benziyor ancak tibble veri yapısıyla kullanılırken daha sade ve kullanışlı. Özetle, bu fonksiyonu, print() fonksiyonunun transpoze edilmiş hâli olarak görebilirsiniz.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ebird)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -425,7 +421,7 @@ $ `SPECIES COMMENTS`           &lt;chr&gt; "Collected (Sclator &amp; Taylor, 187
 $ ...50                        &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
 </div>
 </div>
-<p>Burada sütunları çok daha rahat bir şekilde görebiliyoruz. Şu an için işimize yaramayacak olan bir sürü sütun var. Bu sebeple işimize yarayacak olanları seçelim. Ardından da sadece tür kaydı olan gözlemleri seçmek için <em>species</em>’e göre filtreleyelim.</p>
+<p>Bu fonksiyon sayesinde sütunları çok daha rahat bir şekilde görebiliyoruz. Gördüğünüz gibi bu yazı için işimize yaramayacak olan bir sürü sütun var. Kalabalıkta kaybolmamak için yalnızca işimize yarayabilecek sütunları seçelim. Ardından da sadece tür kaydı olan gözlemleri seçmek için <em>species</em>’e göre filtreleyelim.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ebird_subset <span class="ot">&lt;-</span> ebird <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">29</span>, <span class="dv">30</span>) <span class="sc">|&gt;</span>  <span class="co"># burada indeks kullanarak sectik, sutun isimleriyle de secebiliriz</span></span>
@@ -465,15 +461,15 @@ $ LONGITUDE           &lt;dbl&gt; 29.47437, 32.85443, 28.97673, 28.83948, 36.315
 </div>
 </div>
 <p>Gördüğünüz gibi verinin işimize yarayacak bir alt kümesini aldık, kalabalıktan kurtulduk.</p>
-<p>Artık ilk yüklediğimiz veriyi (ebird) R’dan silebiliriz. Veri, tüm TR’yi kapsadığı için 2 milyondan fazla gözlem içeriyor. Büyük veri setleri RAM’in şişmesine ve R’ın çökmesine sebep olabilir. Bu sebeple artık işimize yaramayacak olan verileri environment’ten kaldırıyoruz.</p>
+<p>Artık ilk yüklediğimiz veriyi (ebird) R’dan silebiliriz. Veri, tüm TR’yi kapsadığı için 2 milyondan fazla gözlem içeriyor. Büyük veri setleri RAM’in şişmesine ve R’ın çökmesine sebep olabilir. Bu sebeple artık işimize yaramayacak olan verileri environment’ten kaldıralım.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(ebird)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="kuş-verisinin-mekânsallıştırılması" class="level3">
 <h3 class="anchored" data-anchor-id="kuş-verisinin-mekânsallıştırılması">3. Kuş verisinin mekânsallıştırılması</h3>
-<p>Ebird verimizi yükleyip, işimize yarayacak olan alt kümesini aldıktan sonra sıra geldi verimizi mekânsallaştırmaya. Verimizi, uygun mekânsal veri tipine dönüştürüp, mekânsal analizlerde kullanılabilecek bir hâle getireceğiz. Bunun için, R’da vektör verileri işlemek için geliştirilen <a href="https://r-spatial.github.io/sf/">{sf}</a> paketini kullanacağız.</p>
-<p>Lat long verisini ve koordinat sistemini tanımlayarak eBird verisini sf objesine çevirdik.</p>
+<p>Kuş verisinin ihtiyacımız olan alt kümesini aldıktan sonra sıra geldi verimizi mekânsallaştırmaya. Verimizi, uygun mekânsal veri tipine dönüştürüp, mekânsal analizlerde kullanılabilecek bir hâle getireceğiz. Bunun için, R’da mekânsal vektör verileri işlemek için geliştirilen <a href="https://r-spatial.github.io/sf/">{sf}</a> paketini kullanacağız.</p>
+<p>Lat long verisini ve koordinat sistemini tanımlayarak eBird verisini sf objesine dönüştürelim.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ebird_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    ebird_subset, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"LONGITUDE"</span>, <span class="st">"LATITUDE"</span>), <span class="at">crs =</span> <span class="st">"EPSG:4326"</span></span>
@@ -502,12 +498,12 @@ Geodetic CRS:  WGS 84
 # ℹ 2 more variables: STATE &lt;chr&gt;, geometry &lt;POINT [°]&gt;</code></pre>
 </div>
 </div>
-<p>Gördüğünüz gibi veri tablosuyla beraber artık geometri tipi (POINT), veri boyutu (dimension), verinin coğrafi sınırlarını belirten bounding box koordinatları ve bir CRS’e (koordinat referans sistemi) sahibiz. Bundan sonra mekânsal analizleri rahatça yapabiliriz.</p>
-<p>Dikkat ederseniz her bir satırda, bir koordinat çiftinden oluşan koordinat verisi var. Bu, her bir satırın ve bu satırdaki tüm bilgilerin, bir geometriyle ilişkili olduğunu gösteriyor. Bu geometri de, geometri tipinde belirtildiği ya da bir koordinat çiftinin varlığından anlayabileceğimiz gibi nokta. Yani 2,298,920 tane noktamız var ve her bir nokta bir gözlemle ilişkili.</p>
+<p>Verimizi sf formatına dönüştürdüğümüzde, bazı önemli mekânsal özelliklerin eklenmiş olduğunu görüyoruz. Bunlar arasında geometri tipi (POINT), veri boyutu (dimension), verinin coğrafi sınırlarını tanımlayan bounding box koordinatları ve koordinat referans sistemi (CRS) bulunuyor. Bundan sonra mekânsal analizleri rahatça yapabiliriz.</p>
+<p>Dikkat ederseniz verinin her bir satırı, bir koordinat çiftiyle ilişkili. Bu, her bir satırın ve bu satırdaki tüm bilgilerin, bir geometriyle ilişkili olduğunu gösteriyor. Bu geometri de, geometri tipinde belirtildiği ya da bir koordinat çiftinin varlığından anlayabileceğimiz gibi nokta. Yani 2,298,920 tane noktamız var ve her bir nokta bir gözlemle ilişkili.</p>
 </section>
 <section id="tr-il-katmanının-yüklenmesi" class="level3">
 <h3 class="anchored" data-anchor-id="tr-il-katmanının-yüklenmesi">4. TR il katmanının yüklenmesi</h3>
-<p>eBird verisini mekânsallaştırdığımıza göre, TR il sınırlarını R’a yükleyebiliriz. Ben <a href="https://www.geoboundaries.org/">geoBoundaries</a> veri tabanını kullanıyorum. Siz de buradan indirebilirsiniz idari sınırlara dair verileri. Aşağıda da gördüğünüz gibi {rgeoboundaries} paketiyle tr il sınırlarına doğrudan erişebiliyoruz.</p>
+<p>eBird verisini mekânsallaştırdığımıza göre sıra geldi TR il sınırlarını R’a yüklemeye. Ben <a href="https://www.geoboundaries.org/">geoBoundaries</a> veri tabanını kullanıyorum. İhtiyaç duyduğunuz mülki idare sınırları verisinine erişmek için bu linki ya da <a href="https://github.com/wmgeolab/rgeoboundaries">{rgeoboundaries}</a> paketini kullanabilirsiniz.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tr_il <span class="ot">&lt;-</span> <span class="fu">gb_adm1</span>(<span class="at">country =</span> <span class="st">"Turkey"</span>, <span class="at">type =</span> <span class="st">"SSCGS"</span>) <span class="co"># type = "SSCGS" argumaniyla basitlestirilmiş versiyonunu indiriyoruz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -560,29 +556,21 @@ First 10 features:
 </div>
 </div>
 <p>Hop! Çok daha iyi!</p>
-<p>Şimdi de <a href="https://r-tmap.github.io/tmap/">{tmap}</a> paketinin içindeki <a href="https://r-tmap.github.io/tmap/reference/qtm.html">qtm()</a> fonksiyonu ile çizelim.</p>
+<p>Artık kuş verimizin Türkiye üzerindeki dağılımını incelemeye başlama vakti geldi. Ancak 2 milyondan fazla satırı olan bir verinin grafiğini çizmek muhtemelen R’ın çökmesiyle sonuçlanacaktır. Bu yüzden bu verinin bir alt kümesini alalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qtm</span>(tr_il)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ebird_sample <span class="ot">&lt;-</span> <span class="fu">sample_n</span>(ebird_sf, <span class="dv">500000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Veri tablomuzdan rastgele 500000 satır seçtik. Bu sayı bilgisayarınız için fazla geliyorsa 5-10b de seçebilirsiniz.</p>
+<p>Verimizi, bu sefer de R’ın vazgeçilmez paketi olan <a href="https://ggplot2.tidyverse.org/">{ggplot2}</a> ile görselleştirelim. ggplot2, çizeceğimiz verileri katman katman belirtip <strong>+</strong> ile birbirine bağlamamıza izin veren oldukça esnek bir paket. Şimdi haritamızı çizelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span>                                       <span class="co"># grafigi baslatiyor</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tr_il, <span class="fu">aes</span>()) <span class="sc">+</span>                 <span class="co"># tr katmanini ekliyoruz</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ebird_sample, <span class="fu">aes</span>(), <span class="at">size =</span> .<span class="dv">5</span>) <span class="co"># kus verimizi ekliyoruz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="ebird_r_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="ebird_r_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Daha az yazarak gayet güzel bir sonuç elde ettik. Yukarıda da gördüğünüz gibi harita çizmek için farklı yöntemler mevcut. Ben genelde <a href="https://ggplot2.tidyverse.org/">{ggplot2}</a> ve {tmap} paketlerini tercih ediyorum. Tercih size kalmış.</p>
-<p>Şimdi, kuş verimizin, Türkiye’deki dağılımına bakalım. 2 milyondan fazla satırı olan bir verinin grafiğini çizmek muhtemelen R’ın çökmesine sebep olacaktır. Bu yüzden bu verinin de bir alt kümesini alacağız.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ebird_sample <span class="ot">&lt;-</span> <span class="fu">sample_n</span>(ebird_sf, <span class="dv">500000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Verideki 500000 satırı rastgele seçtik. Bu satır sayısı bilgisayarınız için fazla gelebilir. 5-10b de seçebilirsiniz.</p>
-<p>Verimizi, bu sefer de R’ın vazgeçilmez paketi olan ggplot ile görselleştiriyoruz.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tr_il, <span class="fu">aes</span>()) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ebird_sample, <span class="fu">aes</span>(), <span class="at">size =</span> .<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="ebird_r_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>500000 kuş gözlem verisinin Türkiye’deki dağılımı bu şekildeymiş. Batı’da ve büyükşehirlerin yakınlarında daha çok gözlem var. Hazır bu şekilde görselleştirmişken merak ettiğim 2 türün de dağılımına bir bakalım. Tür ismine göre filtreleyip çiziyoruz.</p>
+<p>500000 kuş gözlem verisinin Türkiye’deki dağılımı bu şekildeymiş. Bu grafiğe dayanarak, ülkenin batısında ve büyükşehirlerde daha çok gözlem olduğunu söyleyebiliriz. Bu genel dağılımı gördüğümüze göre merak ettiğim 2 türün dağılımına bakmak istiyorum. Veriyi tür ismine göre filtreleyip haritayı çiziyoruz.</p>
 <section id="sakallı-akbaba" class="level4">
 <h4 class="anchored" data-anchor-id="sakallı-akbaba">Sakallı Akbaba</h4>
 <div class="quarto-figure quarto-figure-center">
@@ -591,16 +579,17 @@ First 10 features:
 <p></p><figcaption class="figure-caption"><a href="https://biodiversitylibrary.org/page/2836721">Album of Abyssinian birds and mammals | Chicago :Field Museum of Natural History,1930.</a></figcaption><p></p>
 </figure>
 </div>
+<p>Sakallı akbaba - <em>Gypaetus barbatus</em>, sarp dağların insandan uzak köşelerinde; genellikle kanyonlar ve derin yarlarda yaşayan bir akbaba türü. Kendine has görünüşü ve diyetinin kemikten oluşması sebebiyle oldukça ilgi çekici bir tür. Nesli tehdit altındaki bu nadir türün Türkiye’deki dağılımına bir bakalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>sakalli <span class="ot">&lt;-</span> ebird_sf <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">SCIENTIFIC NAME</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Gypaetus barbatus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sakalli <span class="ot">&lt;-</span> ebird_sf <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">SCIENTIFIC NAME</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Gypaetus barbatus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tr_il, <span class="fu">aes</span>()) <span class="sc">+</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> sakalli, <span class="fu">aes</span>(), <span class="at">size =</span> .<span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tr_il, <span class="fu">aes</span>()) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> sakalli, <span class="fu">aes</span>(), <span class="at">size =</span> .<span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="ebird_r_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="ebird_r_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Gördüğünüz gibi sakallı akbabanın Türkiye’deki dağılımı Köroğlu Dağları, Aladağlar, Kaçkar Dağları, Akdağ gibi dağlık alanlarda yoğunlaşıyor.</p>
@@ -613,40 +602,30 @@ First 10 features:
 <p></p><figcaption class="figure-caption"><a href="https://biodiversitylibrary.org/page/34514933">Coloured figures of the birds of the British Islands. v.1 | London :R. H. Porter,1885-1897.</a></figcaption><p></p>
 </figure>
 </div>
-<p>Şimdi de kızıl akbaba için bakalım.</p>
+<p>Kızıl akbaba - <em>Gyps fulvus</em> da dağları tercih eden ve kayalıklarda yuvalayan bir tür. Kızıl akbaba, sakallı akbaba kadar çekingen olmayan, genellikle koloni hâlinde yaşayan bir tür. Şimdi de kızıl akbabanın dağılımına bir bakalım. Acaba nerelerden kayıtlar gelmiş!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>kizil <span class="ot">&lt;-</span> ebird_sf <span class="sc">|&gt;</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">SCIENTIFIC NAME</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Gyps fulvus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>kizil <span class="ot">&lt;-</span> ebird_sf <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">SCIENTIFIC NAME</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Gyps fulvus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tr_il, <span class="fu">aes</span>()) <span class="sc">+</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> kizil, <span class="fu">aes</span>(), <span class="at">size =</span> .<span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tr_il, <span class="fu">aes</span>()) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> kizil, <span class="fu">aes</span>(), <span class="at">size =</span> .<span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="ebird_r_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<p><img src="ebird_r_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Kızıl akbaba dağılımının, üreme ve göç bölgelerinde yoğunlaşan bir örüntü sergilediğini görebiliyoruz.</p>
-<p>Bu arada aynı haritayı {tmap} paketi ile aşağıdaki gibi çizebiliriz.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tr_il) <span class="sc">+</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(kizil) <span class="sc">+</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="ebird_r_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 </section>
 </section>
 <section id="kuş-verisinin-gruplanıp-özetlenmesi" class="level3">
 <h3 class="anchored" data-anchor-id="kuş-verisinin-gruplanıp-özetlenmesi">5. Kuş verisinin gruplanıp özetlenmesi</h3>
-<p>Biraz oyalanmanın ardından tekrardan sorumuza odaklanabiliriz. Öncelikle Türkiye’deki kuş türlerini ve her türden kaç adet kayıt olduğunu görmek için kuş verisini tür ismine göre grupluyor, ardından kayıt sayısına göre özetliyoruz. Bu işlem biraz uzun sürebilir.</p>
+<p>Biraz oyalanmanın ardından tekrardan sorumuza odaklanabiliriz. Öncelikle Türkiye’deki kuş türlerini ve her türden kaç adet kayıt olduğunu görmek için kuş verisini tür ismine göre gruplayıp, kayıt sayısına göre özetleyelim. Bu işlem biraz uzun sürebilir.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ebird_grouped <span class="ot">&lt;-</span> ebird_sf <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">SCIENTIFIC NAME</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ebird_grouped)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ebird_grouped <span class="ot">&lt;-</span> ebird_sf <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">SCIENTIFIC NAME</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ebird_grouped)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 503 features and 2 fields
 Geometry type: GEOMETRY
@@ -670,7 +649,7 @@ Geodetic CRS:  WGS 84
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ebird_grouped)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ebird_grouped)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 503
 Columns: 3
@@ -679,62 +658,66 @@ $ n                 &lt;int&gt; 1, 3, 2157, 1617, 17281, 792, 355, 6899, 25, 1, 
 $ geometry          &lt;GEOMETRY [°]&gt; POINT (32.87976 39.96636), MULTIPOINT ((41.…</code></pre>
 </div>
 </div>
-<p>eBird veri tabanında Türkiye’den kayıtlı 503 tür varmış. eBird’ün internet sitesinde 494 adet tür gösteriyor ancak veri talebiyle aldığımız veri de 9 fazla tür var. Sebebi nedir bilmiyorum doğrusu. Aklıma, kesin olmayan bazı kayıtların da olabileceği geliyor sadece. Bilenler açıklarsa süper olur.</p>
+<p>Gördüğünüz gibi eBird veri tabanında Türkiye’den kayıtlı 503 tür varmış. eBird’ün internet sitesinde ise 494 adet tür gösteriyor. Bu farklılığın sebebi nedir bilmiyorum doğrusu. Aklıma, kesin olmayan bazı kayıtların da olabileceği geliyor sadece. Bilenler açıklayabilirse süper olur.</p>
 </section>
 <section id="her-bir-il-sınırı-içinde-kalan-tür-sayısının-hesaplanması" class="level3">
 <h3 class="anchored" data-anchor-id="her-bir-il-sınırı-içinde-kalan-tür-sayısının-hesaplanması">6. Her bir il sınırı içinde kalan tür sayısının hesaplanması</h3>
-<p>Şimdi, Türkiye’deki her bir ilin poligonu içerisindeki noktaları sayacağız. Bu da bize her bir ildeki toplam tür sayısını verecek. Öncelikle <a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects()</a> fonksiyonu ile her bir il ile kesişen noktaları belirliyoruz. Ardından <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lengths">lengths()</a> fonksiyonu ile her bir ilde kaç adet nokta olduğunu hesaplıyoruz ve bunu, tr_il verisine yeni bir sütun olarak ekliyoruz. Temelde çok basit bir işlem ama başta anlamak zor olabiliyor.</p>
+<p>Şimdi, Türkiye’deki her bir ilin sınırları içine düşen kuş gözlem noktalarını sayacağız. Yani her bir poligonun içindeki noktaları sayacağız. Bu da bize her bir ildeki toplam tür sayısını verecek. Öncelikle <a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects()</a> fonksiyonu ile her bir il ile kesişen noktaları belirliyoruz. Ardından <a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lengths">lengths()</a> fonksiyonu ile her bir ilde kaç adet nokta olduğunu hesaplıyoruz ve bunu, tr_il verisine yeni bir sütun olarak ekliyoruz. Temelde çok basit bir işlem ama başta anlamak zor olabiliyor.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>tr_il<span class="sc">$</span>bird_count <span class="ot">&lt;-</span> <span class="fu">lengths</span>(<span class="fu">st_intersects</span>(tr_il, ebird_grouped))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>tr_il<span class="sc">$</span>bird_count <span class="ot">&lt;-</span> <span class="fu">lengths</span>(<span class="fu">st_intersects</span>(tr_il, ebird_grouped))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="verinin-görselleştirilmesi" class="level3">
 <h3 class="anchored" data-anchor-id="verinin-görselleştirilmesi">7. Verinin görselleştirilmesi</h3>
 <p>Şimdi, hızlıca bir plotlayalım. Bunun için plot() fonksiyonunu kullacağız. tr_il içindeki bird_count sütununu seçelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tr_il[, <span class="st">"bird_count"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tr_il[, <span class="st">"bird_count"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="ebird_r_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Haritamız hazır. Şimdi daha iyi bir görselleştirme için ggplot() fonksiyonunu kullanalım.</p>
+<p>Öncelikle kırılımlarımızı belirleyelim ki haritamız daha güzel görünsün. Bunun için <a href="https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization">jenks optimizasyonunu</a> kullanacağız.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> classInt<span class="sc">::</span><span class="fu">classIntervals</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  tr_il<span class="sc">$</span>bird_count,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">7</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">style =</span> <span class="st">"jenks"</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span>                                      <span class="co"># grafigi baslatiyor</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> tr_il,                              <span class="co"># tr katmanini ekliyoruz</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> bird_count),                    <span class="co"># renkleri kus turu sayisina gore seciyoruz</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"grey12"</span>,                         <span class="co"># il sinirlarinin rengini belirliyoruz</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> .<span class="dv">1</span>                             <span class="co"># il sinirlarinin kalinligini belirliyoruz</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">breaks =</span> breaks<span class="sc">$</span>brks) <span class="sc">+</span> <span class="co"># haritamizi viridis paletiyle dolduruyoruz</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(                                      <span class="co"># lejant ozelliklerini seciyoruz</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="fu">guide_colorsteps</span>(</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">barwidth =</span> <span class="dv">20</span>,</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">barheight =</span> .<span class="dv">5</span>,</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">title.position =</span> <span class="st">"right"</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(                                        <span class="co"># etiketleri yaziyoruz</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"İllere Göre Kuş Türü Sayısı"</span>,</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Boylam"</span>,</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Enlem"</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span>                                 <span class="co"># tema seciyoruz</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(                                       <span class="co"># temanın ozellliklerini berlirliyoruz</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="st">"white"</span>, <span class="at">colour =</span> <span class="st">"white"</span>),</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Ubuntu Mono"</span>),</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="ebird_r_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Haritamız hazır. Şimdi daha iyi bir görselleştirme için ggplot() fonksiyonunu kullanalım.</p>
-<p>Öncelikle kırılımlarımız belirleyelim ki haritamız daha güzel görünsün. Bunun için <a href="https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization">jenks optimizasyonunu</a> kullanacağız.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  classInt<span class="sc">::</span><span class="fu">classIntervals</span>(tr_il<span class="sc">$</span>bird_count,</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n =</span> <span class="dv">7</span>,</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">style =</span> <span class="st">"jenks"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tr_il,</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">aes</span>(<span class="at">fill =</span> bird_count),</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">colour =</span> <span class="st">"grey12"</span>,</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">linewidth =</span> .<span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">breaks =</span> breaks<span class="sc">$</span>brks) <span class="sc">+</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_colorsteps</span>(</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">barwidth =</span> <span class="dv">20</span>,</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">barheight =</span> .<span class="dv">5</span>,</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title.position =</span> <span class="st">"right"</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"İllere Göre Kuş Türü Sayısı"</span>,</span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Boylam"</span>,</span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Enlem"</span></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="st">"white"</span>, <span class="at">colour =</span> <span class="st">"white"</span>),</span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Ubuntu Mono"</span>),</span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="ebird_r_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Gördüğünüz gibi çok daha iyi bir görselleştirme oldu.</p>
-<p>Burada dikkat etmemiz gereken en önemli şeylerden birisi, verilerin, gözlem sayısı ve il yüzölçümü farklılıklarından dolayı yanlı (bias) olduğu. Bu harita genel fikirler verebilir ancak net çıkarımlar için verinin standartlaştırılması önem arz etmektedir.</p>
+<p>Gördüğünüz gibi çok daha iyi bir görselleştirme oldu. Şu an elimizde, Türkiye’deki illere göre kuş türü sayısını gösteren bir harita bulunmakta. Ancak bu harita üzerinden yapacağımız yorumlarda dikkatli olmamız gereken birkaç önemli nokta var. İl yüzölçümünün ve illere göre gözlem sayısının farklı olmasından kaynaklanan yanlılık (bias) potansiyeli. Bu harita genel fikirler verebilir ancak net çıkarımlar için verinin standartlaştırılması ve istatistiki testlere tabi tutulması önem arz etmektedir.</p>
 <p>İkinci yazıda görüşmek dileğiyle.</p>
 <p>Bilimle ve huzurla kalınız.</p>
 

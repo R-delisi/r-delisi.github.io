@@ -12,22 +12,22 @@ categories:
 image: figs/preview.png
 ---
 
-
-
 ![](figs/preview.png)
 
 **Merhabalar, blogun ilk yazısına hoş geldiniz. Temel bilgiler içeren yazılar da olacak ancak blog içeriklerinin çoğunun bu gibi vaka örneklerinden oluşacağını düşünüyorum. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
 
-Bu blog yazısında, özetle, R'da kuş verilerini nasıl işleyeceğimize değineceğim. Kuşlara doğrudan ilginiz olmasa dahi, temel bazı mekânsal analizleri öğrenmek için faydalı bir yazı olacak.
+Lisansa başladığım yıllarda arazi çalışmaları için can atan, lablardan ve her türlü veri işinden kaçan biriydim. Doğayı gözlemlemeyi; kuş ve memeli arazilerine gitmeyi çok seviyor, bu konularda yapacağım bilimsel çalışmaları düşlüyordum. Ancak korkunun ecele faydası yokmuş. Doğadaki gözlemlerimizden anlamlı bilgiler çıkartmanın yolu veriden geçiyormuş. 😅 Veriyi, münasebetimiz arttıkça sevmeye başladım. Ama öyle zorunluluktan sevmek falan değil. İçine girdikçe ne kadar haz veren bir uğraş olduğunu keşfettim. İstatistik ve veri analizi, rakamlardan ibaret değil, hayatın her yerinde. Onu sevelim, koruyalım. :) Neyse lafı fazla uzatmadan konuya döneyim.
 
-Burada iki temel sorumuz var:
+Bu blog yazısında, R programlama dilini kullanarak kuş verilerinin nasıl işlendiğini göstereceğim. Yazının uzunluğu korkutmasın! Sadece azıcık bir ilgi ve temel R ile GIS bilgisi yeterli olacak. Kuşlara ilginiz olmasa bile, bu yazının bazı temel mekânsal analizleri öğrenmek için faydalı olacağını düşünüyorum. Takıldığınız her noktada çekinmeden yorum yapabilirsiniz.
 
-1.  Türkiye'de, illere göre toplam kuş türü sayısı nasıl bir dağılım gösteriyor?
-2.  Bilindiği gibi Kızılcahamam, Türkiye'deki en önemli kara akbaba - *Aegypius monachus* popülasyonlarından birisini barındırıyor. Bu türün, Kızılcahamam ilçe sınırları içerisinde nasıl bir dağılımı vardır? Türün dağılımıyla çevresel faktörler arasındaki ilişki **kabaca** nasıldır?
+Size iki ana soru sunuyorum:
+
+1. Türkiye'deki iller bazında kuş türü çeşitliliği nasıl bir dağılıma sahip?
+2. Bilindiği gibi Kızılcahamam, Türkiye'deki en önemli kara akbaba - *Aegypius monachus* popülasyonlarından birisini barındırıyor. Bu türün, Kızılcahamam ilçe sınırları içerisinde nasıl bir dağılımı vardır? Türün dağılımıyla çevresel faktörler arasındaki ilişki **kabaca** nasıldır?
 
 Bu yazıda yalnızca birinci soruya odaklanacağız. İkinci soru için ikinci yazıyı bekleyiniz lütfen. :)
 
-------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 ### Yazının Akışı
 
@@ -46,11 +46,10 @@ Yazının genel akışı aşağıdaki gibidir:
 ```{r}
 #| echo: false
 tibble::tribble(
-    ~ Paket, ~ Açıklama,
-    "tidyverse", "Çoğunlukla veri manipülasyonu ve görselleştirme üzerine paketler içeren bir paket koleksiyonu",
-    "sf", "Simple Features: Mekânsal vektör verileri işlemek için",
-    "rgeoboundaries", "Mülki idare sınırlarını indirmek için",
-    "tmap", "Güzel haritalar çizmek için"
+  ~ Paket, ~ Açıklama,
+  "tidyverse", "Çoğunlukla veri manipülasyonu ve görselleştirme üzerine paketler içeren bir paket koleksiyonu",
+  "sf", "Simple Features: Mekânsal vektör verileri işlemek için",
+  "rgeoboundaries", "Mülki idare sınırlarını indirmek için"
 ) |> knitr::kable()
 ```
 
@@ -61,28 +60,26 @@ Eğer bu paketler kurulu değilse aşağıdaki kod bloğu ile kurabilirsiniz. Bu
 if (!require("tidyverse")) install.packages("tidyverse")
 if (!require("sf")) install.packages("sf")
 if (!require("rgeoboundaries")) install.packages("rgeoboundaries")
-if (!require("tmap")) install.packages("tmap")
 ```
 
-Eğer paketler kuruluysa library() fonksiyonu ile yükleyebiliriz.
+Eğer paketler kuruluysa, bu paketleri library() fonksiyonu ile yükleyebiliriz.
 
 ```{r}
 #| warning: false
 library(tidyverse) # bircok veri isini kolaylastirmak icin
 library(sf) # r'da mekansal vektor verileri islemek icin
 library(rgeoboundaries) # tr il sinirlarina erismek icin
-library(tmap) # guzel haritalar cizmek icin 
 ```
 
 ### 2. Kuş verisinin yüklenip bu yazı için gerekli olan alt kümesinin alınması
 
-İlk soruya cevap verebilmek için öncelikle iki temel veriye ihtiyacımız var. Bunlardan birisi **kuş**, diğeri ise **Türkiye'deki iller**. 
+Yazımızdaki ilk soruya cevap verebilmek için iki temel veriye ihtiyacımız var. Bunlar **kuş** ve **Türkiye'nin il sınırları** verileri.
 
-Kuş verisi olarak, Türkiye ve dünyadaki en kapsamlı kuş gözlem veri tabanı olan [eBird](https://ebird.org)'ü kullanacağız. Kuş gözlemcileri araziye çıktıklarında gözlemledikleri kuşları bu veri tabanına kaydediyor, bilime ve doğa korumaya katkı sağlayabiliyorlar. 2015 yılında ulusal veri tabanımız Kuşbank'ın eBird'e taşınmasından beri Türkiye kuşlarını konu alan en kapsamlı veri tabanı aynı zamanda.
+Kuş verisini [eBird](https://ebird.org) veri tabanından alacağız. eBird, Türkiye ve dünyadaki en kapsamlı kuş gözlem veri tabanı. Kuş gözlemcileri araziye çıktıklarında gözlemledikleri kuşları bu veri tabanına kaydediyor, bu şekilde bilime ve doğa korumaya katkı sağlayabiliyorlar.
 
-eBird verilerini siteye üye olup, en altta, **Bilim** başlığı altındaki **Veri indirme talebi** sayfasından ya da [{rebird}](https://docs.ropensci.org/rebird/) paketini kullanarak indirebilirsiniz. Ben, site üzerinden tüm Türkiye verilerini talep ederek indirdim.
+eBird verilerini siteye üye olduktan sonra, en altta, **Bilim** başlığı altındaki **Veri indirme talebi** sayfasından ya da [{rebird}](https://docs.ropensci.org/rebird/) paketini kullanarak indirebilirsiniz. Ben, site üzerinden tüm Türkiye verilerini indirdim.
 
-İndirdiğimiz eBird verilerini R'a yükleyelim. eBird verileri txt dosyası olduğundan [{tidyverse}](https://www.tidyverse.org/) paket evreni içindeki bir fonksiyon olan [read_delim()](https://readr.tidyverse.org/reference/read_delim.html)'i kullandık. Base R'daki [read.table()](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/read.table) fonksiyonu da kullanılabilir. Veri biraz büyük olduğundan yüklenmesi ve işlenmesi yavaş olabilir.
+İlk adım olarak indirdiğimiz eBird verisini R'a yükleyelim. Bu veri txt formatında olduğu için, [{tidyverse}](https://www.tidyverse.org/) paket grubuna ait [read_delim()](https://readr.tidyverse.org/reference/read_delim.html) fonksiyonunu kullandık. Base R'daki [read.table()](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/read.table) fonksiyonu da bu iş için kullanılabilir. Veri biraz büyük olduğundan yüklenmesi ve işlenmesi biraz zaman alabilir.
 
 ```{r}
 #| output: false
@@ -93,13 +90,13 @@ ebird <- read_delim("./ebird/ebd_TR_relApr-2023.txt")
 print(ebird)
 ```
 
-[print()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/print) fonksiyonu ile verinin genel yapısını gördük. 2,403,720 gözlem (satır) ve 50 değişkene (sütun) sahip bir tibble ({tidyverse}'e özel bir data frame şekli, bence daha kullanışlı). Değişken sayısı fazla olduğu için print() fonksiyonu yeterince kullanışlı. Bu sebeple, R'a yüklediğimiz eBird veri tablosunun tüm sütunlarını ve onların yapılarını görmek için [glimpse()](https://dplyr.tidyverse.org/reference/glimpse.html) fonksiyonunu kullanacağız. Bu fonksiyon, base R'daki [str()](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/str) fonksiyonuna benziyor ancak tibble veri yapısıyla kullanılırken daha sade ve kullanışlı bence. Özetle, bu fonksiyonu, print() fonksiyonunun transpoze edilmiş hâli olarak görebilirsiniz.
+Verimizi R'a yükledikten sonra [print()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/print) fonksiyonu ile veri setimizin temel yapısına bir göz attık. 2,403,720 gözlem (satır) ve 50 değişkene (sütun) sahip bir tibble karşımıza çıktı. tibble, {tidyverse}'e özel klasik data.frame'den daha kullanışlı bir veri yapısıdır. Özel bir data.frame diyebiliriz. Ancak bu kadar fazla değişkenimiz varken print() fonksiyonu yeterince işlevsel değil. Verinin büyük bir kısmını göremiyoruz. Bu sebeple, R'a yüklediğimiz veri tablosunun tüm sütunlarını ve onların yapılarını görmek için [glimpse()](https://dplyr.tidyverse.org/reference/glimpse.html) fonksiyonunu kullanacağız. Bu fonksiyon, base R'daki [str()](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/str) fonksiyonuna benziyor ancak tibble veri yapısıyla kullanılırken daha sade ve kullanışlı. Özetle, bu fonksiyonu, print() fonksiyonunun transpoze edilmiş hâli olarak görebilirsiniz.
 
 ```{r}
 glimpse(ebird)
 ```
 
-Burada sütunları çok daha rahat bir şekilde görebiliyoruz. Şu an için işimize yaramayacak olan bir sürü sütun var. Bu sebeple işimize yarayacak olanları seçelim. Ardından da sadece tür kaydı olan gözlemleri seçmek için *species*'e göre filtreleyelim.
+Bu fonksiyon sayesinde sütunları çok daha rahat bir şekilde görebiliyoruz. Gördüğünüz gibi bu yazı için işimize yaramayacak olan bir sürü sütun var. Kalabalıkta kaybolmamak için yalnızca işimize yarayabilecek sütunları seçelim. Ardından da sadece tür kaydı olan gözlemleri seçmek için *species*'e göre filtreleyelim.
 
 ```{r}
 ebird_subset <- ebird |>
@@ -114,7 +111,7 @@ glimpse(ebird_subset)
 
 Gördüğünüz gibi verinin işimize yarayacak bir alt kümesini aldık, kalabalıktan kurtulduk.
 
-Artık ilk yüklediğimiz veriyi (ebird) R'dan silebiliriz. Veri, tüm TR'yi kapsadığı için 2 milyondan fazla gözlem içeriyor. Büyük veri setleri RAM'in şişmesine ve R'ın çökmesine sebep olabilir. Bu sebeple artık işimize yaramayacak olan verileri environment'ten kaldırıyoruz.
+Artık ilk yüklediğimiz veriyi (ebird) R'dan silebiliriz. Veri, tüm TR'yi kapsadığı için 2 milyondan fazla gözlem içeriyor. Büyük veri setleri RAM'in şişmesine ve R'ın çökmesine sebep olabilir. Bu sebeple artık işimize yaramayacak olan verileri environment'ten kaldıralım.
 
 ```{r}
 rm(ebird)
@@ -122,9 +119,9 @@ rm(ebird)
 
 ### 3. Kuş verisinin mekânsallıştırılması
 
-Ebird verimizi yükleyip, işimize yarayacak olan alt kümesini aldıktan sonra sıra geldi verimizi mekânsallaştırmaya. Verimizi, uygun mekânsal veri tipine dönüştürüp, mekânsal analizlerde kullanılabilecek bir hâle getireceğiz. Bunun için, R'da vektör verileri işlemek için geliştirilen [{sf}](https://r-spatial.github.io/sf/) paketini kullanacağız.
+Kuş verisinin ihtiyacımız olan alt kümesini aldıktan sonra sıra geldi verimizi mekânsallaştırmaya. Verimizi, uygun mekânsal veri tipine dönüştürüp, mekânsal analizlerde kullanılabilecek bir hâle getireceğiz. Bunun için, R'da mekânsal vektör verileri işlemek için geliştirilen [{sf}](https://r-spatial.github.io/sf/) paketini kullanacağız.
 
-Lat long verisini ve koordinat sistemini tanımlayarak eBird verisini sf objesine çevirdik.
+Lat long verisini ve koordinat sistemini tanımlayarak eBird verisini sf objesine dönüştürelim.
 
 ```{r}
 ebird_sf <- st_as_sf(
@@ -133,13 +130,13 @@ ebird_sf <- st_as_sf(
 ebird_sf
 ```
 
-Gördüğünüz gibi veri tablosuyla beraber artık geometri tipi (POINT), veri boyutu (dimension), verinin coğrafi sınırlarını belirten bounding box koordinatları ve bir CRS'e (koordinat referans sistemi) sahibiz. Bundan sonra mekânsal analizleri rahatça yapabiliriz.
+Verimizi sf formatına dönüştürdüğümüzde, bazı önemli mekânsal özelliklerin eklenmiş olduğunu görüyoruz. Bunlar arasında geometri tipi (POINT), veri boyutu (dimension), verinin coğrafi sınırlarını tanımlayan bounding box koordinatları ve koordinat referans sistemi (CRS) bulunuyor. Bundan sonra mekânsal analizleri rahatça yapabiliriz.
 
-Dikkat ederseniz her bir satırda, bir koordinat çiftinden oluşan koordinat verisi var. Bu, her bir satırın ve bu satırdaki tüm bilgilerin, bir geometriyle ilişkili olduğunu gösteriyor. Bu geometri de, geometri tipinde belirtildiği ya da bir koordinat çiftinin varlığından anlayabileceğimiz gibi nokta. Yani 2,298,920 tane noktamız var ve her bir nokta bir gözlemle ilişkili.
+Dikkat ederseniz verinin her bir satırı, bir koordinat çiftiyle ilişkili. Bu, her bir satırın ve bu satırdaki tüm bilgilerin, bir geometriyle ilişkili olduğunu gösteriyor. Bu geometri de, geometri tipinde belirtildiği ya da bir koordinat çiftinin varlığından anlayabileceğimiz gibi nokta. Yani 2,298,920 tane noktamız var ve her bir nokta bir gözlemle ilişkili.
 
 ### 4. TR il katmanının yüklenmesi
 
-eBird verisini mekânsallaştırdığımıza göre, TR il sınırlarını R'a yükleyebiliriz. Ben [geoBoundaries](https://www.geoboundaries.org/) veri tabanını kullanıyorum. Siz de buradan indirebilirsiniz idari sınırlara dair verileri. Aşağıda da gördüğünüz gibi {rgeoboundaries} paketiyle tr il sınırlarına doğrudan erişebiliyoruz.
+eBird verisini mekânsallaştırdığımıza göre sıra geldi TR il sınırlarını R'a yüklemeye. Ben [geoBoundaries](https://www.geoboundaries.org/) veri tabanını kullanıyorum. İhtiyaç duyduğunuz mülki idare sınırları verisinine erişmek için bu linki ya da [{rgeoboundaries}](https://github.com/wmgeolab/rgeoboundaries) paketini kullanabilirsiniz.
 
 ```{r}
 tr_il <- gb_adm1(country = "Turkey", type = "SSCGS") # type = "SSCGS" argumaniyla basitlestirilmiş versiyonunu indiriyoruz
@@ -160,35 +157,29 @@ plot(tr_il[, "shapeName"], graticule = TRUE, axes = TRUE, main = "Türkiye Harit
 
 Hop! Çok daha iyi!
 
-Şimdi de [{tmap}](https://r-tmap.github.io/tmap/) paketinin içindeki [qtm()](https://r-tmap.github.io/tmap/reference/qtm.html) fonksiyonu ile çizelim.
-
-```{r}
-qtm(tr_il)
-```
-
-Daha az yazarak gayet güzel bir sonuç elde ettik. Yukarıda da gördüğünüz gibi harita çizmek için farklı yöntemler mevcut. Ben genelde [{ggplot2}](https://ggplot2.tidyverse.org/) ve {tmap} paketlerini tercih ediyorum. Tercih size kalmış.
-
-Şimdi, kuş verimizin, Türkiye'deki dağılımına bakalım. 2 milyondan fazla satırı olan bir verinin grafiğini çizmek muhtemelen R'ın çökmesine sebep olacaktır. Bu yüzden bu verinin de bir alt kümesini alacağız.
+Artık kuş verimizin Türkiye üzerindeki dağılımını incelemeye başlama vakti geldi. Ancak 2 milyondan fazla satırı olan bir verinin grafiğini çizmek muhtemelen R'ın çökmesiyle sonuçlanacaktır. Bu yüzden bu verinin bir alt kümesini alalım.
 
 ```{r}
 ebird_sample <- sample_n(ebird_sf, 500000)
 ```
 
-Verideki 500000 satırı rastgele seçtik. Bu satır sayısı bilgisayarınız için fazla gelebilir. 5-10b de seçebilirsiniz.
+Veri tablomuzdan rastgele 500000 satır seçtik. Bu sayı bilgisayarınız için fazla geliyorsa 5-10b de seçebilirsiniz.
 
-Verimizi, bu sefer de R'ın vazgeçilmez paketi olan ggplot ile görselleştiriyoruz.
+Verimizi, bu sefer de R'ın vazgeçilmez paketi olan [{ggplot2}](https://ggplot2.tidyverse.org/) ile görselleştirelim. ggplot2, çizeceğimiz verileri katman katman belirtip **+** ile birbirine bağlamamıza izin veren oldukça esnek bir paket. Şimdi haritamızı çizelim.
 
 ```{r}
-ggplot() +
-  geom_sf(data = tr_il, aes()) +
-  geom_sf(data = ebird_sample, aes(), size = .5)
+ggplot() +                                       # grafigi baslatiyor
+  geom_sf(data = tr_il, aes()) +                 # tr katmanini ekliyoruz
+  geom_sf(data = ebird_sample, aes(), size = .5) # kus verimizi ekliyoruz
 ```
 
-500000 kuş gözlem verisinin Türkiye'deki dağılımı bu şekildeymiş. Batı'da ve büyükşehirlerin yakınlarında daha çok gözlem var. Hazır bu şekilde görselleştirmişken merak ettiğim 2 türün de dağılımına bir bakalım. Tür ismine göre filtreleyip çiziyoruz.
+500000 kuş gözlem verisinin Türkiye'deki dağılımı bu şekildeymiş. Bu grafiğe dayanarak, ülkenin batısında ve büyükşehirlerde daha çok gözlem olduğunu söyleyebiliriz. Bu genel dağılımı gördüğümüze göre merak ettiğim 2 türün dağılımına bakmak istiyorum.  Veriyi tür ismine göre filtreleyip haritayı çiziyoruz.
 
 #### Sakallı Akbaba
 
-![[Album of Abyssinian birds and mammals | Chicago :Field Museum of Natural History,1930.](https://biodiversitylibrary.org/page/2836721)](figs/bearded.jpg)
+![[Album of Abyssinian birds and mammals \| Chicago :Field Museum of Natural History,1930.](https://biodiversitylibrary.org/page/2836721)](figs/bearded.jpg)
+
+Sakallı akbaba - _Gypaetus barbatus_, sarp dağların insandan uzak köşelerinde; genellikle kanyonlar ve derin yarlarda yaşayan bir akbaba türü. Kendine has görünüşü ve diyetinin kemikten oluşması sebebiyle oldukça ilgi çekici bir tür. Nesli tehdit altındaki bu nadir türün Türkiye'deki dağılımına bir bakalım.
 
 ```{r}
 sakalli <- ebird_sf |> 
@@ -205,9 +196,9 @@ Gördüğünüz gibi sakallı akbabanın Türkiye'deki dağılımı Köroğlu Da
 
 #### Kızıl Akbaba
 
-![[Coloured figures of the birds of the British Islands. v.1 | London :R. H. Porter,1885-1897.](https://biodiversitylibrary.org/page/34514933)](figs/griffon.jpg)
+![[Coloured figures of the birds of the British Islands. v.1 \| London :R. H. Porter,1885-1897.](https://biodiversitylibrary.org/page/34514933)](figs/griffon.jpg)
 
-Şimdi de kızıl akbaba için bakalım.
+Kızıl akbaba - _Gyps fulvus_ da dağları tercih eden ve kayalıklarda yuvalayan bir tür. Kızıl akbaba, sakallı akbaba kadar çekingen olmayan, genellikle koloni hâlinde yaşayan bir tür. Şimdi de kızıl akbabanın dağılımına bir bakalım. Acaba nerelerden kayıtlar gelmiş!
 
 ```{r}
 kizil <- ebird_sf |> 
@@ -223,18 +214,10 @@ ggplot() +
 
 Kızıl akbaba dağılımının, üreme ve göç bölgelerinde yoğunlaşan bir örüntü sergilediğini görebiliyoruz.
 
-Bu arada aynı haritayı {tmap} paketi ile aşağıdaki gibi çizebiliriz.
-
-```{r}
-tm_shape(tr_il) +
-  tm_polygons() +
-  tm_shape(kizil) +
-  tm_dots()
-```
 
 ### 5. Kuş verisinin gruplanıp özetlenmesi
 
-Biraz oyalanmanın ardından tekrardan sorumuza odaklanabiliriz. Öncelikle Türkiye'deki kuş türlerini ve her türden kaç adet kayıt olduğunu görmek için kuş verisini tür ismine göre grupluyor, ardından kayıt sayısına göre özetliyoruz. Bu işlem biraz uzun sürebilir.
+Biraz oyalanmanın ardından tekrardan sorumuza odaklanabiliriz. Öncelikle Türkiye'deki kuş türlerini ve her türden kaç adet kayıt olduğunu görmek için kuş verisini tür ismine göre gruplayıp, kayıt sayısına göre özetleyelim. Bu işlem biraz uzun sürebilir.
 
 ```{r}
 ebird_grouped <- ebird_sf |>
@@ -247,11 +230,11 @@ print(ebird_grouped)
 glimpse(ebird_grouped)
 ```
 
-eBird veri tabanında Türkiye'den kayıtlı 503 tür varmış. eBird'ün internet sitesinde 494 adet tür gösteriyor ancak veri talebiyle aldığımız veri de 9 fazla tür var. Sebebi nedir bilmiyorum doğrusu. Aklıma, kesin olmayan bazı kayıtların da olabileceği geliyor sadece. Bilenler açıklarsa süper olur.
+Gördüğünüz gibi eBird veri tabanında Türkiye'den kayıtlı 503 tür varmış. eBird'ün internet sitesinde ise 494 adet tür gösteriyor. Bu farklılığın sebebi nedir bilmiyorum doğrusu. Aklıma, kesin olmayan bazı kayıtların da olabileceği geliyor sadece. Bilenler açıklayabilirse süper olur.
 
 ### 6. Her bir il sınırı içinde kalan tür sayısının hesaplanması
 
-Şimdi, Türkiye'deki her bir ilin poligonu içerisindeki noktaları sayacağız. Bu da bize her bir ildeki toplam tür sayısını verecek. Öncelikle [st_intersects()](https://r-spatial.github.io/sf/reference/geos_binary_pred.html) fonksiyonu ile her bir il ile kesişen noktaları belirliyoruz. Ardından [lengths()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lengths) fonksiyonu ile her bir ilde kaç adet nokta olduğunu hesaplıyoruz ve bunu, tr_il verisine yeni bir sütun olarak ekliyoruz. Temelde çok basit bir işlem ama başta anlamak zor olabiliyor.
+Şimdi, Türkiye'deki her bir ilin sınırları içine düşen kuş gözlem noktalarını sayacağız. Yani her bir poligonun içindeki noktaları sayacağız. Bu da bize her bir ildeki toplam tür sayısını verecek. Öncelikle [st_intersects()](https://r-spatial.github.io/sf/reference/geos_binary_pred.html) fonksiyonu ile her bir il ile kesişen noktaları belirliyoruz. Ardından [lengths()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lengths) fonksiyonu ile her bir ilde kaç adet nokta olduğunu hesaplıyoruz ve bunu, tr_il verisine yeni bir sütun olarak ekliyoruz. Temelde çok basit bir işlem ama başta anlamak zor olabiliyor.
 
 ```{r}
 tr_il$bird_count <- lengths(st_intersects(tr_il, ebird_grouped))
@@ -267,34 +250,39 @@ plot(tr_il[, "bird_count"])
 
 Haritamız hazır. Şimdi daha iyi bir görselleştirme için ggplot() fonksiyonunu kullanalım.
 
-Öncelikle kırılımlarımız belirleyelim ki haritamız daha güzel görünsün. Bunun için [jenks optimizasyonunu](https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization) kullanacağız.
+Öncelikle kırılımlarımızı belirleyelim ki haritamız daha güzel görünsün. Bunun için [jenks optimizasyonunu](https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization) kullanacağız.
 
 ```{r}
-breaks <-
-  classInt::classIntervals(tr_il$bird_count,
-                           n = 7,
-                           style = "jenks")
+breaks <- classInt::classIntervals(
+  tr_il$bird_count,
+  n = 7,
+  style = "jenks"
+)
 ```
 
 ```{r}
-ggplot() +
-  geom_sf(data = tr_il,
-          aes(fill = bird_count),
-          colour = "grey12",
-          linewidth = .1) +
-  scale_fill_viridis_c(breaks = breaks$brks) +
-  guides(fill = guide_colorsteps(
-    barwidth = 20,
-    barheight = .5,
-    title.position = "right"
-  )) +
-  labs(
+ggplot() +                                      # grafigi baslatiyor
+  geom_sf(
+    data = tr_il,                              # tr katmanini ekliyoruz
+    aes(fill = bird_count),                    # renkleri kus turu sayisina gore seciyoruz
+    colour = "grey12",                         # il sinirlarinin rengini belirliyoruz
+    linewidth = .1                             # il sinirlarinin kalinligini belirliyoruz
+  ) +
+  scale_fill_viridis_c(breaks = breaks$brks) + # haritamizi viridis paletiyle dolduruyoruz
+  guides(                                      # lejant ozelliklerini seciyoruz
+    fill = guide_colorsteps(
+      barwidth = 20,
+      barheight = .5,
+      title.position = "right"
+    )
+  ) +
+  labs(                                        # etiketleri yaziyoruz
     title = "İllere Göre Kuş Türü Sayısı",
     x = "Boylam",
     y = "Enlem"
   ) +
-  theme_bw() +
-  theme(
+  theme_bw() +                                 # tema seciyoruz
+  theme(                                       # temanın ozellliklerini berlirliyoruz
     legend.position = "bottom",
     plot.background = element_rect("white", colour = "white"),
     text = element_text(family = "Ubuntu Mono"),
@@ -302,9 +290,7 @@ ggplot() +
   )
 ```
 
-Gördüğünüz gibi çok daha iyi bir görselleştirme oldu.
-
-Burada dikkat etmemiz gereken en önemli şeylerden birisi, verilerin, gözlem sayısı ve il yüzölçümü farklılıklarından dolayı yanlı (bias) olduğu. Bu harita genel fikirler verebilir ancak net çıkarımlar için verinin standartlaştırılması önem arz etmektedir.
+Gördüğünüz gibi çok daha iyi bir görselleştirme oldu. Şu an elimizde, Türkiye'deki illere göre kuş türü sayısını gösteren bir harita bulunmakta. Ancak bu harita üzerinden yapacağımız yorumlarda dikkatli olmamız gereken birkaç önemli nokta var. İl yüzölçümünün ve illere göre gözlem sayısının farklı olmasından kaynaklanan yanlılık (bias) potansiyeli. Bu harita genel fikirler verebilir ancak net çıkarımlar için verinin standartlaştırılması ve istatistiki testlere tabi tutulması önem arz etmektedir.
 
 İkinci yazıda görüşmek dileğiyle.
 
