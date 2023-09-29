@@ -16,6 +16,7 @@ about:
     - icon: github
       text: Github
       href: https://github.com/mehmetgoktug
+comments: false
 ---
 
 Merhaba ben Mehmet Göktuğ Öztürk. Kendimi bildim bileli doğayı ve onu şekillendiren dinamikleri gözlemlemeye karşı büyük bir ilgiye sahibim. Doğup, büyüdüğüm evin dışarıdan izole bahçesiyle başlayan doğayla temasım, büyükbabamla gezdiğim Orta Karadeniz meşelikleri ve dedemden dinlediğim yaban hayatı hikâyeleriyle perçinlendi. Bu sayede yolumun düştüğü Hacettepe Üniversitesi Biyoloji Bölümü'nden 2021 yılında mezun oldum. Hacettepe Üniversitesi Fen Bilimleri Enstitüsü Ekoloji Anabilim Dalı'nda, Çağatay Tavşanoğlu danışmanlığında yüksek lisans çalışmamı yürütüyorum. Yüksek lisans çalışmam, yıldırım kökenli orman yangınlarının mekân-zamansal örüntüleri üzerine. Lisans eğitimim boyunca yangın ekolojisi, fonksiyonel bitki karakterleri, göçebe hayvancılık, yırtıcı kuş göçü, üreyen kuşlar ve büyük memeliler üzerine çeşitli projeler kapsamında İç Anadolu, Karadeniz, Akdeniz ve Ege Bölgesi'nde arazi çalışmalarına katıldım. Ekoloji, yaban hayatı, doğa koruma, klimatoloji, meteoroloji, mekânsal veri analizi ve R programlama konularına büyük ilgi duymaktayım. Ayrıca 2011 yılından beri müdavimi olduğum *havadelisi.com*'un editörlüğünü yapmaktayım.
