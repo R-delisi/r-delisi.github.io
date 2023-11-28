@@ -1,5 +1,5 @@
 ---
-title: "R ve Kuşlar - Ebird Verilerinin R ile Analizi I"
+title: "R ve Kuşlar - eBird Verilerinin R ile Analizi I"
 author: "Mehmet Göktuğ Öztürk"
 format: html
 date: 2023-09-27
