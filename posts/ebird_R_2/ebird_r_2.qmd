@@ -1,0 +1,332 @@
+---
+title: "R ve Kuşlar - eBird Verilerinin R ile Analizi II"
+author: "Mehmet Göktuğ Öztürk"
+format: html
+date: 2023-12-10
+description: "R ile Kuş Verilerinin Analizi II"
+categories:
+  - R
+  - gis
+  - r-spatial
+  - case_study
+image: figs/preview.png
+editor_options: 
+  chunk_output_type: console
+---
+
+![](figs/preview.png)
+
+**Merhabalar, blogun *ikinci* yazısına hoş geldiniz. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
+
+Blogun ilk yazısını yazarken, ikincisi de birkaç haftaya çıkar, nasıl olsa kodlar hazır diye düşünüyordum ancak tezdir, iştir derken uzadı. Yoğunluk yetmiyormuş gibi bilgisayarın format ihtiyacı ve NTFS dosya sistemine sahip harici diskin linux ile uyumsuzluğu da eklenince yazının taslağı ve kodlarını kaybettim. Sonuç olarak -birbirinden güzel bahanelerimi özetleyecek olursam- gecikmiş, kaybedilmiş ve sıfırdan yazılmış bir yazıyla karşınızdayım.
+
+Bu blog yazısı, bir öncekinin devamı niteliğinde sayılabilir. R ile eBird verilerini işlemeye devam edeceğiz. [İlk yazıda](https://r-delisi.github.io/posts/ebird_R/ebird_r.html) birinci soru üzerine odaklanmıştık, bunda ise ikinci soruya odaklanacağız:
+
+2. Bilindiği gibi Kızılcahamam, Türkiye'deki en önemli kara akbaba - *Aegypius monachus* popülasyonlarından birisini barındırıyor. Bu türün, Kızılcahamam ilçe sınırları içerisinde nasıl bir dağılımı vardır? Türün dağılımıyla çevresel faktörler arasındaki ilişki **kabaca** nasıldır?
+
+Temel R ve GIS bilgisine sahip olmanız yazıdaki birçok yeri anlamanız için yeterli olacaktır. Ancak bu alanlarda yeniyseniz de endişelenmeyin. Anlamadığınız her şeyi yorum olarak sorabilirsiniz. Blogun da ana amaçlarından birisi bu zaten. Ayrıca kuşlara ilginiz olmasa bile, bu yazının bazı temel mekânsal analizleri öğrenmek için faydalı olacağını düşünüyorum.
+
+--------------------------------------------------------------------------------
+
+### Yazınının Akışı
+
+Yazının genel akışı aşağıdaki gibidir:
+
+1.  Paketlerin yüklenmesi
+2.  İlçe verisinin işleri
+3.  Kuş verisinin işleri
+4.  DEM verisinin işleri
+5.  Topografik hesaplamalar
+6.  Verinin görselleştirilmesi
+
+### 1. Paketlerin yüklenmesi
+
+```{r}
+#| echo: false
+tibble::tribble(
+  ~ Paket, ~ Açıklama,
+  "tidyverse", "Çoğunlukla veri manipülasyonu ve görselleştirme üzerine paketler içeren bir paket koleksiyonu",
+  "sf", "Simple Features: Mekânsal vektör verileri işlemek için",
+  "terra", "Raster verileri işlemek için",
+  "tidyterra", "terra paketi için tidyverse metotları sağlayan bir paket",
+  "mapview", "İnteraktif haritalar için",
+  "rgeoboundaries", "Mülki idare sınırlarını indirmek için",
+) |> knitr::kable()
+```
+
+Bu paketler kurulu değilse aşağıdaki kod bloğu ile kurabilirsiniz. Bu kod bloğu, paketi R'a yüklemeye çalışacak, eğer yükleyemezse kuracaktır. Paketler kuruluysa, [library()](https://stat.ethz.ch/R-manual/R-devel/library/base/html/library.html) fonksiyonu ile yükleyebiliriz.
+
+```{r}
+#| output: false
+#| warning: false
+# eger paketler yuklu degilse onlari kur
+if (!require("tidyverse")) install.packages("tidyverse")
+if (!require("sf")) install.packages("sf")
+if (!require("terra")) install.packages("terra")
+if (!require("tidyterra")) install.packages("tidyterra")
+if (!require("mapview")) install.packages("mapview")
+if (!require("rgeoboundaries")) remotes::install_github("wmgeolab/rgeoboundaries")
+
+# paketleri R'a yukle
+library(tidyverse) # bircok veri isini kolaylastirmak için
+library(sf) # r'da mekansal vektor verileri islemek icin
+library(terra) # r'da mekansal raster verileri islemek icin
+library(tidyterra) # terra ile tidyverse metotlari kullanmak icin
+library(mapview) # interaktif haritalar cizmek icin
+library(rgeoboundaries) # tr ilce sinirlarina erismek icin
+```
+
+### 2. İlçe verisinin işleri
+
+İkinci soruya cevap verebilmek için kuş, ilçe sınırları ve dijital yükseklik modeline (DEM) ihtiyacımız var. İlk ilçeden başlayalım. Kuş ve DEM verisini işlemek için ilçeye ihtiyaç duyacağız ne de olsa.
+
+İlk yazıda olduğu gibi bu sefer de [geoBoundaries](https://www.geoboundaries.org/) verisini kullanacağız. Şimdi ilçe verilerini indirip, içinden Kızılcahamam'ı çıkartalım. 
+
+```{r}
+tr_ilce <- gb_adm2(country = "Turkey", type = "SSCGS") # type = "SSCGS" argumaniyla basitlestirilmiş versiyonunu indiriyoruz
+khamam <- tr_ilce[tr_ilce$shapeName == "Kızılcahamam", ]
+khamam
+```
+
+Kızılcahamam'ı doğru bir şekilde aldık gibi görünüyor. Verimizi [{mapview}](https://r-spatial.github.io/mapview/) paketini kullanarak görselleştirelim, bir kontrol edelim. Bu paket, interaktif haritalar yapmak için oldukça işlevsel.
+
+```{r}
+mapview(khamam)
+```
+
+Gördüğünüz gibi her şey yolunda. :)
+
+### 3. Kuş verisinin işleri
+
+![Kara akbaba. Kaynak: [Johann Andreas Naumann's ... Naturgeschichte der Vögel Deutschlands... | Leipzig, G. Fleischer, 1820-1860](https://www.biodiversitylibrary.org/page/33755019#page/5/mode/1up)](./figs/aegypius_monachus.jpg)
+
+[Kara akbaba - _Aegypius monachus_](https://en.wikipedia.org/wiki/Cinereous_vulture), Avrasya'da geniş dağılıma sahip bir yırtıcı türü. 3 metreye varan kanat açıklığıyla en büyük kuşlardan birisi ve azalan bir popülasyona sahip. Türkiye, türün en önemli yaşam alanlarından birisi. Tür, özellikle Kuzey Anadolu'da, orman - bozkır geçişindeki yaşlı ormanları tercih ediyor. Bu alanlardan birisi de bu yazıda incelediğimiz yer olan Kızılcahamam. Kızılcahamam'ın yaşlı karaçam - _Pinus nigra_ ormanları, türün üremesi için oldukça elverişli. 
+
+Türle alakalı kısa bir bilgi verdikten sonra verilere tekrardan dönebiliriz. Kuş verisini nasıl elde ettiğimize [ilk yazıda](https://r-delisi.github.io/posts/ebird_R/ebird_r.html) değinmiştik. Tekrardan uzun uzun anlatmaya gerek yok.
+
+Öncelikle kuş verimizi R'a yükleyelim:
+
+```{r}
+#| output: false
+ebird <- read_delim("./ebird/ebd_TR_relApr-2023.txt")
+```
+
+```{r}
+print(ebird)
+```
+
+Gördüğünüz gibi 2,403,720 gözlem (satır) ve 50 değişkene (sütun) sahip bir veri tablomuz var. Bu verilerin çoğuna ihtiyaç duymuyoruz. Dolayısıyla işimize yaramayanlardan kurtulmamız işimizi çokça kolaylaştıracaktır. Sadece işimize yarayan sütunları seçip, kara akbaba türüne ait gözlemleri içerecek şekilde filtreleyelim. 
+
+```{r}
+karaakbaba <- ebird |>
+  select(6, 7, 11, 12, 29, 30) |>  # burada indeks kullanarak sectik, sutun isimleriyle de secebiliriz
+  filter(`SCIENTIFIC NAME` == "Aegypius monachus")
+karaakbaba
+```
+
+Şimdi değişken sayımız 6'ya, gözlem sayımız ise 1910'a düştü. Veri, çok daha yönetilebilir bir hâlde. Bu etkiyi, değişken isimlerini değiştirerek daha da artırabiliriz. Daha kısa, tamamı küçük harflerden oluşan, latinize ve boşluklar yerine alt çizgi kullandığımız isimler daha kullanışlı olacaktır. Herhangi bir hatayla karşılaşma riskimiz düşecektir. Bunun için ilk olarak karaakbaba data frame'inin değişken (sütun) isimlerine bakalım. [names()](https://stat.ethz.ch/R-manual/R-devel/library/base/html/names.html) ya da [colnames()](https://stat.ethz.ch/R-manual/R-devel/library/base/html/colnames.html) fonksiyonunu kullanabiliriz.
+
+```{r}
+names(karaakbaba)
+```
+
+Şimdi de yeni isimlerden oluşan bir karakter vektörü oluşturalım ve bunu karaakbaba data frame'inin değişken isimlerine atayalım.
+
+```{r}
+names(karaakbaba) <- c(
+  "eng_name", "sci_name", "obs_count", "breeding_code", "y", "x"
+)
+names(karaakbaba)
+```
+
+Gördüğünüz gibi değişken isimlerini istediğimiz gibi değiştirdik.
+
+Artık ilk yüklediğimiz eBird verisini R'dan silebiliriz. Bu veri, 2 milyondan fazla gözlemden oluştuğu için RAM'in şişmesine ve R'ın çökmesine yol açabilir. Ardından da çöp toplayıcıyı (garbage collector) çalıştırmak faydalı olacaktır. R, bu işi genelde otomatik yapıyor ancak büyük veriler silindiği zaman gc()'nin çalıştırılması öneriliyor. 
+
+```{r}
+rm(ebird)
+gc()
+```
+
+Şimdi de mekânsallaştırmaya geçebiliriz. Verimiz şu anda bir data frame. Dolayısıyla onunla mekânsal işler yapmak için verimizi mekânsallaştırmamız gerekiyor. Bunun için [{sf}](https://r-spatial.github.io/sf/) paketini kullanacağız. Bu paket, mekânsal vektör veriler işlemek için geliştirmiş, [OGC (Open Geospatial Consortium)](https://www.ogc.org/) standardı bir paket. Ben de işlerimin büyük bir kısmında onu tercih ediyorum.
+
+Koordinatların olduğu sütunları ve koordinat sistemini tanımlayarak verimizi sf objesine dönüştürelim.
+
+```{r}
+karaakbaba_sf <- st_as_sf(
+  karaakbaba, coords = c("x", "y"), crs = "EPSG:4326"
+)
+karaakbaba_sf
+```
+
+Kara akbaba verisi artık mekânsal bir formatta. Geometri tipi, koordinat sistemi gibi öznitelikler barındırıyor.
+
+Veriyi daha iyi tanımak için ilk görselleştirmeleri yapalım. Acaba kara akbabalar Türkiye'de nasıl dağılıyor? Bunun için tekrardan [mapview()](https://r-spatial.github.io/mapview/reference/mapView.html) fonksiyonunu kullanıyoruz. 
+
+```{r}
+mapview(karaakbaba_sf)
+```
+
+Bu işlem de tamam. Gördüğünüz gibi ülkemizin kuzeyinde yoğunlaşan bir popülasyon mevcut.
+
+Sıra geldi kuş verimizin Kızılcahamam'a göre alt kümesini almaya.
+
+```{r}
+karaakbaba_subset <- karaakbaba_sf[khamam, ]
+karaakbaba_subset
+```
+
+Kızılcahamam'da, eBird veritabanında kayıtlı 139 tane kara akbaba kaydı varmış. Bunlara bir göz atıp DEM verisiyle ilgilenmeye başlayalım. Kara akbaba dağılımıyla alakalı asıl haritayı en son yapacağız. 
+
+```{r}
+#| fig-width: 6
+#| fig-height: 6
+plot(
+  st_geometry(khamam), 
+  main = "Kızılcahamam'da Kara Akbaba Dağılımı", 
+  lwd = 2, 
+  border = "grey30", 
+  axes = TRUE, 
+  reset = FALSE
+) 
+plot(
+  st_geometry(karaakbaba_subset), 
+  cex = 2, 
+  pch = 3, 
+  lwd = 1.5, 
+  add = TRUE
+)
+```
+
+Hemen hızlıca mapview ile de bakalım.
+
+```{r}
+mapview(khamam, lwd = 3, alpha.regions = 0) + mapview(karaakbaba_subset)
+```
+
+### 4. DEM verisinin işleri
+
+Kara akbabanın Kızılcahamam'daki dağılımını ortaya çıkarttık. Şimdi de bazı çevresel değişkenlerle ilişkisi nasılmış, -__kabaca__- ona bakalım. Ben, topografik değişkenlerle olan ilişkisini merak ettim ve bu sebeple DEM verisine bakacağız. 
+
+[DEM (Digital Elevation Model)](https://en.wikipedia.org/wiki/Digital_elevation_model), kısaca, yeryüzünün yükseklik bilgisini sayısal olarak temsil eden modele verilen isim. Her bir grid için, sahip olduğu yükseklik verisini barındırır. Topografik ve hidrolojik birçok analizde sıklıkla kullanılıyor. Rakımın biyolojik sistemlerdeki önemi nedeniyle, ekoloji ve biyocoğrafyada da yaygın bir kullanımı var. 
+
+Burada [COP-DEM (Copernicus DEM)](https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model) kullandım. Veriye [şu](https://drive.google.com/drive/folders/1O9jRSbvqEVP8VeQIZHu2f6TSbwCa8EM8?usp=sharing) bağlantıdan ulaşabilirsiniz. Belki daha sonra bu verinin nereden, nasıl indirilebileceğiyle alakalı bir başka yazı yazarım.
+
+![Raster veri tipi. Kaynak: [Geocomputation with R](https://r.geocompx.org/spatial-class#raster-data)](./figs/raster-intro-plot-1.png)
+
+DEM verisi, raster formatında bir veri. Raster veriyi, bir tür resim ya da bir tür matris olarak düşünebilirsiniz. Bu veri, hücrelerden - gridlerden oluşur ve her bir grid için bir değer içerir. __Genellikle__, yükseklik, eğim, sıcaklık, yağış gibi sürekli veriler bu formattadır.
+
+Biz bu veri için {terra} paketini kullanacağız. Oldukça hızlı ve işlevsel bir paket.
+
+```{r}
+# dem verisini yukleyelim
+dem <- rast("./dem_4326.tif")
+dem
+```
+
+Veriyi yazdırdığımızda, çözünürlüğünden, dört köşesinin koordinatına ve koordinat sistemine kadar birçok detayı görebiliyoruz.
+
+```{r}
+plot(dem)
+```
+
+Kolayca haritasını da çizebiliyoruz. Gördüğünüz gibi Türkiye topografik haritası.
+
+Şimdi verimizi Kızılcahamam ilçe sınırlarına göre maskeleyelim. khamam, sf formatında olduğu için [vect()](https://rdrr.io/cran/terra/man/vect.html) ile {terra}'nın kendi vektör veri tipi olan SpatVector'e dönüştürüyoruz.
+
+```{r}
+dem_subset <- crop(dem, vect(khamam), mask = TRUE)
+dem_subset
+```
+
+```{r}
+plot(dem_subset)
+```
+
+### 5. Topografik hesaplamalar
+
+[terrain()](https://rdrr.io/cran/terra/man/terrain.html) ile eğim ve bakıyı hesaplayalım.
+```{r}
+slp <- terrain(dem_subset, "slope")
+asp <- terrain(dem_subset, "aspect")
+```
+
+```{r}
+par(mfrow = c(1, 2))
+plot(slp, main = "Kızılcahamam Eğim Haritası")
+plot(asp, main = "Kızılcahamam Bakı Haritası")
+```
+
+Şimdi de her bir kara akbaba gözlem noktasının sahip olduğu çevresel değişkenleri çıkartalım ve ardından karaakbaba verisiyle birleştirelim.
+
+```{r}
+karaakbaba_subset$ID <- 1:nrow(karaakbaba_subset)
+
+ext_dem <- extract(dem, vect(karaakbaba_subset))
+ext_slp <- extract(slp, vect(karaakbaba_subset))
+ext_asp <- extract(asp, vect(karaakbaba_subset))
+
+ext_dem <- left_join(karaakbaba_subset, ext_dem, by = "ID")
+ext_slp <- left_join(ext_dem, ext_slp, by = "ID")
+ext_asp <- left_join(ext_slp, ext_asp, by = "ID")
+
+karaakbaba_ext <- ext_asp
+names(karaakbaba_ext)[7] <- "altitude"
+glimpse(karaakbaba_ext)
+```
+
+Gördüğünüz gibi kara akbaba verimizin içinde artık her bir nokta için rakım, eğim ve bakı bilgisi mevcut. Bu aşamadan sonra modellerle çalışabiliriz ancak bu, bu yazının konusu değil. Ayrıca elimizdeki veri bunun için ne kadar yeterli, ayrı bir tartışma konusu. Şimdi çıkarttığımız topografik verilere bir göz atıp asıl haritamızı yapmaya geçebiliriz.
+
+```{r}
+#| warning: false
+#| message: false
+karaakbaba_ext |>
+  st_drop_geometry() |>
+  pivot_longer(cols = c("altitude", "slope", "aspect")) |> 
+  ggplot(aes(x = value, fill = name, colour = "name")) +
+  geom_histogram(alpha = .6) +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d() +
+  theme_minimal() +    
+  theme(
+    legend.position="none",
+  ) + 
+  facet_wrap(~name, scales = "free_x")
+```
+
+
+### 6. Verinin görselleştirilmesi
+
+Uzun bir yazı oldu yine ancak sonuna geldik. Şimdi Kızılcahamam'daki kara akbaba gözlemlerinin dağılımını, DEM ile birlikte görselleştirmeye çalışalım.
+
+```{r}
+ggplot() +              # grafigi baslatiyor
+  geom_spatraster(      # dem verisini ekliyoruz
+    data = dem_subset,
+    na.rm = TRUE
+  ) +
+  geom_sf(              # kizilcahamam ilce sinirlarini ekliyoruz
+    data = khamam,
+    fill = NA
+  ) +
+  geom_sf(              # kara akbaba gozlem verisini ekliyoruz
+    data = karaakbaba_subset,
+    aes()
+  ) +
+  scale_fill_wiki_c() + # dem verisi icin renk paleti ekliyoruz
+  labs(                 # etiketleri yaziyoruz
+    title = "Kara Akbaba Dağılım Haritası",
+    subtitle = "Kızılcahamam'da kara akbaba dağılımı",
+    fill = "Yükseklik (m)",
+    caption = "Veri: eBird | COP-DEM"
+  ) +
+  theme_minimal() +     # tema seciyoruz
+  theme(                # temanin ozelliklerini belirliyoruz
+    plot.background = element_rect("white", colour = "white"),
+    text = element_text(family = "ubuntu mono")
+  )
+```
+
+Güzel oldu sanki. :) 
+
+Bilimle ve huzurla kalınız.
