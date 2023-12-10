@@ -316,7 +316,7 @@ ggplot() +              # grafigi baslatiyor
   scale_fill_wiki_c() + # dem verisi icin renk paleti ekliyoruz
   labs(                 # etiketleri yaziyoruz
     title = "Kara Akbaba Dağılım Haritası",
-    subtitle = "Kızılcahamam'da kara akbaba dağılımı",
+    subtitle = "Kızılcahamam'daki kara akbaba gözlemlerinin dağılımı",
     fill = "Yükseklik (m)",
     caption = "Veri: eBird | COP-DEM"
   ) +
