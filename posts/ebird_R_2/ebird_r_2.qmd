@@ -180,7 +180,7 @@ Kızılcahamam'da, eBird veritabanında kayıtlı 139 tane kara akbaba kaydı va
 
 ```{r}
 #| fig-width: 6
-#| fig-height: 6
+#| fig-height: 7
 plot(
   st_geometry(khamam), 
   main = "Kızılcahamam'da Kara Akbaba Dağılımı", 
@@ -191,7 +191,7 @@ plot(
 ) 
 plot(
   st_geometry(karaakbaba_subset), 
-  cex = 2, 
+  cex = 1, 
   pch = 3, 
   lwd = 1.5, 
   add = TRUE
