@@ -21,12 +21,6 @@ categories:
 Blogdaki son yazımın üzerinden 10 ay geçti.
 Bu *"kısacık"* zamana nişan, evlilik ve tezi -özellikle de tezi- sıkıştırınca başımı kaşıyacak vakit bile bulamadım.
 Neyse bu yoğun dönemi atlattığıma, bir nebze olsun kafamı dinleyebildiğime göre yeni yazının vakti çoktan gelmiş demektir. 
-
-Aslında üçüncü yazıyı, bir yıl bir ay kadar önce [OpenGeoHub](https://opengeohub.org/) 2023 yaz okulu için gittiğim Polonya'da, okulun da verdiği motivasyonla, trenle Gdansk'tan Poznan'a dönerken yazmıştım.
-Gdansk'a giderken de yazmaya niyetlensem de Kuzey Avrupa Ovası'nın mozaik peyzajından gözümü alamamış, yolculuk boyunca tarım alanlarını çevreleyen sarıçam, huş, meşe ve gürgen ormanlarını izlemiştim.  
-Acaba karaca görebilir miyim? Buralarda turna ürüyor mu? Bu tepelerde moose da varmış! diye tüm yolculuk boyunca gözümü camdan ayırmadım.
-Bir çift turnayla günü kapattım, hiç yoktan iyidir.
-Neyse gevezeliği bırakıp da yazıya dönelim.
 Bu üçüncü yazıyı da blogun ikinci yazısında bahsettiğim veri kaybından dolayı kaybetmiştim. 
 Arazi kullanım verileriyle alakalı olan o yazıyı daha sonra tekrardan yazarak paylaşmayı düşünüyorum.
 
