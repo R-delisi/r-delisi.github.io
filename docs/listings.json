@@ -8,6 +8,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/get_terrain_R/get_terrain.html",
       "/posts/ebird_R_2/ebird_r_2.html",
       "/posts/ebird_R/ebird_r.html"
     ]
