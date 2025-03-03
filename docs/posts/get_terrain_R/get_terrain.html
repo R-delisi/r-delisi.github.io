@@ -8,9 +8,9 @@
 
 <meta name="author" content="Mehmet Göktuğ Öztürk">
 <meta name="dcterms.date" content="2025-03-03">
-<meta name="description" content="R ile Topografik Veri İndirme">
+<meta name="description" content="R ile Topografik Topografik Harita">
 
-<title>R ile Veri İndirme - DEM Verisi İndirme ve Görselleştirme – R Delisi</title>
+<title>R ile Topografik Harita - DEM Verisi İndirme ve Görselleştirme – R Delisi</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -108,12 +108,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="R ile Veri İndirme - DEM Verisi İndirme ve Görselleştirme – R Delisi">
-<meta property="og:description" content="R ile Topografik Veri İndirme">
+<meta property="og:title" content="R ile Topografik Harita - DEM Verisi İndirme ve Görselleştirme – R Delisi">
+<meta property="og:description" content="R ile Topografik Topografik Harita">
 <meta property="og:image" content="figs/preview.png">
 <meta property="og:site_name" content="R Delisi">
-<meta name="twitter:title" content="R ile Veri İndirme - DEM Verisi İndirme ve Görselleştirme – R Delisi">
-<meta name="twitter:description" content="R ile Topografik Veri İndirme">
+<meta name="twitter:title" content="R ile Topografik Harita - DEM Verisi İndirme ve Görselleştirme – R Delisi">
+<meta name="twitter:description" content="R ile Topografik Topografik Harita">
 <meta name="twitter:image" content="figs/preview.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">R ile Veri İndirme - DEM Verisi İndirme ve Görselleştirme</h1>
+<h1 class="title">R ile Topografik Harita - DEM Verisi İndirme ve Görselleştirme</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
     <div class="quarto-category">gis</div>
@@ -205,7 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    R ile Topografik Veri İndirme
+    R ile Topografik Topografik Harita
   </div>
 </div>
 
@@ -237,8 +237,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="figs/preview.png" class="img-fluid"></p>
 <p><strong>Merhabalar, blogun <em>üçüncü</em> yazısına hoş geldiniz.</strong> <strong>Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.</strong> <strong>Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.</strong></p>
 <p>Blogdaki son yazımın üzerinden neredeyse 15 ay geçti. Bu <em>“kısacık”</em> zamana nişan, evlilik ve tezi -özellikle de tezi- sıkıştırınca başımı kaşıyacak vakit bile bulamadım. Ardından da esiri olduğum mükemmelliyetçilik eklenince bu yazının çıkışı bugünü buldu. Yani anlayacağınız yine bahanelerim var. :)</p>
-<p>Bir önceki yazıda DEM verisi ile basitçe uğraşmıştık. Bu yazıda R kullanarak DEM verisini nasıl indirebileceğimizi göreceğiz. Ardından da <code>base R</code> kullanarak Türkiye Topografya Haritası oluşturacağız.</p>
-<p>Bu yazı, öncekilere zıt bir şekilde, kısa ve öz olacak.</p>
+<p>Bir önceki yazıyı okuyanlar hatırlayacaktır; DEM verisinden eğim ve bakı hesaplamış, kara akbaba gözlem noktalarındaki değerleri çekmiş ve görselleştirmiştik. Bu yazıda ise R kullanarak DEM verisini nasıl indirebileceğimizi göreceğiz. Ardından da <code>base R</code> kullanarak görselleştirmeler yapacağız.</p>
+<p>Bu yazı, öncekilerden daha kısa ve öz olacak.</p>
 <section id="yazının-akışı" class="level2">
 <h2 class="anchored" data-anchor-id="yazının-akışı">Yazının Akışı</h2>
 <ol type="1">
@@ -249,8 +249,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="paketlerin-yüklenmesi" class="level2">
 <h2 class="anchored" data-anchor-id="paketlerin-yüklenmesi">1. Paketlerin yüklenmesi</h2>
-<p>Hangi paketleri kullanacağımıza geçmeden önce size R programlama konusunda geçirdiğim zihinsel değişimden bahsetmek istiyorum. R öğrenmeye başladığımda -olması gerektiği gibi- ilk olarak R programlamanın temellerini öğrenmiş, ardından R ile veri analizine geçmiştim. Sonrasında arkadaşım ve saygıdeğer hocam İsmail’in (kendisi benim ilk R hocam ve yardımcı tez danışmanım oluyor) önerileriyle <code>tidyverse</code> kullanmaya başladım. <code>tidyverse</code>, daha önceki yazılarda da bahsettiğim gibi, veri işlerini kolaylaştıran (bu tartışılabilir) bir paket koleksiyonu. İçerisinde <a href="https://r4ds.hadley.nz/data-tidy.html">düzenli veri - tidy data</a> prensiplerine dayanan, R ile veri işlemeyi standart ve daha kolay bir hâle getiren <code>ggplot2</code>, <code>dplyr</code>, <code>readr</code>, <code>tidyr</code>, <code>tibble</code> gibi çok sayıda paket bulunuyor. O günden bugüne işlerimin büyük bir kısmında bu paketleri kullandım. Ta ki geçtiğimiz ocak ayına kadar. Bu süreç veri analizi konusunda bana çok şey öğretti. Düzenli veri prensiplerini ve onları uygulamayı öğrendim. R’da en çok kullanılan paketleri barındıran <code>tidyverse</code>’yi öğrendim. Geçtiğimiz ocak ayında ise programlama konusundaki fikirlerimde bazı değişiklikler oldu ve büyük oranda <code>base R</code> kullanmaya başladım. Bu, <code>tidyverse</code>’nin kötü bir paket olduğu manasına gelmiyor tabi ki. Kendileri oldukça işlevsel bir paket. Veri işlemede büyük kolaylıklar sağlıyor. Mesela <code>ggplot2</code> yeri kolay kolay doldurulamayacak bir paket. Ancak R, hâlihazırda veri analizi ve istatistik için geliştirilmiş bir dil ve bu işler için yerli olan çok sayıda fonksiyon barındırıyor. <code>base R</code> kullanarak hiçbir bağımlılık, hiçbir yeni paket gerekmeden birçok işinizi görebilirsiniz. Hem de <code>tidyverse</code>’den daha zor, daha uzun olmayacak bir şekilde. Ağırlıkla <code>C</code> ve <code>Fortran</code> gibi dillerle yazılmış bu fonksiyonların birçoğu vektörize ve doğru kullanıldığında <em>ışık hızında</em> çalışabiliyor. Ta ki tekrarlanan işler için döngüler ya da apply() gibi fonksiyonlar kullanana kadar. Ben de olabildiğince daha az bağımlıkla çalışmak, R’ın yerli gücünden yararlanmak ve analizin yanı sıra programlamaya da ağırlık vermek amacıyla çoğunlukla <code>base R</code> kullanmaya başladım. Yanlış anlaşılmasın, paket kullanmaya ya da <code>tidyverse</code>’ye karşı değilim. Sadece <code>base R</code> ile kolaylıkla yapabileceğim şeyler için neden paket kullanayım? Eğer <code>base R</code> yeterince etkili bir seçenek değilse diğer paketlerden yararlanırım.</p>
-<p>Neyse sözü fazla uzattım. Şimdi bu iş için kullanacağımız paketleri yükleyebiliriz. Eğer bilgisayarınızda yüklü olmayan bir paket varsa <code>install.packages()</code> fonksiyonunu kullanarak yükleyebilirsiniz. Bu sefer hem vektör hem de raster veriler için <code>terra</code> paketini kullanacağız. Ben mekânsal vektör işlerinde genellikle <code>sf</code> paktini kullanıyorum ancak <code>terra</code> da bunun için bir alternatif. Mülki idare sınırları ve sayısal yükseklik modellerine erişmek için de <code>geodata</code> paketini kullanacağız. Bu paket de <code>raster</code>, <code>terra</code>, <code>dismo</code> gibi birçok önemli R paketini yazan <a href="https://github.com/rhijmans">Robert Hijmans’ın</a> yazdığı bir paket.</p>
+<p>Hangi paketleri kullanacağımıza geçmeden önce size R programlama konusunda geçirdiğim zihinsel değişimden bahsetmek istiyorum. R öğrenmeye başladığımda -olması gerektiği gibi- ilk olarak R programlamanın temellerini öğrenmiş, ardından R ile veri analizine geçmiştim. Sonrasında arkadaşım ve saygıdeğer hocam İsmail’in (kendisi benim ilk R hocam ve yardımcı tez danışmanım oluyor) önerileriyle <code>tidyverse</code> kullanmaya başladım. <code>tidyverse</code>, daha önceki yazılarda da bahsettiğim gibi, veri işlerini standartlaştıran bir paket koleksiyonu. İçerisinde <a href="https://r4ds.hadley.nz/data-tidy.html">düzenli veri - tidy data</a> prensiplerine dayanan, R ile veri işlemeyi standart ve daha kolay bir hâle getiren <code>ggplot2</code>, <code>dplyr</code>, <code>readr</code>, <code>tidyr</code>, <code>tibble</code> gibi çok sayıda paket bulunuyor. O günden bugüne işlerimin büyük bir kısmında bu paketleri kullandım. Bu süreç, veri analizi konusunda bana çok şey öğretti; düzenli veri prensiplerini, onları uygulamayı ve R’ın en popüler paketlerinden <code>tidyverse</code>’yi öğrendim. Geçtiğimiz ocak ayında ise programlama konusundaki fikirlerimde bazı değişiklikler oldu ve büyük oranda <code>base R</code> kullanmaya başladım. Bu kararı, <code>tidyverse</code>’nin kötü, yetersiz bir paket olduğunu düşündüğüm için almadım. Kendileri veri işlemede büyük kolaylıklar sağlayan, işlevsel bir paket. Mesela <code>ggplot2</code>’nin yeri kolay kolay doldurulamaz. Ancak R, hâlihazırda veri analizi ve istatistik için geliştirilmiş bir dil ve bu işler için yerli olan çok sayıda araç barındırıyor. <code>base R</code> kullanarak hiçbir bağımlılık, hiçbir yeni paket gerekmeden birçok işinizi kolaylıkla görebilirsiniz. Ağırlıkla <code>C</code> ve <code>Fortran</code> gibi dillerle yazılmış olan <code>base R</code> fonksiyonları doğru kullanıldığında <em>ışık hızında</em> çalışabiliyor. Ta ki tekrarlanan işler için döngüler ya da apply() gibi fonksiyonlar kullanana kadar. Ben de olabildiğince daha az bağımlıkla çalışmak, R’ın yerli gücünden yararlanmak ve analizin yanı sıra programlamaya da ağırlık vermek amacıyla çoğunlukla <code>base R</code> kullanmaya başladım. Yanlış anlaşılmasın, paket kullanmaya ya da <code>tidyverse</code>’ye karşı değilim. Sadece <code>base R</code> ile kolaylıkla yapabileceğim şeyler için neden paket kullanayım? Eğer <code>base R</code> yeterince etkili bir seçenek değilse diğer paketlerden yararlanırım.</p>
+<p>Neyse sözü fazla uzattım. Şimdi bu iş için kullanacağımız paketleri yükleyebiliriz. Eğer bilgisayarınızda yüklü olmayan bir paket varsa <code>install.packages()</code> fonksiyonunu kullanarak yükleyebilirsiniz. Bu yazı için toplamda iki paket kullanacağız: <code>terra</code> ve <code>geodata</code>. Ben mekânsal vektör işlerinde genellikle <code>sf</code> paktini kullanıyorum ancak bu sefer hem vektör hem de raster veriler için <code>terra</code> paketini kullanacağız. Mülki idare sınırları ve sayısal yükseklik modellerine erişmek için de <code>geodata</code> paketini kullanacağız. Bu paket de <code>raster</code>, <code>terra</code>, <code>dismo</code> gibi birçok önemli R paketini yazan <a href="https://github.com/rhijmans">Robert Hijmans’ın</a> yazdığı bir paket.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># paketleri R'a yukle</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>libs <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
@@ -266,7 +266,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="dem-verisinin-indirilmesi" class="level2">
 <h2 class="anchored" data-anchor-id="dem-verisinin-indirilmesi">2. DEM verisinin indirilmesi</h2>
-<p>DEM verisinden önceki yazıda kısaca bahsetmiştim. Tekrardan hatırlamakta fayda var. <a href="https://en.wikipedia.org/wiki/Digital_elevation_model">DEM (Digital Elevation Model)</a>, kısaca, yeryüzünün yükseklik bilgisini sayısal olarak temsil eden modele verilen isim. Her bir grid için, sahip olduğu yükseklik verisini barındırır. Topografik ve hidrolojik birçok analizde sıklıkla kullanılıyor.</p>
+<p>DEM verisinden önceki yazıda kısaca bahsetmiştim. Tekrardan hatırlamakta fayda var. <a href="https://en.wikipedia.org/wiki/Digital_elevation_model">DEM (Digital Elevation Model)</a>, kısaca, yeryüzünün yükseklik bilgisini sayısal olarak temsil eden modele verilen isim. Her bir grid için, sahip olduğu yükseklik verisini barındıran bu veri, topografik ve hidrolojik birçok analizde sıklıkla kullanılıyor.</p>
 <p>Bu yazıda SRTM verisini, <code>geodata</code> paketini kullanarak indireceğiz. Bu paket ile, GADM, SRTM, Worldclim, OSM gibi birçok farklı veriyi kolaylıkla indirebiliriz.</p>
 <p>Öncelikle paketin içerdiği fonksiyonlara bir bakalım.</p>
 <div class="cell">
@@ -286,7 +286,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [34] "worldclim_global"    "worldclim_tile"     </code></pre>
 </div>
 </div>
-<p>Bizim işimize yarayacak fonkiyon <code>elevation_30s()</code>. Ülke kodu için <code>country</code> argümanını, DEM verisinin Türkiye sınırlarına göre maskelemek için <code>mask</code> argümanını ve veriyi kaydeceğimiz yer için ise <code>path</code> argümanını kullanıyoruz. Ben <code>tempfile()</code> fonksiyonu ile geçici bir dosya oluşturdum. Dilerseniz yereldeki herhangi bir dizine de kaydedebiliriz.</p>
+<p>Bizim işimize yarayacak fonkiyon <code>elevation_30s()</code>. Ülke kodu için <code>country</code> argümanını, DEM verisinin Türkiye sınırlarına göre maskelemek için <code>mask</code> argümanını ve veriyi kaydeceğimiz yer için ise <code>path</code> argümanını kullanıyoruz. Ben <code>tempfile()</code> fonksiyonu ile geçici bir dosya oluşturdum. Dilerseniz yereldeki herhangi bir dizine de kaydedebilirsiniz.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dem <span class="ot">&lt;-</span> <span class="fu">elevation_30s</span>(<span class="at">country =</span> <span class="st">"TUR"</span>, <span class="at">mask =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempfile</span>())</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -308,14 +308,35 @@ max value   :        4972 </code></pre>
 <pre><code>[1] 1853280</code></pre>
 </div>
 </div>
-<p>Gördüğünüz gibi veri <code>SpatRaster</code> sınıfında. Verinin çıktısında birçok temel bilgiye erişebiliriz. Satır sayısı 792, sütun sayısı 2340 olan, toplamda 1853280 hücreden oluşuyor. Çözünürlüğü 0.008333333 derece, yani yaklaşık 1 km diyebiliriz. Verinin extent’i Türkiye sınırlarını kapsıyor. Minimum değer -42, ilen maksimum değer 4972. Yaklaşık 1 km çözünürlüğe sahip olduğunu düşündüğümüzde neredeyse Ağrı Dağı’nın 5137 metrelik rakımını yakalıyormuş. Gayet iyi.</p>
-<p>Şimdi basitçe görselleştirelim.</p>
+<p>Verinin çıktısında birçok temel bilgiye erişebiliriz. Gördüğünüz gibi veri <code>SpatRaster</code> sınıfında; satır sayısı 792, sütun sayısı 2340 olan, toplamda 1853280 hücreden oluşuyor. Çözünürlüğü 0.008333333 derece, yani yaklaşık 1 km diyebiliriz. Verinin extent’i Türkiye sınırlarını kapsıyor. Minimum değer -42 m, iken maksimum değer 4972 m. Yaklaşık 1 km çözünürlüğe sahip olduğunu düşündüğümüzde neredeyse Ağrı Dağı’nın 5137 metrelik rakımını yakalıyormuş. Gayet iyi.</p>
+<p>Verinin minimum değeri -42 metreden başladığı için reclassify etmek istiyorum. 0’dan küçük olan tüm değerleri 0’a eşitleyeceğim. Bunu <code>terra</code> paketi içindeki <code>classify()</code> fonksiyonu ile yapabiliriz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dem <span class="ot">&lt;-</span> <span class="fu">classify</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  dem, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">rcl =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>dem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 792, 2340, 1  (nrow, ncol, nlyr)
+resolution  : 0.008333333, 0.008333333  (x, y)
+extent      : 25.5, 45, 35.7, 42.3  (xmin, xmax, ymin, ymax)
+coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+source(s)   : memory
+varname     : TUR_elv_msk 
+name        : TUR_elv_msk 
+min value   :           0 
+max value   :        4972 </code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi minimum değer artık 0’dan başlıyor.</p>
+<p>Şimdi basitçe görselleştirelim.</p>
+<div class="cell" data-fig-heigh="3">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -323,53 +344,53 @@ max value   :        4972 </code></pre>
 <p>Bu hâliyle bile çok güzel görünüyor.</p>
 <p>Şimdi de eğim, bakı ve hillshade’i hesaplıyoruz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>slp <span class="ot">&lt;-</span> <span class="fu">terrain</span>(dem, <span class="st">"slope"</span>, <span class="at">unit =</span> <span class="st">"radian"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>asp <span class="ot">&lt;-</span> <span class="fu">terrain</span>(dem, <span class="st">"aspect"</span>, <span class="at">unit =</span> <span class="st">"radian"</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>hillshade <span class="ot">&lt;-</span> <span class="fu">shade</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  slp,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  asp,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">angle =</span> <span class="dv">45</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">direction =</span> <span class="dv">300</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">normalize =</span> <span class="cn">TRUE</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>slp <span class="ot">&lt;-</span> <span class="fu">terrain</span>(dem, <span class="st">"slope"</span>, <span class="at">unit =</span> <span class="st">"radian"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>asp <span class="ot">&lt;-</span> <span class="fu">terrain</span>(dem, <span class="st">"aspect"</span>, <span class="at">unit =</span> <span class="st">"radian"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>hillshade <span class="ot">&lt;-</span> <span class="fu">shade</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  slp,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  asp,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">angle =</span> <span class="dv">45</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">direction =</span> <span class="dv">300</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">normalize =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Şimdi de bir bakalım nasıl görünüyorlar. Daha yüksek çözünürlüklü bir görüntü için <code>maxcell</code> argümanıyla oynayacağım. İşlem biraz yavaşlayabilir. Çoğu durumda <code>plot(data)</code> yeterince iyi sonuç veriyor.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(slp, <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(slp))) <span class="co"># sutun ve satir sayisini carpip hucre sayisini hesapliyorum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Bir bakalım nasıl görünüyorlar. Çoğu durumda <code>plot(data)</code> yeterince iyi sonuç veriyor ancak daha yüksek çözünürlüklü bir görüntü için <code>maxcell</code> argümanını değiştireceğim. İşlem biraz yavaşlayabilir.</p>
+<div class="cell" data-fig-heigh="3">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(slp, <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(slp))) <span class="co"># sutun ve satir sayisini carpip hucre sayisini hesapliyorum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(asp, <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(asp)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-fig-heigh="3">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(asp, <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(asp)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hillshade, <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(hillshade)), <span class="at">col =</span> <span class="fu">grey</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span><span class="sc">/</span><span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-fig-heigh="3">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hillshade, <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(hillshade)), <span class="at">col =</span> <span class="fu">grey</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span><span class="sc">/</span><span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Şimdi de mülki idare sınırları için GADM verilerini çekelim. GADM, Türkiye için sınır çözünürlüğü yüksek olan bir veri değil ancak yüksek sınır doğruluğu gerekmeyen işler için gayet kullanışlı. Türkiye ve komşu ülkeleri alacağım. Öncelikle tüm dünya verisini çekiyoruz. Ardından Türkiye’nin extent’inin koordinatlarına göre kırpıyoruz.</p>
+<p>Şimdi de mülki idare sınırları için GADM verilerini çekelim. GADM, Türkiye için sınır çözünürlüğü yüksek olan bir veri değil ancak yüksek sınır doğruluğu gerekmeyen işler için gayet kullanışlı. Tüm dünya verisini çekip, Türkiye’nin ve komşuların bir kısmının extent’inin koordinatlarına göre kırpıyoruz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">&lt;-</span> <span class="fu">world</span>(<span class="at">resolution =</span> <span class="dv">1</span>, <span class="at">path =</span> <span class="fu">tempfile</span>())</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>ext <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">ext</span>(<span class="fu">c</span>(<span class="fl">25.7</span>, <span class="fl">45.3</span>, <span class="fl">35.5</span>, <span class="fl">42.5</span>)), <span class="at">crs =</span> <span class="st">"EPSG:4326"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">&lt;-</span> <span class="fu">crop</span>(adm, ext)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>adm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">&lt;-</span> <span class="fu">world</span>(<span class="at">resolution =</span> <span class="dv">1</span>, <span class="at">path =</span> <span class="fu">tempfile</span>())</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ext <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">ext</span>(<span class="fu">c</span>(<span class="fl">25.7</span>, <span class="fl">45.3</span>, <span class="fl">35.5</span>, <span class="fl">42.5</span>)), <span class="at">crs =</span> <span class="st">"EPSG:4326"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>adm <span class="ot">&lt;-</span> <span class="fu">crop</span>(adm, ext)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>adm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> class       : SpatVector 
  geometry    : polygons 
@@ -383,12 +404,12 @@ max value   :        4972 </code></pre>
                  BGR   Bulgaria</code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-fig-heigh="3">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -396,119 +417,157 @@ max value   :        4972 </code></pre>
 </section>
 <section id="verinin-görselleştirilmesi" class="level2">
 <h2 class="anchored" data-anchor-id="verinin-görselleştirilmesi">3. Verinin görselleştirilmesi</h2>
-<p>Şimdi güzel bir harita oluşturalım. Yazının en karmaşık kısmı nuhtemelen burası olacak. Daha önceki yazılarda, R’da grafikler için oldukça standart bir iş akışı sağlayan <code>ggplot2</code> paketini kullanarak haritalar çizmiştik. Bu sefer ise <code>base R</code> kullanacağız. <code>base R</code> ile grafik çizdiğimiz zaman ilkin gözümüze yeterince iyi gelmeyebilir ancak biraz tecrübe kazandığımızda ne kadar esnek ve işlevsel olduğunu görebiliriz. <code>ggplot2</code> kadar standart, karmaşık grafiklerde onun kadar kolay bir iş akışı sunmuyor ancak düşünüldüğü kadar zor değil ve çok daha esnek bir yapıya sahip. Neredeyse dilediğimiz hemen her şeyi çizebiliriz. Bazen çok az satırla bile süper işler çıkabiliyor. Bu aşamada yanlış ya da eksik yaptığım şeyler olabilir. Gözünüze çarparsa yorum yapmaktan çekinmeyin.</p>
+<p>Şimdi güzel bir harita oluşturalım. Yazının en karmaşık kısmı nuhtemelen burası olacak. Daha önceki yazılarda, R’da grafikler için oldukça standart bir iş akışı sağlayan <code>ggplot2</code> paketini kullanarak haritalar çizmiştik. Bu sefer ise <code>base R</code> kullanacağız. <code>base R</code> ile grafik çizdiğimiz zaman ilkin gözümüze yeterince iyi gelmeyebilir ancak biraz tecrübe kazandığımızda ne kadar esnek ve işlevsel olduğunu görebiliriz. <code>ggplot2</code> kadar standart, karmaşık grafiklerde onun kadar kolay bir iş akışı sunmuyor ancak düşünüldüğü kadar zor değil ve çok daha esnek bir yapıya sahip. Neredeyse dilediğimiz hemen her şeyi çizebiliriz. Bazen çok az satırla bile süper işler çıkabiliyor. Bu aşamada yanlış ya da eksik yaptığım şeyler olursa yorum yapmaktan çekinmeyin lütfen.</p>
 <p>Öncelikle Türkiye ve çevre ülkelerin sınırlarının olduğu bir altlık harita çizelim.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  adm,                       <span class="co"># veri</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">0.8</span>,                 <span class="co"># cizgi kalinligi</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">26.1</span>, <span class="fl">44.9</span>),      <span class="co"># x eksinin sinirladigimiz aralik</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">35.7</span>, <span class="fl">42.3</span>),      <span class="co"># y eksinin sinirladigimiz aralik</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="st">"grey"</span>,           <span class="co"># poligon sinirlarinin rengi</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">background =</span> <span class="st">"lightblue"</span>,  <span class="co"># deniz alanlarinin rengi</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"white"</span>,             <span class="co"># kara alanlarinin rengi</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">axes =</span> <span class="cn">TRUE</span>,               <span class="co"># eksenleri cizmek icin</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),       <span class="co"># plot'un marginlerini belirtiyor (alt, sol, ust, sag)</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span>                    <span class="co"># en cok gozden kacan nokta, y eksenininin etiketlerini yatay yapiyor</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-fig-heigh="3">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  adm,                       <span class="co"># veri</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">0.8</span>,                 <span class="co"># cizgi kalinligi</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">26.1</span>, <span class="fl">44.9</span>),      <span class="co"># x eksinin sinirladigimiz aralik</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">35.7</span>, <span class="fl">42.3</span>),      <span class="co"># y eksinin sinirladigimiz aralik</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="st">"grey"</span>,           <span class="co"># poligon sinirlarinin rengi</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">background =</span> <span class="st">"lightblue"</span>,  <span class="co"># deniz alanlarinin rengi</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"white"</span>,             <span class="co"># kara alanlarinin rengi</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">axes =</span> <span class="cn">TRUE</span>,               <span class="co"># eksenleri cizmek icin</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),       <span class="co"># plot'un marginlerini belirtiyor (alt, sol, ust, sag)</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span>                    <span class="co"># en cok gozden kacan nokta, y eksenininin etiketlerini yatay yapiyor</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Şimdi de kabartmasıyla ve konturlarıyla beraber topografik haritamızı çizelim.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  hillshade,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">grey</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span><span class="sc">/</span><span class="dv">100</span>),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(hillshade)),</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">FALSE</span> <span class="co"># rakimin lejantini cizmek icin burada cizmiyoruz</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  dem,</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">255</span>),</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(dem)),</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>,               <span class="co"># ilk plot'un uzerine cizebilmek icin</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">plg =</span> <span class="fu">list</span>(               <span class="co"># terra::plot'ta lejant ayarlari icin</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">loc =</span> <span class="st">"bottom"</span>,         <span class="co"># lejanti asagiya ciz</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.7</span>),     <span class="co"># lejant boyutu</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.8</span>,              <span class="co"># yazi boyutu</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4500</span>, <span class="dv">500</span>), <span class="co"># lejant etiketleri</span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">tic =</span> <span class="st">"out"</span>,            <span class="co"># lejanttaki cizgilerin pozisyonu</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"m"</span>,            <span class="co"># baslik</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title.cex =</span> <span class="fl">0.7</span>         <span class="co"># baslik boyutu</span></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  dem, </span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">0.35</span>, </span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">labcex =</span> <span class="fl">0.38</span>, <span class="co"># label boyutu</span></span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> scales<span class="sc">::</span><span class="fu">alpha</span>(<span class="st">"grey40"</span>, <span class="fl">0.7</span>), </span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-fig-heigh="3.3">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  hillshade,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">grey</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span> <span class="sc">/</span> <span class="dv">100</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(hillshade)),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">FALSE</span> <span class="co"># rakimin lejantini cizmek icin burada cizmiyoruz</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  dem,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">255</span>),</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(dem)),</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>,               <span class="co"># ilk plot'un uzerine cizebilmek icin</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">plg =</span> <span class="fu">list</span>(               <span class="co"># terra::plot'ta lejant ayarlari icin</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">loc =</span> <span class="st">"bottom"</span>,         <span class="co"># lejanti asagiya ciz</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.7</span>),     <span class="co"># lejant boyutu</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.8</span>,              <span class="co"># yazi boyutu</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4500</span>, <span class="dv">500</span>), <span class="co"># lejant etiketleri</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">tic =</span> <span class="st">"out"</span>,            <span class="co"># lejanttaki cizgilerin pozisyonu</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"m"</span>,            <span class="co"># baslik</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">title.cex =</span> <span class="fl">0.8</span>         <span class="co"># baslik boyutu</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="fu">contour</span>(</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  dem, </span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">0.35</span>, </span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">labcex =</span> <span class="fl">0.38</span>, <span class="co"># label boyutu</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> scales<span class="sc">::</span><span class="fu">alpha</span>(<span class="st">"grey40"</span>, <span class="fl">0.7</span>), </span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Şimdi de iki haritayı birleştirelim. Bu sefer konturu çizmeyeceğim.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>() <span class="co"># yeni bir plot baslatmak icin</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">family =</span> <span class="st">"OpenSans"</span>) <span class="co"># font </span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  adm,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">0.8</span>,</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">26.1</span>, <span class="fl">44.9</span>),</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">35.7</span>, <span class="fl">42.3</span>),</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="st">"grey"</span>,</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">background =</span> <span class="st">"lightblue"</span>,</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"white"</span>,</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">axes =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  hillshade,</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">grey</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span><span class="sc">/</span><span class="dv">100</span>),</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(hillshade)),</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  dem,</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">255</span>),</span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(dem)),</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">plg =</span> <span class="fu">list</span>(</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">loc =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.7</span>),</span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.8</span>,</span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4500</span>, <span class="dv">500</span>),</span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">tic =</span> <span class="st">"out"</span>,</span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"m"</span>,</span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.main =</span> <span class="fl">0.5</span></span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm, <span class="at">border =</span> <span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="fl">0.8</span>, <span class="at">add =</span> <span class="cn">TRUE</span>) <span class="co"># sinirlari vurgulu cizmek icin tekrar ekledim</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Şimdi de iki haritayı birleştirelim. Ancak bu sefer konturu çizmeyeceğim.</p>
+<div class="cell" data-fig-heigh="3.3">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>() <span class="co"># yeni bir plot baslatmak icin</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">family =</span> <span class="st">"OpenSans"</span>) <span class="co"># font </span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  adm,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="fl">0.8</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">26.1</span>, <span class="fl">44.9</span>),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">35.7</span>, <span class="fl">42.3</span>),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">border =</span> <span class="st">"grey"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">background =</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"white"</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">axes =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  hillshade,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">grey</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span><span class="sc">/</span><span class="dv">100</span>),</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(hillshade)),</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  dem,</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">terrain.colors</span>(<span class="dv">255</span>),</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxcell =</span> <span class="fu">prod</span>(<span class="fu">dim</span>(dem)),</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">plg =</span> <span class="fu">list</span>(</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">loc =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.7</span>),</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.8</span>,</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4500</span>, <span class="dv">500</span>),</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">tic =</span> <span class="st">"out"</span>,</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Rakım [m]"</span>,</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">title.cex =</span> <span class="fl">0.8</span></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(adm, <span class="at">border =</span> <span class="st">"grey"</span>, <span class="at">lwd =</span> <span class="fl">0.8</span>, <span class="at">add =</span> <span class="cn">TRUE</span>) <span class="co"># sinirlari vurgulu cizmek icin tekrar ekledim</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="get_terrain_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Fena olmadı. :) Biraz daha uğraşla daha iyi haritalar elde edilebilir. Özellikle de göl ve nehir katmanları eklenirse güzel olacaktır.</p>
+<p>Şimdi de Türkiye rakımının dağılımına bir bakalım. Bunun için histogram çizeceğim.</p>
+<div class="cell" data-fig-heigh="5">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.new</span>()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mgp =</span> <span class="fu">c</span>(<span class="fl">3.6</span>, <span class="dv">1</span>, <span class="dv">0</span>),         <span class="co"># etiket uzakligini ayarliyoruz</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">1</span>, </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"OpenSans"</span>, </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">bty =</span> <span class="st">"l"</span>,                  <span class="co"># box'ın tipini L seklinde yapmak icin</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex.lab =</span> <span class="fl">1.3</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">xpd =</span> <span class="cn">NA</span>                    <span class="co"># etiketi grafik sinirlari disina tasimaya izin verir</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  dem,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Rakım [m]"</span>,         <span class="co"># x ekseninin etiketi</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Sıklık"</span>,            <span class="co"># y ekseninin etiketi</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">""</span>,                  <span class="co"># baslik icin. "" bos yaparak basligi cizmiyorum</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"orange"</span>,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4972</span>, <span class="dv">100</span>), <span class="co"># grafigin kirilimlari</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">density =</span> <span class="dv">50</span>                <span class="co"># kutularin icindeki tarama cizgisinin yogunlugu</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(                         <span class="co"># x eksenindeki kucuk tikleri cizmek icin</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">side =</span> <span class="dv">1</span>,                   <span class="co"># alttaki x eksenine cizmek icin</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">at =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">4972</span>, <span class="dv">100</span>),     <span class="co"># kirilimlar</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">tck =</span> <span class="sc">-</span><span class="fl">0.030</span> <span class="sc">/</span> <span class="dv">4</span>,           <span class="co"># tik boyutu kucuk olsun</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="cn">FALSE</span>              <span class="co"># etiket olmamasi icin</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()                         <span class="co"># eksenlere kutu cizmek icin</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="get_terrain_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Grafik, sağa çarpık bir dağılım sergiliyor. Ortalama rakımın 1132 metre olduğu Türkiye’yi iyi temsil eden bir grafik oldu.</p>
 <p>Bir sonraki yazıda görüşürüz.</p>
 <p>Bilimle ve huzurla kalınız!</p>
 

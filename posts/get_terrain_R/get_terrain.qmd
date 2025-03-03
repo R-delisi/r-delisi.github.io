@@ -1,9 +1,9 @@
 ---
-title: "R ile Veri İndirme - DEM Verisi İndirme ve Görselleştirme"
+title: "R ile Topografik Harita - DEM Verisi İndirme ve Görselleştirme"
 author: "Mehmet Göktuğ Öztürk"
 format: html
 date: 2025-03-03
-description: "R ile Topografik Veri İndirme"
+description: "R ile Topografik Topografik Harita"
 categories:
   - R
   - gis
@@ -23,9 +23,11 @@ Bu *"kısacık"* zamana nişan, evlilik ve tezi -özellikle de tezi- sıkıştı
 Ardından da esiri olduğum mükemmelliyetçilik eklenince bu yazının çıkışı bugünü buldu.
 Yani anlayacağınız yine bahanelerim var. :) 
 
-Bir önceki yazıda DEM verisi ile basitçe uğraşmıştık. Bu yazıda R kullanarak DEM verisini nasıl indirebileceğimizi göreceğiz. Ardından da `base R` kullanarak Türkiye Topografya Haritası oluşturacağız.  
+Bir önceki yazıyı okuyanlar hatırlayacaktır; DEM verisinden eğim ve bakı hesaplamış, kara akbaba gözlem noktalarındaki değerleri çekmiş ve görselleştirmiştik. 
+Bu yazıda ise R kullanarak DEM verisini nasıl indirebileceğimizi göreceğiz. 
+Ardından da `base R` kullanarak görselleştirmeler yapacağız.  
 
-Bu yazı, öncekilere zıt bir şekilde, kısa ve öz olacak. 
+Bu yazı, öncekilerden daha kısa ve öz olacak. 
 
 ## Yazının Akışı
 
@@ -38,22 +40,17 @@ Bu yazı, öncekilere zıt bir şekilde, kısa ve öz olacak.
 Hangi paketleri kullanacağımıza geçmeden önce size R programlama konusunda geçirdiğim zihinsel değişimden bahsetmek istiyorum.
 R öğrenmeye başladığımda -olması gerektiği gibi- ilk olarak R programlamanın temellerini öğrenmiş, ardından R ile veri analizine geçmiştim.
 Sonrasında arkadaşım ve saygıdeğer hocam İsmail'in (kendisi benim ilk R hocam ve yardımcı tez danışmanım oluyor) önerileriyle `tidyverse` kullanmaya başladım.
-`tidyverse`, daha önceki yazılarda da bahsettiğim gibi, veri işlerini kolaylaştıran (bu tartışılabilir) bir paket koleksiyonu. 
+`tidyverse`, daha önceki yazılarda da bahsettiğim gibi, veri işlerini standartlaştıran bir paket koleksiyonu. 
 İçerisinde [düzenli veri - tidy data](https://r4ds.hadley.nz/data-tidy.html) prensiplerine dayanan, R ile veri işlemeyi standart ve daha kolay bir hâle getiren `ggplot2`, `dplyr`, `readr`, `tidyr`, `tibble` gibi çok sayıda paket bulunuyor. 
 O günden bugüne işlerimin büyük bir kısmında bu paketleri kullandım. 
-Ta ki geçtiğimiz ocak ayına kadar.
-Bu süreç veri analizi konusunda bana çok şey öğretti. 
-Düzenli veri prensiplerini ve onları uygulamayı öğrendim. 
-R'da en çok kullanılan paketleri barındıran `tidyverse`'yi öğrendim. 
+Bu süreç, veri analizi konusunda bana çok şey öğretti; düzenli veri prensiplerini, onları uygulamayı ve R'ın en popüler paketlerinden `tidyverse`'yi öğrendim. 
 Geçtiğimiz ocak ayında ise programlama konusundaki fikirlerimde bazı değişiklikler oldu ve büyük oranda `base R` kullanmaya başladım.
-Bu, `tidyverse`'nin kötü bir paket olduğu manasına gelmiyor tabi ki.
-Kendileri oldukça işlevsel bir paket.
-Veri işlemede büyük kolaylıklar sağlıyor.
-Mesela `ggplot2` yeri kolay kolay doldurulamayacak bir paket.
-Ancak R, hâlihazırda veri analizi ve istatistik için geliştirilmiş bir dil ve bu işler için yerli olan çok sayıda fonksiyon barındırıyor.
-`base R` kullanarak hiçbir bağımlılık, hiçbir yeni paket gerekmeden birçok işinizi görebilirsiniz.
-Hem de `tidyverse`'den daha zor, daha uzun olmayacak bir şekilde.
-Ağırlıkla `C` ve `Fortran` gibi dillerle yazılmış bu fonksiyonların birçoğu vektörize ve doğru kullanıldığında *ışık hızında* çalışabiliyor.
+Bu kararı, `tidyverse`'nin kötü, yetersiz bir paket olduğunu düşündüğüm için almadım.
+Kendileri veri işlemede büyük kolaylıklar sağlayan, işlevsel bir paket.
+Mesela `ggplot2`'nin yeri kolay kolay doldurulamaz.
+Ancak R, hâlihazırda veri analizi ve istatistik için geliştirilmiş bir dil ve bu işler için yerli olan çok sayıda araç barındırıyor.
+`base R` kullanarak hiçbir bağımlılık, hiçbir yeni paket gerekmeden birçok işinizi kolaylıkla görebilirsiniz.
+Ağırlıkla `C` ve `Fortran` gibi dillerle yazılmış olan `base R` fonksiyonları doğru kullanıldığında *ışık hızında* çalışabiliyor.
 Ta ki tekrarlanan işler için döngüler ya da apply() gibi fonksiyonlar kullanana kadar. 
 Ben de olabildiğince daha az bağımlıkla çalışmak, R'ın yerli gücünden yararlanmak ve analizin yanı sıra programlamaya da ağırlık vermek amacıyla çoğunlukla `base R` kullanmaya başladım.
 Yanlış anlaşılmasın, paket kullanmaya ya da `tidyverse`'ye karşı değilim.
@@ -62,8 +59,8 @@ Eğer `base R` yeterince etkili bir seçenek değilse diğer paketlerden yararla
 
 Neyse sözü fazla uzattım. Şimdi bu iş için kullanacağımız paketleri yükleyebiliriz.
 Eğer bilgisayarınızda yüklü olmayan bir paket varsa `install.packages()` fonksiyonunu kullanarak yükleyebilirsiniz.
-Bu sefer hem vektör hem de raster veriler için `terra` paketini kullanacağız.
-Ben mekânsal vektör işlerinde genellikle `sf` paktini kullanıyorum ancak `terra` da bunun için bir alternatif. 
+Bu yazı için toplamda iki paket kullanacağız: `terra` ve `geodata`.
+Ben mekânsal vektör işlerinde genellikle `sf` paktini kullanıyorum ancak bu sefer hem vektör hem de raster veriler için `terra` paketini kullanacağız.
 Mülki idare sınırları ve sayısal yükseklik modellerine erişmek için de `geodata` paketini kullanacağız. 
 Bu paket de `raster`, `terra`, `dismo` gibi birçok önemli R paketini yazan [Robert Hijmans'ın](https://github.com/rhijmans) yazdığı bir paket.
 
@@ -82,8 +79,7 @@ sapply(libs, require, character.only = TRUE)
 DEM verisinden önceki yazıda kısaca bahsetmiştim. 
 Tekrardan hatırlamakta fayda var.
 [DEM (Digital Elevation Model)](https://en.wikipedia.org/wiki/Digital_elevation_model), kısaca, yeryüzünün yükseklik bilgisini sayısal olarak temsil eden modele verilen isim. 
-Her bir grid için, sahip olduğu yükseklik verisini barındırır. 
-Topografik ve hidrolojik birçok analizde sıklıkla kullanılıyor. 
+Her bir grid için, sahip olduğu yükseklik verisini barındıran bu veri, topografik ve hidrolojik birçok analizde sıklıkla kullanılıyor. 
 
 Bu yazıda SRTM verisini, `geodata` paketini kullanarak indireceğiz.
 Bu paket ile, GADM, SRTM, Worldclim, OSM gibi birçok farklı veriyi kolaylıkla indirebiliriz.
@@ -96,7 +92,7 @@ ls("package:geodata")
 Bizim işimize yarayacak fonkiyon `elevation_30s()`.
 Ülke kodu için `country` argümanını, DEM verisinin Türkiye sınırlarına göre maskelemek için `mask` argümanını ve veriyi kaydeceğimiz yer için ise `path` argümanını kullanıyoruz. 
 Ben `tempfile()` fonksiyonu ile geçici bir dosya oluşturdum.
-Dilerseniz yereldeki herhangi bir dizine de kaydedebiliriz.
+Dilerseniz yereldeki herhangi bir dizine de kaydedebilirsiniz.
 
 ```{r}
 dem <- elevation_30s(country = "TUR", mask = TRUE, path = tempfile())
@@ -107,18 +103,33 @@ dem
 nrow(dem) * ncol(dem)
 ```
 
-Gördüğünüz gibi veri `SpatRaster` sınıfında.
 Verinin çıktısında birçok temel bilgiye erişebiliriz.
-Satır sayısı 792, sütun sayısı 2340 olan, toplamda 1853280 hücreden oluşuyor.
+Gördüğünüz gibi veri `SpatRaster` sınıfında; satır sayısı 792, sütun sayısı 2340 olan, toplamda 1853280 hücreden oluşuyor.
 Çözünürlüğü 0.008333333 derece, yani yaklaşık 1 km diyebiliriz.
 Verinin extent'i Türkiye sınırlarını kapsıyor.
-Minimum değer -42, ilen maksimum değer 4972. 
+Minimum değer -42 m, iken maksimum değer 4972 m. 
 Yaklaşık 1 km çözünürlüğe sahip olduğunu düşündüğümüzde neredeyse Ağrı Dağı'nın 5137 metrelik rakımını yakalıyormuş.
 Gayet iyi. 
+
+Verinin minimum değeri -42 metreden başladığı için reclassify etmek istiyorum. 
+0'dan küçük olan tüm değerleri 0'a eşitleyeceğim.
+Bunu `terra` paketi içindeki `classify()` fonksiyonu ile yapabiliriz.
+
+```{r}
+dem <- classify(
+  dem, 
+  rcl = matrix(c(-Inf, 0, 0), ncol = 3, byrow = TRUE)
+)
+dem
+```
+
+Gördüğünüz gibi minimum değer artık 0'dan başlıyor.
 
 Şimdi basitçe görselleştirelim.
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3
 plot(dem)
 ```
 
@@ -138,28 +149,31 @@ hillshade <- shade(
 )
 ```
 
-Şimdi de bir bakalım nasıl görünüyorlar. 
-Daha yüksek çözünürlüklü bir görüntü için `maxcell` argümanıyla oynayacağım.
+Bir bakalım nasıl görünüyorlar. 
+Çoğu durumda `plot(data)` yeterince iyi sonuç veriyor ancak daha yüksek çözünürlüklü bir görüntü için `maxcell` argümanını değiştireceğim.
 İşlem biraz yavaşlayabilir.
-Çoğu durumda `plot(data)` yeterince iyi sonuç veriyor.
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3
 plot(slp, maxcell = prod(dim(slp))) # sutun ve satir sayisini carpip hucre sayisini hesapliyorum
 ```
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3
 plot(asp, maxcell = prod(dim(asp)))
 ```
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3
 plot(hillshade, maxcell = prod(dim(hillshade)), col = grey(0:100/100))
 ```
 
 Şimdi de mülki idare sınırları için GADM verilerini çekelim.
 GADM, Türkiye için sınır çözünürlüğü yüksek olan bir veri değil ancak yüksek sınır doğruluğu gerekmeyen işler için gayet kullanışlı.
-Türkiye ve komşu ülkeleri alacağım.
-Öncelikle tüm dünya verisini çekiyoruz.
-Ardından Türkiye'nin extent'inin koordinatlarına göre kırpıyoruz.
+Tüm dünya verisini çekip, Türkiye'nin ve komşuların bir kısmının extent'inin koordinatlarına göre kırpıyoruz.
 
 ```{r}
 adm <- world(resolution = 1, path = tempfile())
@@ -169,6 +183,8 @@ adm
 ```
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3
 plot(adm)
 ```
 
@@ -182,12 +198,13 @@ Bu sefer ise `base R` kullanacağız.
 `ggplot2` kadar standart, karmaşık grafiklerde onun kadar kolay bir iş akışı sunmuyor ancak düşünüldüğü kadar zor değil ve çok daha esnek bir yapıya sahip.
 Neredeyse dilediğimiz hemen her şeyi çizebiliriz.
 Bazen çok az satırla bile süper işler çıkabiliyor.
-Bu aşamada yanlış ya da eksik yaptığım şeyler olabilir.
-Gözünüze çarparsa yorum yapmaktan çekinmeyin.
+Bu aşamada yanlış ya da eksik yaptığım şeyler olursa yorum yapmaktan çekinmeyin lütfen.
 
 Öncelikle Türkiye ve çevre ülkelerin sınırlarının olduğu bir altlık harita çizelim.
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3
 plot(
   adm,                       # veri
   lwd = 0.8,                 # cizgi kalinligi
@@ -205,9 +222,12 @@ plot(
 Şimdi de kabartmasıyla ve konturlarıyla beraber topografik haritamızı çizelim.
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3.3
 plot(
   hillshade,
-  col = grey(0:100/100),
+  col = grey(0:100 / 100),
+  mar = c(5, 1, 0, 1),
   maxcell = prod(dim(hillshade)),
   legend = FALSE # rakimin lejantini cizmek icin burada cizmiyoruz
 )
@@ -225,7 +245,7 @@ plot(
     at = seq(0, 4500, 500), # lejant etiketleri
     tic = "out",            # lejanttaki cizgilerin pozisyonu
     title = "m",            # baslik
-    title.cex = 0.7         # baslik boyutu
+    title.cex = 0.8         # baslik boyutu
   )
 )
 contour(
@@ -238,9 +258,11 @@ contour(
 ```
 
 Şimdi de iki haritayı birleştirelim.
-Bu sefer konturu çizmeyeceğim.
+Ancak bu sefer konturu çizmeyeceğim.
 
 ```{r}
+#| fig-width: 8
+#| fig-heigh: 3.3
 plot.new() # yeni bir plot baslatmak icin
 par(family = "OpenSans") # font 
 plot(
@@ -251,7 +273,7 @@ plot(
   border = "grey",
   background = "lightblue",
   col = "white",
-  mar = c(2, 1, 0, 1),
+  mar = c(5, 1, 0, 1),
   axes = TRUE,
   las = 1
 )
@@ -275,8 +297,8 @@ plot(
     cex = 0.8,
     at = seq(0, 4500, 500),
     tic = "out",
-    title = "m",
-    cex.main = 0.5
+    title = "Rakım [m]",
+    title.cex = 0.8
   )
 )
 plot(adm, border = "grey", lwd = 0.8, add = TRUE) # sinirlari vurgulu cizmek icin tekrar ekledim
@@ -285,6 +307,44 @@ plot(adm, border = "grey", lwd = 0.8, add = TRUE) # sinirlari vurgulu cizmek ici
 Fena olmadı. :) 
 Biraz daha uğraşla daha iyi haritalar elde edilebilir.
 Özellikle de göl ve nehir katmanları eklenirse güzel olacaktır.
+
+Şimdi de Türkiye rakımının dağılımına bir bakalım.
+Bunun için histogram çizeceğim.
+
+```{r}
+#| fig-width: 8
+#| fig-heigh: 5
+#| warning: false
+plot.new()
+par(
+  mar = c(5, 5, 1, 1),
+  mgp = c(3.6, 1, 0),         # etiket uzakligini ayarliyoruz
+  las = 1, 
+  family = "OpenSans", 
+  bty = "l",                  # box'ın tipini L seklinde yapmak icin
+  cex.lab = 1.3,
+  xpd = NA                    # etiketi grafik sinirlari disina tasimaya izin verir
+)
+hist(
+  dem,
+  xlab = "Rakım [m]",         # x ekseninin etiketi
+  ylab = "Sıklık",            # y ekseninin etiketi
+  main = "",                  # baslik icin. "" bos yaparak basligi cizmiyorum
+  col = "orange",
+  breaks = seq(0, 4972, 100), # grafigin kirilimlari
+  density = 50                # kutularin icindeki tarama cizgisinin yogunlugu
+)
+axis(                         # x eksenindeki kucuk tikleri cizmek icin
+  side = 1,                   # alttaki x eksenine cizmek icin
+  at = seq(0, 4972, 100),     # kirilimlar
+  tck = -0.030 / 4,           # tik boyutu kucuk olsun
+  labels = FALSE              # etiket olmamasi icin
+) 
+box()                         # eksenlere kutu cizmek icin
+```
+
+Grafik, sağa çarpık bir dağılım sergiliyor. 
+Ortalama rakımın 1132 metre olduğu Türkiye'yi iyi temsil eden bir grafik oldu.
 
 Bir sonraki yazıda görüşürüz.
 
