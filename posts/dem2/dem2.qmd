@@ -188,7 +188,7 @@ par(
   mar = c(5, 5, 1, 1),
   mgp = c(3.6, 1, 0),         # etiket uzakligini ayarliyoruz
   las = 1, 
-  family = "OpenSans", 
+  family = "Montserrat", 
   bty = "l",                  # box'ın tipini L seklinde yapmak icin
   cex.lab = 1.3,
   xpd = NA                    # etiketi grafik sinirlari disina tasimaya izin verir
@@ -198,9 +198,7 @@ hist(
   xlab = "Rakım [m]",         # x ekseninin etiketi
   ylab = "Sıklık",            # y ekseninin etiketi
   main = "",                  # baslik icin. "" bos yaparak basligi cizmiyorum
-  col = "orange",
   breaks = seq(0, 2150, 50),  # grafigin kirilimlari
-  density = 50                # kutularin icindeki tarama cizgisinin yogunlugu
 )
 axis(                         # x eksenindeki kucuk tikleri cizmek icin
   side = 1,                   # alttaki x eksenine cizmek icin
