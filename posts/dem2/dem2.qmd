@@ -185,12 +185,12 @@ Geçenki yazıdaki histogramı şimdi de İzmir için çizelim, rakımın İzmir
 #| warning: false
 plot.new()
 par(
-  mar = c(5, 5, 1, 1),
-  mgp = c(3.6, 1, 0),         # etiket uzakligini ayarliyoruz
+  mar = c(5, 5.2, 1, 1),
+  mgp = c(3.6, 0.7, 0),         # etiket uzakligini ayarliyoruz
   las = 1, 
   family = "Montserrat", 
   bty = "l",                  # box'ın tipini L seklinde yapmak icin
-  cex.lab = 1.3,
+  cex.lab = 1.2,
   xpd = NA                    # etiketi grafik sinirlari disina tasimaya izin verir
 )
 hist(
