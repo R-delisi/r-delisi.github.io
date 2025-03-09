@@ -177,7 +177,7 @@ sbar(
 )
 ```
 
-Geçenki yazıdaki histogramı şimdi de İzmir için çizelim.
+Geçenki yazıdaki histogramı şimdi de İzmir için çizelim, rakımın İzmir'deki dağılımına bir bakalım.
 
 ```{r}
 #| fig-width: 8
@@ -211,8 +211,7 @@ axis(                         # x eksenindeki kucuk tikleri cizmek icin
 box()                         # eksenlere kutu cizmek icin
 ```
 
-Grafik, sağa çarpık bir dağılım sergiliyor. 
-Ortalama rakımın 1132 metre olduğu Türkiye'yi iyi temsil eden bir grafik oldu.
+Grafik, fazlasıyla sağa çarpık bir dağılım sergiliyor. 
 
 Bir sonraki yazıda görüşürüz.
 
