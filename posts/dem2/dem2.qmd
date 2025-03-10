@@ -94,6 +94,7 @@ Bunun için siteye üye olmalı ve API Key oluşturmalısınız.
 Bu, işlem ücretsiz ve oldukça basit.
 Sonrasında `set_opentopo_key()` fonksiyonunu kullanarak key'inizi girmelisiniz.
 Ardından R oturumunu yeniden başlattığınızda verilere erişebilirsiniz.
+
 İzmir sınırlarını kullanarak DEM verisini indirmek için `get_elev_raster()` fonksiyonunu kullanacağız.
 İzmir DEM verisini indirmek için `locations = izm`, yüksek çözünürlüklü SRTM verisi için `src = "gl1"` ve veriyi İzmir sınırlarına göre kırpmak için de `clip = "locations"` argümanını kullanacağız.
 
