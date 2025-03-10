@@ -160,10 +160,10 @@ plot(
   breaks = breaks,                                                            # kirilimlar
   type = "continuous",                                                        # kirilimlari manuel belirledigimiz icin lejanti manuel olarak cont. yapmamiz gerekiyor
   col = tidyterra::hypso.colors(                                              # tidyterra paketiyle palet seciyorum  
-    length(breaks) - 1,                                                       # renk sayisinin kırılım boyutundan bir az olmasi icin
+    length(breaks) - 1,                                                       # renk sayisinin kırilim boyutundan bir az olmasi icin
     palette = "wiki-schwarzwald-cont"
   ), 
-  las = 1,                                                                    # y eksenindeki yazıların yatay olmasi icin
+  las = 1,                                                                    # y eksenindeki yaziların yatay olmasi icin
   maxcell = prod(dim(dem)),                                                   # maksimum cozunurlukte cizmek icin
   plg = list(at = seq(0, 2100, 250), tic = "out"),                            # lejant ayarlari
   mar = c(0.5, 1.5, 0, 4)                                                     # marjin 
