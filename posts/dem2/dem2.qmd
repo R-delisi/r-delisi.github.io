@@ -1,9 +1,9 @@
 ---
-title: "R ile Topografik Harita 2 - DEM Verisi İndirme ve Görselleştirme"
+title: "R ile Topografik Veri İndirme 2 - DEM Verisi İndirme ve Görselleştirme"
 author: "Mehmet Göktuğ Öztürk"
 format: html
 date: 2025-03-10
-description: "R ile Topografik Topografik Harita 2"
+description: "R ile Topografik Topografik Veri İndirme 2"
 categories:
   - R
   - gis
@@ -18,20 +18,14 @@ image: figs/preview.png
 **Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.** 
 **Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
 
-Geçtiğimiz hafta, üzerinden uzunca bir zaman geçtikten sonra blogun *üçüncü* yazısını yayımlamıştım.
-`geodata` paketini kullanarak SRTM verisi indirmiş ve görselleştirmiştik.
+Geçtiğimiz hafta, üzerinden uzunca bir zaman geçtikten sonra, blogun *üçüncü* yazısını yayımlamıştım.
+`geodata` paketini kullanarak SRTM verisi indirmiş ve görselleştirmiştim.
 SRTM, orijinal olarak 30 metre çözünürlüklü bir veri ancak `geodata` paketi bu veriyi, maksimum 30 arc second (yaklaşık 1 km) çözünürlüklü olarak sağlıyor.
 Bu çözünürlük, çoğu görselleştirme ve ekolojik modelleme çalışması için oldukça yeterli, özellikle de Türkiye gibi büyük coğrafyalarda çalıştığımız zaman.
 Ancak çalışmamızın konusu, amacı ya da çalışma alanının boyutuna göre, topografyayı daha iyi temsil edecek, daha yüksek çözünürlüklü verilere ihtiyaç duyabiliriz.
-Jeolog arkadaşım Bahadır'ın mesajı üzerine bu yazıyı yazmaya karar verdim.
-Bahadır, SRTM verisinin 30 metre çözünürlüğünün kendi çalışmaları için yeterli olmadığını, bu sebeple 12.5 metrelik Alos Palsar verisi kullanıklarını söylemişti.
-Bildiğim kadarıyla Alos Palsar verilerine erişmek için bir R paketi mevcut değil.
-[ASF Data Search](https://search.asf.alaska.edu) web sitesinden manuel olarak, [asf_search](https://docs.asf.alaska.edu/asf_search/basics/) Python paketi ile ya da R ile [ASF Search API](https://docs.asf.alaska.edu/api/basics/)'si ile indirebiliriz.
-Ancak bu, bu yazının konusu değil.
-İlerleyen zamanlarda belki değinebilirim.  
 Geçtiğimiz yazının devamı niteliğindeki bu yazıda, R kullanarak yüksek çözünürlüklü SRTM verilerine nasıl erişebileceğimizi anlatacağım.
 Yüksek çözünürlü veri indireceğimiz için Türkiye ölçeğinde veri indirmek ve o veriyi işlemek daha fazla zaman alacaktır.
-Bu sebeple İzmir için indireceğim.
+Bu sebeple bu yazı İzmir ölçeğinde olacak.
 
 ## Yazının Akışı
 
@@ -48,8 +42,11 @@ DEM verilerine erişmek için oldukça pratik bir paket.
 
 ```{r}
 #| warning: false
-libs <- c("sf", "terra", "elevatr", "rgeoboundaries", "mapview")
-sapply(libs, require, character.only = TRUE)
+library(sf)
+library(terra)
+library(elevatr)
+library(rgeoboundaries)
+library(mapview)
 ```
 
 ## 2. DEM verisinin indirilmesi
@@ -64,6 +61,7 @@ tr_il
 ```
 
 ```{r}
+#| fig-cap: "Şekil 1: Türkiye mülki idare sınırları."
 plot(st_geometry(tr_il))
 ```
 
@@ -75,26 +73,29 @@ izm
 ```
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 9
+#| fig-height: 7.5
+#| fig-cap: "Şekil 2: İzmir mülki idare sınırları." 
 
 plot(st_geometry(izm))
 ```
 
-Bir de interaktif olarak bakalım.
+Bir de interaktif olarak kontrol edelim.
 
 ```{r}
+#| fig-cap: "Şekil 3: İzmir mülki idare sınırları."
 mapview(izm)
 ```
+
+İzmir sınırları hazır olduğuna göre DEM verisini indirebiliriz.
 
 `elevatr` paketi, "aws" hariç diğer kaynaklardan veri indirmek için [OpenTopography API](https://opentopography.org/)'sini kullanıyor.
 Bunun için siteye üye olmalı ve API Key oluşturmalısınız.
 Bu, işlem ücretsiz ve oldukça basit.
 Sonrasında `set_opentopo_key()` fonksiyonunu kullanarak key'inizi girmelisiniz.
 Ardından R oturumunu yeniden başlattığınızda verilere erişebilirsiniz.
-Şimdi de İzmir sınırlarını kullanarak DEM verisini indirebiliriz.
-Bunun için `get_elev_raster()` fonksiyonunu kullanacağız.
-İzmir için veri indirmek için `locations = izm`, yüksek çözünürlüklü SRTM verisi için `src = "gl1"` ve veriyi İzmir sınırlarına göre kırpmak için de `clip = "locations"` argümanını kullanacağız.
+İzmir sınırlarını kullanarak DEM verisini indirmek için `get_elev_raster()` fonksiyonunu kullanacağız.
+İzmir DEM verisini indirmek için `locations = izm`, yüksek çözünürlüklü SRTM verisi için `src = "gl1"` ve veriyi İzmir sınırlarına göre kırpmak için de `clip = "locations"` argümanını kullanacağız.
 
 ```{r}
 #| warning: false
@@ -107,17 +108,18 @@ dem
 ```
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 9
+#| fig-height: 7.5
+#| fig-cap: "Şekil 4: İzmir topografya haritası, raster paketinin varsayılan plot() fonksiyonu."
 
 plot(dem)
 ```
 
+Yüksek çözünürlüklü DEM verisini indirdik.
 Gördüğünüz gibi veri `RasterLayer` sınıfında.
 Bunun sebebi `elevatr` paketinin hâlen `raster` paketini kullanması.
 Veriyi `terra`'nın `SpatRaster` sınıfına çeviriyorum. 
-Ardından da bir önceki yazıdaki gibi reclassify edeceğim.
-0'dan küçük olan tüm değerleri 0'a eşitleyeceğim.
+Ardından da bir önceki yazıdaki gibi reclassify edip, 0'dan küçük olan tüm değerleri 0'a eşitleyeceğim.
 Bunu `terra` paketi içindeki `classify()` fonksiyonu ile yapabiliriz.
 
 ```{r}
@@ -130,8 +132,9 @@ dem
 ```
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 9
+#| fig-height: 7.5
+#| fig-cap: "Şekil 5: İzmir topografya haritası, terra paketinin varsayılan plot() fonksiyonu." 
  
 plot(dem)
 ```
@@ -144,72 +147,57 @@ Veriyi görselleştirmek için yine `base R` kullanacağım.
 Bu sefer daha iyi bir renk paleti seçiyor ve kuzey oku ile ölçek ekliyorum.
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 9
+#| fig-height: 7.5
+#| fig-cap: "Şekil 6: İzmir topografya haritası, terra ve base plot ile topografya haritası." 
  
-breaks <- seq(0, 2150, 10)
-plot.new()
-par(family = "Monserrat", cex = 1.2)
+breaks <- seq(0, 2150, 10)                                                    # kirilimlari onceden belirliyoruz
+
+par(family = "Montserrat", cex = 1.4)                                         # font ailesi ve boyutu
 plot(
-  dem, 
-  breaks = breaks,
-  type = "continuous",
-  col = tidyterra::hypso.colors(
-    length(breaks) - 1, 
+  dem,                                                                        # raster veri 
+  breaks = breaks,                                                            # kirilimlar
+  type = "continuous",                                                        # kirilimlari manuel belirledigimiz icin lejanti manuel olarak cont. yapmamiz gerekiyor
+  col = tidyterra::hypso.colors(                                              # tidyterra paketiyle palet seciyorum  
+    length(breaks) - 1,                                                       # renk sayisinin kırılım boyutundan bir az olmasi icin
     palette = "wiki-schwarzwald-cont"
   ), 
-  las = 1,
-  maxcell = prod(dim(dem)),
-  plg = list(
-    at = seq(0, 2100, 250),
-    tic = "out"
-  ),
-  mar = c(0.5, 1.5, 0, 4)
+  las = 1,                                                                    # y eksenindeki yazıların yatay olmasi icin
+  maxcell = prod(dim(dem)),                                                   # maksimum cozunurlukte cizmek icin
+  plg = list(at = seq(0, 2100, 250), tic = "out"),                            # lejant ayarlari
+  mar = c(0.5, 1.5, 0, 4)                                                     # marjin 
 )
-plot(st_geometry(izm), add = TRUE)
-north("topleft", type = 1, label = expression(bold("KUZEY")), lwd = 1.2)
-sbar(
-  10, 
-  "bottomleft", 
-  below = "km",
-  adj = c(0.5, -1),
-  lonlat = TRUE
-)
+plot(st_geometry(izm), add = TRUE)                                            # izmir sinirlari
+north(c(26.35, 39.2), type = 1, label = expression(bold("KUZEY")), lwd = 1.2) # kuzey oku
+sbar(10, "bottomleft", below = "km", adj = c(0.5, -1), lonlat = TRUE)         # olcek
+mtext("Veri: SRTM", side = 1, adj = 0.99, line = 1.7)                         # kaynak eklemek icin
 ```
 
 Geçenki yazıdaki histogramı şimdi de İzmir için çizelim, rakımın İzmir'deki dağılımına bir bakalım.
 
 ```{r}
-#| fig-width: 8
-#| fig-heigh: 5
+#| fig-width: 9
+#| fig-heigh: 5.5
 #| warning: false
-plot.new()
+#| fig-cap: "Şekil 7: İzmir'de rakımın dağılımı."
+
+breaks <- seq(0, 2150, 50)
+
 par(
   mar = c(5, 5.2, 1, 1),
-  mgp = c(3.6, 0.7, 0),         # etiket uzakligini ayarliyoruz
+  mgp = c(3.6, 0.7, 0),                                                     # etiket uzakligini ayarliyoruz
   las = 1, 
   family = "Montserrat", 
-  bty = "l",                  # box'ın tipini L seklinde yapmak icin
+  bty = "l",                                                                # box'ın tipini L seklinde yapmak icin
   cex.lab = 1.2,
-  xpd = NA                    # etiketi grafik sinirlari disina tasimaya izin verir
+  xpd = NA                                                                  # etiketi grafik sinirlari disina tasimaya izin verir
 )
-hist(
-  dem,
-  xlab = "Rakım [m]",         # x ekseninin etiketi
-  ylab = "Sıklık",            # y ekseninin etiketi
-  main = "",                  # baslik icin. "" bos yaparak basligi cizmiyorum
-  breaks = seq(0, 2150, 50),  # grafigin kirilimlari
-)
-axis(                         # x eksenindeki kucuk tikleri cizmek icin
-  side = 1,                   # alttaki x eksenine cizmek icin
-  at = seq(0, 2150, 50),      # kirilimlar
-  tck = -0.030 / 4,           # tik boyutu kucuk olsun
-  labels = FALSE              # etiket olmamasi icin
-) 
-box()                         # eksenlere kutu cizmek icin
+hist(dem, xlab = "Rakım [m]", ylab = "Sıklık", main = "", breaks = breaks)  # histogram
+axis(side = 1, at = breaks, tck = -0.030 / 4, labels = FALSE)               # x eksenindeki kucuk tikler
+box()                                                                       # eksenlere kutu cizmek icin
 ```
 
-Grafik, fazlasıyla sağa çarpık bir dağılım sergiliyor. 
+Grafik, sergilediği sağa çarpık dağılımla İzmir'in bir kıyı kenti olduğunu oldukça net bir şekilde gösteriyor. 
 
 Bir sonraki yazıda görüşürüz.
 

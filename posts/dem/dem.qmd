@@ -1,9 +1,9 @@
 ---
-title: "R ile Topografik Harita - DEM Verisi İndirme ve Görselleştirme"
+title: "R ile Topografik Veri İndirme - DEM Verisi İndirme ve Görselleştirme"
 author: "Mehmet Göktuğ Öztürk"
 format: html
 date: 2025-03-03
-description: "R ile Topografik Topografik Harita"
+description: "R ile Topografik Topografik Veri İndirme"
 categories:
   - R
   - gis
