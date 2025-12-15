@@ -766,7 +766,7 @@ Aslında birçok modern R kullanıcısı base R grafiklerini küçümseme eğili
 Meraklıları şu bağlantıları ziyaret edebilir:
 
 1. [https://github.com/karoliskoncevicius/r_notes/blob/main/baseplotting.md](https://github.com/karoliskoncevicius/r_notes/blob/main/baseplotting.md)
-2. [https://poisonalien.github.io/basegraphics/bamain/baseplotting.md](https://poisonalien.github.io/basegraphics/baseplots.htmlseplots.html)
+2. [https://poisonalien.github.io/basegraphics/baseplots.html](https://poisonalien.github.io/basegraphics/baseplots.html)
 3. [https://plantarum.ca/2014/02/19/r-graphics/](https://plantarum.ca/2014/02/19/r-graphics/)
 4. [https://plantarum.ca/2023/02/13/terra-maps/](https://plantarum.ca/2023/02/13/terra-maps/)
 
@@ -871,8 +871,10 @@ legend(
 
 ```{r}
 #| echo: false
+#| message: false
+#| warning: false
  
-dev.off()
+invisible(dev.off())
 
 ```
 

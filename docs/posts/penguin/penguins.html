@@ -1870,7 +1870,7 @@ $Gentoo
 <p>Bu yazıda yalnızca <code>base R</code> ile gelen <code>plot()</code> fonksiyonu ve onun kardeşlerini kullanacağız. Basit grafikler çizmek için çok kolay ve hızlı bir yol. İleride <code>ggplot2</code> gibi bir kütüphane kullansanız bile analiz esnasında veriyi hızlıca görmek için kullanabileceğiniz bir fonksiyon. Aslında birçok modern R kullanıcısı base R grafiklerini küçümseme eğiliminde çünkü <code>ggplot2</code> muhteşem bir paket ve karmaşık grafikler yapmak için eşsiz bir araç sunuyor ancak base R da düşünüldüğü gibi basit olmayan, aslında daha esnek ve istenildiği zaman çok farklı ve kompleks grafikler çizmeye olanak sağlayabiliyor. Meraklıları şu bağlantıları ziyaret edebilir:</p>
 <ol type="1">
 <li><a href="https://github.com/karoliskoncevicius/r_notes/blob/main/baseplotting.md">https://github.com/karoliskoncevicius/r_notes/blob/main/baseplotting.md</a></li>
-<li><a href="https://poisonalien.github.io/basegraphics/baseplots.htmlseplots.html">https://poisonalien.github.io/basegraphics/bamain/baseplotting.md</a></li>
+<li><a href="https://poisonalien.github.io/basegraphics/baseplots.html">https://poisonalien.github.io/basegraphics/baseplots.html</a></li>
 <li><a href="https://plantarum.ca/2014/02/19/r-graphics/">https://plantarum.ca/2014/02/19/r-graphics/</a></li>
 <li><a href="https://plantarum.ca/2023/02/13/terra-maps/">https://plantarum.ca/2023/02/13/terra-maps/</a></li>
 </ol>
@@ -2006,15 +2006,9 @@ $Gentoo
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>null device 
-          1 </code></pre>
-</div>
-</div>
 <p>Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>bill_dep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins<span class="sc">$</span>bill_dep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2024,11 +2018,11 @@ $Gentoo
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(</span>
-<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>  penguins<span class="sc">$</span>bill_dep, </span>
-<span id="cb146-3"><a href="#cb146-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Bill Depth [mm]"</span>, </span>
-<span id="cb146-4"><a href="#cb146-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Histogram of Bill Depth"</span></span>
-<span id="cb146-5"><a href="#cb146-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(</span>
+<span id="cb145-2"><a href="#cb145-2" aria-hidden="true" tabindex="-1"></a>  penguins<span class="sc">$</span>bill_dep, </span>
+<span id="cb145-3"><a href="#cb145-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Bill Depth [mm]"</span>, </span>
+<span id="cb145-4"><a href="#cb145-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Histogram of Bill Depth"</span></span>
+<span id="cb145-5"><a href="#cb145-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
