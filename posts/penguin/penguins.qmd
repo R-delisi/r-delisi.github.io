@@ -12,37 +12,38 @@ categories:
 image: figs/penguins.png
 ---
 
-![](figs/penguins.png)
+![[Kaynak: Allison Horst](https://allisonhorst.github.io/palmerpenguins/articles/art.html)](figs/penguins.png)
 
 **Merhabalar, blogun yeni yazısına hoş geldiniz.** 
 **Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.** 
 **Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
 
-Bu yazıda, R'da son yılların en sevilen veri setlerinden birisini kullanarak birçok temel işi yapmayı, R öğrenmeye - kullanmaya yeni başlayanlar için yol gösterici, yardımcı bir rehber oluşturmayı hedefliyorum.
+Bu yazıda, R'da son yılların en sevilen veri setlerinden birisini kullanarak birçok temel işi yapmayı, yeni başlayanlar için yol gösterici, yardımcı bir rehber oluşturmayı hedefliyorum.
 Arkadaşım Rüveyda ile R çalışırken, bu gibi bir yazının yeni başlayanlar için oldukça faydalı olabileceğini düşündüm ve bu yazıyı yazmaya karar verdim.
-Örnekler ve pratikler üzerinden öğrenmenin oldukça etkili olduğunu düşünüyorum.
 Önceki yazıların aksine ulaşılması daha kolay olan bir veri seti üzerinden çalışacağımız için, yazıyı okurken bir yandan da alıştırma yapmak daha kolay olacaktır.
 Bol bol alıştırma yapmanızı öneriyorum.
 Bazı yerlerde biraz ayrıntıya girmiş olabilirim, bu sizi korkutmasın, motivasyonunuzu kırmasın.
-Yalnızca devam edin ve diğer kısımlara bakın.
-Sonrasında tekrardan oralara dönebilirsiniz.
-Umarım yardımcı olur.
+Yalnızca devam edin ve diğer kısımlara bakın, sonra geri dönüp takıldığınız yerlere bakabilirsiniz.
 
 "Palmer Penguins" veri seti, son dönemde veri bilimi ve istatistik alanında en çok kullanılan eğitim-uygulama veri setlerinden birisi.
-2014 yılındaki [şu](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0090081) yayında kullanılan bu veri setinin, 2022 yılında R'da Iris veri seti yerine kullanılması [önerilmiş](https://journal.r-project.org/articles/RJ-2022-020/) ve [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/index.html) paketi yayımlanmıştır.
-Bu paketin ardından Python ve Julia gibi veri biliminde sıklıkla kullanılan programlama dillerinde de palmerpenguins paketleri yazılmış, başta eğitim olmak üzere birçok yerde kullanılmaya başlanılmıştır. 
-Bu veri seti, R 4.5.0 sürümüyle beraber R'ı yüklediğimiz zaman varsayılan olarak (base R ile) gelen `{datasets}` paketine dahil edilmiştir.
-Veriyi daha iyi tanımak ve yapılan birçok örnek çalışmayı görmek için [şu siteyi](https://allisonhorst.github.io/palmerpenguins/index.html) mutlaka incelemenizi öneririm.
+Öncelikle [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/index.html) paketi yayımlanmış, gördüğü ilginin ardından da bu veri seti, R 4.5.0 sürümüyle beraber R'ı yüklediğimiz zaman varsayılan olarak (base R ile) gelen `{datasets}` paketine dahil edilmiştir.
+Veriyi daha iyi tanımak ve yapılan örnek çalışmaları görmek için [şu siteyi](https://allisonhorst.github.io/palmerpenguins/index.html) mutlaka incelemenizi öneririm.
+
+![[Kaynak: Allison Horst](https://allisonhorst.github.io/palmerpenguins/articles/art.html)](figs/penguins3.png){width=50%}
 
 ## 1. Giriş
 
 Bugün bu veri setini kullanarak R'daki birçok temel analizi yapacağız.
 Bu yazıda yalnızca `base R` (R programlama dilini yüklediğimiz zaman varsayılan olarak gelen paketler) kullanacağız.
-Hiçbir paket yüklemeye gerek kalmadan, palmerpenguins verisini inceleyecek, veriyle oynayacak ve ufak analizler yapacağız.
-Buradaki amacım bir data.frame üzerinde çalışırken base R'a dair birçok temel noktayı ele alabilmek.
+Hiçbir paket yüklemeye gerek kalmadan, `palmerpenguins` verisini inceleyecek, veriyle oynayacak ve basit grafikler çizeceğiz.
+Buradaki amacım bir data.frame üzerinde çalışırken `base R`'a dair birçok temel noktayı ele alabilmek.
 Dolayısıyla göreceğimiz fonksiyonların hepsini, bir veriyi analiz ederken mutlaka kullanmanız gerekmiyor.
 Yalnızca o an gerekenleri, işinize yarayanları kullanmanız yeterli olacaktır.  
-Bir sonraki yazıda benzer işleri `dplyr` ve `ggplot2` paketi ile yapmak istiyorum.
+Bir sonraki yazıda `dplyr` ve `ggplot2` versiyonunu göreceğiz. :)
+
+Henüz başlamamışken şu iki harika base R kılavuzunu buraya bırakayım:
+1. [Introduction to R](https://rspatial.org/intr/index.html)
+2. [fasteR: Fast Lane to Learning R!](https://github.com/matloff/fasteR)
 
 Şimdi `penguins` verisine bakalım. 
 
@@ -272,6 +273,8 @@ str(penguins_raw)
 ```{r}
 summary(penguins_raw)
 ```
+
+![[Kaynak: Allison Horst](https://allisonhorst.github.io/palmerpenguins/articles/art.html)](figs/penguins2.png)
 
 ### Sütun işlemleri
 
