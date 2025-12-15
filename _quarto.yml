@@ -15,12 +15,10 @@ website:
         text: Blog
       - about.qmd
     right:
-      - icon: 'bsky'
+      - icon: 'bluesky'
         href: 'https://bsky.app/profile/mehmetgoktug.bsky.social'
       - icon: 'mastodon'
         href: 'https://ecoevo.social/@mehmet_goktu'
-      - icon: 'twitter'
-        href: "https://twitter.com/mehmet_goktu"
       - icon: 'github'
         href: "https://github.com/mehmetgoktug"
       - icon: 'linkedin'
