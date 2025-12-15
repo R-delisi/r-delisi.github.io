@@ -1,0 +1,894 @@
+---
+title: "Penguins Verisi ile Base R'a Giriş"
+author: "Mehmet Göktuğ Öztürk"
+format: html
+date: 2025-12-15
+description: "Base R ile Veri Cambazlığı"
+categories:
+  - R
+  - base R
+  - tidyverse
+  - palmerpenguins
+image: figs/penguins.png
+---
+
+![](figs/penguins.png)
+
+**Merhabalar, blogun yeni yazısına hoş geldiniz.** 
+**Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.** 
+**Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
+
+Bu yazıda, R'da son yılların en sevilen veri setlerinden birisini kullanarak birçok temel işi yapmayı, R öğrenmeye - kullanmaya yeni başlayanlar için yol gösterici, yardımcı bir rehber oluşturmayı hedefliyorum.
+Arkadaşım Rüveyda ile R çalışırken, bu gibi bir yazının yeni başlayanlar için oldukça faydalı olabileceğini düşündüm ve bu yazıyı yazmaya karar verdim.
+Örnekler ve pratikler üzerinden öğrenmenin oldukça etkili olduğunu düşünüyorum.
+Önceki yazıların aksine ulaşılması daha kolay olan bir veri seti üzerinden çalışacağımız için, yazıyı okurken bir yandan da alıştırma yapmak daha kolay olacaktır.
+Bol bol alıştırma yapmanızı öneriyorum.
+Bazı yerlerde biraz ayrıntıya girmiş olabilirim, bu sizi korkutmasın, motivasyonunuzu kırmasın.
+Yalnızca devam edin ve diğer kısımlara bakın.
+Sonrasında tekrardan oralara dönebilirsiniz.
+Umarım yardımcı olur.
+
+"Palmer Penguins" veri seti, son dönemde veri bilimi ve istatistik alanında en çok kullanılan eğitim-uygulama veri setlerinden birisi.
+2014 yılındaki [şu](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0090081) yayında kullanılan bu veri setinin, 2022 yılında R'da Iris veri seti yerine kullanılması [önerilmiş](https://journal.r-project.org/articles/RJ-2022-020/) ve [palmerpenguins](https://allisonhorst.github.io/palmerpenguins/index.html) paketi yayımlanmıştır.
+Bu paketin ardından Python ve Julia gibi veri biliminde sıklıkla kullanılan programlama dillerinde de palmerpenguins paketleri yazılmış, başta eğitim olmak üzere birçok yerde kullanılmaya başlanılmıştır. 
+Bu veri seti, R 4.5.0 sürümüyle beraber R'ı yüklediğimiz zaman varsayılan olarak (base R ile) gelen `{datasets}` paketine dahil edilmiştir.
+Veriyi daha iyi tanımak ve yapılan birçok örnek çalışmayı görmek için [şu siteyi](https://allisonhorst.github.io/palmerpenguins/index.html) mutlaka incelemenizi öneririm.
+
+## 1. Giriş
+
+Bugün bu veri setini kullanarak R'daki birçok temel analizi yapacağız.
+Bu yazıda yalnızca `base R` (R programlama dilini yüklediğimiz zaman varsayılan olarak gelen paketler) kullanacağız.
+Hiçbir paket yüklemeye gerek kalmadan, palmerpenguins verisini inceleyecek, veriyle oynayacak ve ufak analizler yapacağız.
+Buradaki amacım bir data.frame üzerinde çalışırken base R'a dair birçok temel noktayı ele alabilmek.
+Dolayısıyla göreceğimiz fonksiyonların hepsini, bir veriyi analiz ederken mutlaka kullanmanız gerekmiyor.
+Yalnızca o an gerekenleri, işinize yarayanları kullanmanız yeterli olacaktır.  
+Bir sonraki yazıda benzer işleri `dplyr` ve `ggplot2` paketi ile yapmak istiyorum.
+
+Şimdi `penguins` verisine bakalım. 
+
+```{r}
+penguins
+```
+
+Gördüğünüz gibi birçok satır ve sütundan oluşan bir veri tablosu.
+Öncesinde R konsolunun kaç tane değer yazdıracağını ayarlamadıysanız veriyi bu şekilde çağırmak, tüm veri tablosunu konsola yazdıracaktır.
+Bu durum, büyük veri tablolarında istenmeyen bir durum.
+Bundan kaçınmak için `head()` ve `tail()` fonksiyonlarını kullanabilir, verinin ilk 6 ve son 6 satırını görüntüleyebilirsiniz ancak öncelikle bir verimizin yapısını tanıyalım, sonrasında bu fonksiyonları kullanarak verinin bir alt kümesini görüntüleyelim.
+
+Bu veri tablosunun hangi sınıfta yer aldığını, hangi veri yapısına sahip olduğunu görmek için `class()` fonksiyonunu kullanabiliriz.
+
+```{r}
+class(penguins)
+```
+
+Gördüğünüz gibi bir `data.frame`.
+Yani satır (gözlem) ve sütunlardan (değişken) oluşan, tıpkı bir Excel tablosu gibi olan bir veri tablosu.
+
+Şimdi de verinin yapısına daha ayrıntılı bakmak için `str()` fonksiyonunu kullanalım.
+
+```{r}
+str(penguins)
+```
+
+Gördüğünüz gibi 344 gözlem ve 8 değişkenden oluşan bir veri tablosu.
+Verideki 1. (species) 2. (island) ve 3. (sex) değişken kategorik değişkenler için kullandığımız `factor` veri tipindeyken, 3. (bill_len) ve 4. değişken (bill_dep) numeric (double) ve 5. (flipper_len), 6. (body_mass) ve 8. (year) değişken integer veri tipinde. 
+Double - numeric veri tipini, kompleks sayılar dışında kalan tüm sayılar için kullanabiliriz.
+Tam sayılar dışındaki sayılar için genellikle daha kullanışlı.
+Integer ise ismiyle müsemma tam sayılar için kullanılan bir veri tipi.
+
+Başta karmaşık gelebilir ancak zamanla, alıştırma yaptıkça size çok doğal, çok kolay gelmeye başlayacak.
+
+Data frame'ler, gördüğünüz gibi birbirinden farklı veri tipindeki değişkenleri tutabiliyor.
+Bu özelliğiyle içerisinde her şeyi tutabildiğimiz `list()` veri yapısında oldukça benziyor.
+Zaten 2 boyutlu yapısıyla matrix'lere benzese de data.frame'ler asıl olarak birer list'tir.
+Onu, matrix'lere benzeyen list'ler gibi düşünebilirsiniz.
+Bu yapısıyla matrix'ler gibi dikdörtgen şeklinde, düzenli bir şekilde veri tutabiliyor ama aynı zamanda list'ler gibi de oldukça esnek bir yapısı var.
+Veri analizinde kullanılmak için daha uygun veri yapıları.
+
+Yine kafanız karışmış olabilir. 
+Zamanla oturacak, merak etmeyin.
+Benim data.frame'lerin birer list olduğunu fark etmem oldukça uzun bir zaman aldı mesela.
+Ne kadar erken öğrenirseniz işlerinizi o kadar etkili yapabilirsiniz. 
+
+Şimdi verimizin ilk ve son 6 satırına bakabiliriz.
+
+```{r}
+head(penguins)
+tail(penguins)
+```
+
+`?head` ya da `help(head)` fonksiyonlarını çalıştırarak dokümantasyonuna ulaşabilirsiniz.
+Burada bu fonksiyonların nasıl çalıştığı ve hangi argümanları alabileceği konusunda ayrıntılı bilgiye ulaşabilirsiniz.
+R'a ilk başlayanlar için dokümantasyonlar karmaşık gelebilir.
+Öncelikle anlamaya çalışın, eğer zorlanırsanız da Google kullanarak herhangi bir fonksiyon hakkında oldukça basit ve kullanışlı kaynaklara erişebilirsiniz.
+Birçok iyi yazılımcı ve R kullanıcısı, çok basit işlevleri bile unutup Google'den yardım alabiliyor.
+Hata yapmaktan ve yardım almaktan asla çekinmeyin.
+Hata yapmıyorsanız bir programlama dilini öğrenmiyorsunuz demektir.
+Tabi artık Google yerine ChatGPT gibi yapay dil modellerinden de faydalanabilirsiniz ama öğrenmenin ilk aşamalarında pek önermem. 
+
+Şimdi dokümantasyonda gördüğünüz `n` argümanını kullanarak kaç adet satır görüntülemek istediğinizi seçebilirsiniz.
+
+```{r}
+head(penguins, n = 10)
+tail(penguins, n = 10)
+```
+
+Gördüğünüz gibi ilk ve son 10 satırı görebildik.
+`n` argümanının ikinci argüman olması dolayısıyla bu fonksiyonları doğrudan, `head(penguins, 10)` şeklinde de kullanabilirsiniz.
+
+Benzer bir işlemi kare parantez, yani indeksleme (slicing), kullanarak da yapabiliriz.
+Burada, görüntülemek istediğimiz satır ve sütunları manuel olarak seçeceğiz.
+Virgülden önceki değer her zaman ilk boyutu, yani satırları; sonraki değer ise ikinci boyutu, yani sütunları seçmek için kullanılıyor.
+
+`str()` fonksiyonuyla zaten bilgi edinmiştik ama tekrardan verimizin uzunluğuna, boyutlarına bir bakalım.
+```{r}
+length(penguins)
+```
+
+Vektörlerin uzunluğunu öğrenmek için kullandığımız `length()` fonksiyonu bize data.frame hakkında yeterince bilgi vermedi.
+Eğer bir vektör ya da matrix ile çalışsaydık tüm elemanların sayısını öğrenebilirdik ama data.frame bize yalnızca sütun (değişken) sayısını verdi.
+Neden?
+Çünkü biraz önce de belirttiğim gibi data.frame'ler özünde sütunlardan - vektörlerden oluşan birer list'tir!
+Ama aynı zamanda da matrix gibi 2 boyutlu bir veridir.
+Dolayısıyla `dim()` fonksiyonuyla tıpkı matrix'lerde olduğu gibi verinin boyutlarına ulaşabiliriz. 
+
+```{r}
+dim(penguins)
+```
+
+Gördüğünüz gibi verimiz 344 satır (gözlem) ve 8 sütundan (değişken) oluşuyor.
+
+`head()` fonksiyonunun yaptığı gibi ilk altı satırı görmek istediğimizi düşünelim.
+
+```{r}
+penguins[1:6, ]
+```
+
+Burada `1:6` ifadesi, 1'den 6'ya kadar sayılar üret demenin kolay yolu.
+`seq()` fonksiyonunun basitleştirilmiş hâli olarak düşünebilirsiniz.
+
+```{r}
+1:6
+```
+
+Bakın 1'den 6'ya kadar olan sayılara bir vektör olarak eriştik.
+Bunu, yukarıdaki örnekteki gibi bir data.frame'in ilk 6 satırını görmek için kullanabiliriz.
+
+Aynı vektörü `c()` ve `seq()` fonksiyonu ile de oluşturabiliriz.
+Ama bu örnek için daha uzun olacaktır.
+
+```{r}
+penguins[c(1, 2, 3, 4, 5, 6), ]
+``` 
+
+```{r}
+penguins[seq(1, 6), ]
+```
+
+Sütun seçmek için kullandığımız indeksi önceden tanımladığımız bir vektör yardımıyla da yazabiliriz.
+
+```{r}
+i <- 1:6
+penguins[i, ]
+```
+
+i'ye 1'den 6'ya kadar sayılardan oluşan bir vektör atadım ve onu da satır seçmek için kullandım.
+
+Şimdi de ilk iki sütunu ve ilk 10 satırı seçelim.
+
+```{r}
+penguins[1:10, 1:2]
+```
+
+Gördüğünüz gibi oldukça basit bir şekilde verimizin bir alt kümesini aldık.
+
+Şimdi de aynı işlemleri indeks yerine sütun isimleri kullanarak yapalım.
+
+```{r}
+penguins[1:10, c("species", "island")]
+```
+
+Bu sefer de sütun indeksleri yerine sütun isimlerini kullandık.
+Sütun isimlerini `"` içerisinde, yani character olarak tanımladım ve birden fazla değer olduğu için `c()` (combine) fonksiyonuyla bir vektör oluşturdum.
+Başta karmaşık gelebilir ama mantığını öğrendikten, yeterli sayıda alıştırma yaptıktan sonra oldukça basitleşecektir.
+
+Şimdi de verimizin özet istatistiklerine bir bakalım.
+Bunun için `summary()` fonksiyonunu kullanabiliriz.
+
+```{r}
+summary(penguins)
+```
+
+`summary()` fonksiyonunu kullanarak her değer için özet istatistikleri görebiliyoruz.
+Eksik veri için kullanılan `NA` değerleri de dahil.
+Ayrıca factor değerlerimiz için bir frekans tablosu elde etmiş oluyoruz.
+Yani her bir kategoriden kaç adet olduğunu görebiliyoruz.
+Bunu yapmanın birden fazla yolu var ve bazıları daha kullanışlı.
+Bunlara da bir bakalım ancak öncelikle `species` değişkeni için kaç adet eşsiz (unique) değer olduğuna bakalım.
+Diğer kategorik değişkenler için de aynı yöntemi kullanabilirsiniz.
+
+```{r}
+
+unique(penguins$species)
+
+```
+
+Dikkat edin burada list ve özellikle de data.frame'lerde kullanılan yeni bir operatörle karşılaştık; `$` operatörü.
+Bu operatörü data.frame'lerin sütunlarına doğrudan erişmek için kullanabiliriz.
+Bir sütuna erişmek ve onu vektöre çevirip işlem yapmak istediğimizde en kullanışlı yöntem bu.
+
+```{r}
+penguins$species
+```
+
+Bakın `species` sütununu bir vektör olarak döndürdü.
+
+Şimdi, biraz evvel dediğim gibi `summary()`, `table()` gibi fonksiyonlarla hem eşsiz değerlere hem de bu değerlerin sıklığına erişebiliriz.
+Ne gerek var `unique()` gibi fonksiyonlara diyebilirsiniz ancak çoğu zaman programatik olarak ihtiyaç duyabiliyoruz.
+Bu yüzden öğrenmekte fayda var.
+
+Şimdi de bu eşsiz değerlerin sıklık tablosuna bakalım.
+```{r}
+table(penguins$species)
+```
+
+```{r}
+table(penguins$island)
+```
+
+Tek tek faktör değişkenlerimizin sıklık tablosuna baktığımıza göre şimdi de, iki farklı değişken kullanarak bakabiliriz.
+
+Hangi adada hangi türden kaç tane penguen mevcut?
+
+```{r}
+
+table(penguins$species, penguins$island)
+
+```
+
+Gördüğünüz gibi iki değişkeni de kullanarak `table()` fonksiyonuyla bunu öğrenebiliyoruz.
+
+## 2. Veri cambazlığı
+
+Şu ana kadar bir data.frame üzerinden, R'da, vektörler, matrix'ler ve özellikle de data.frame'lerle yapabileceğimiz birçok temel işlemi gördük.
+
+Şimdi bir veri analizi - veri bilimi iş akışının en mühim kısımlarından olan veri cambazlığını nasıl yapabileceğimize bakacağız.
+Bunun için Hadley Wickham'ın R for Data Science kitabında anlattığı şekliyle `sütun`, `satır` ve `grup` işlemlerini, base R kullanarak yapacağız.
+Gerçek dünya verileriyle uğraştığımızda bu kısım, bir veri bilimi iş akışının genellikle büyük çoğunluğunu oluşturuyor.
+
+Bu bölümde yine palmerpenguins datasını kullanacağız ama bu sefer ham olan versiyonunu.
+Verinin ham hâlini kullanarak `penguins`'teki son hâline ulaşmaya çalışacağız. 
+Bu veriye erişmek için `penguins_raw` yazabilirsiniz.
+
+```{r}
+penguins_raw
+```
+
+Şimdi veriye hızlıca göz atalım.
+```{r}
+str(penguins_raw)
+```
+
+```{r}
+summary(penguins_raw)
+```
+
+### Sütun işlemleri
+
+`penguins` verisi 8 değişkenden oluşuyordu ancak `penguins_raw` verisi 17 değişkenden oluşuyor.
+
+Öncelikle `penguins`'te olan değişkenlerin bizim için önemli olduğunu varsayalım ve onları seçelim.
+penguins ismiyle çatışma olmasın diye önce verinin farklı isimli bir kopyasını oluşturacağım, ardından sütunları seçeceğim.
+
+Daha önce de gördüğümüz gibi sütunlarla ilgili bir işlem yapmak için 2. boyutu, yani virgülün sağını kullanıyoruz. 
+```{r}
+peng_raw <- penguins_raw
+head(peng_raw[, 1:3])
+```
+
+Yukarıda gördüğünüz gibi istediğimiz sütunların indeksini bir vektör olarak yazarak seçim yapabiliyoruz.
+
+Bunun için sütun isimlerini de tercih edebiliriz.
+
+```{r}
+head(peng_raw[, c("studyName", "Sample Number", "Species")])
+```
+
+Gördüğünüz gibi sonuç aynı.
+
+Bu tür karmaşık verilerde indeksleri kullanıp seçim yapmak daha kolay olabiliyor ancak burada isimlere göre seçelim.
+Bu şekilde yaptığımız iş hataya daha az açık olacaktır.
+```{r}
+names_raw <- c(
+  "Species", "Island", "Date Egg", "Culmen Length (mm)", "Culmen Depth (mm)",
+  "Flipper Length (mm)", "Body Mass (g)", "Sex"
+) 
+peng_sel <- peng_raw[, names_raw]
+head(peng_sel)
+```
+
+```{r}
+str(peng_sel)
+```
+
+Şimdi de sütun isimlerini değiştirelim.
+
+Camel case kullanılan isimler, büyük harfle başlayan isimler, birimler, boşluklar derken standart olmayan birçok şey var.
+Ben, tidy style guide'da belirtildiği gibi snake_case kullanmayı tercih ediyor, bunun daha işlevsel olduğunu düşünüyorum.
+Yani tüm isimleri küçük harflerle yazacağız, Türkçe karakter kullanmayacağız ve boşlukları `_` ile ayıracağız.
+
+Sütun isimlerine -data.frame'de names() fonksiyonunu da colnames() fonksiyonunu da kullanabiliriz- değiştirmek istediğimiz isimleri atıyoruz.
+```{r}
+names(peng_sel) <- c(
+  "species", "island", "year", "bill_len", "bill_dep", 
+  "flipper_len", "body_mass","sex"
+)
+head(peng_sel)
+```
+
+Gördüğünüz gibi isimler `penguins` verisiyle aynı hâle geldi.
+
+Şimdi de sütun yerlerini sıralayalım.
+Bunun için sütunları istediğimiz sırada, indeksleriyle seçeceğiz.
+`penguins` ile tek fark `year` değişkeninin yeri.
+Dolayısıyla `year` değişkeninin indeksini en sona koyuyoruz.
+```{r}
+peng_relocate <- peng_sel[, c(1, 2, 4, 5, 6, 7, 8, 3)]
+head(peng_relocate)
+```
+
+Bu iş de tamamdır!
+
+Şimdi de görevimizi biraz daha zorlaştıralım.
+Her sütunun içindeki değerleri düzenleyeceğiz.
+Dikkat ettiyseniz `penguins` verisinde çok daha düzenli bir hâldeydi.
+
+İlk olarak yılla başlayalım.
+Tarihi yıla çevirmemiz lazım.
+```{r}
+
+peng_relocate$year
+
+```
+
+Gördüğünüz yıl vektöründen ay ve günü silmemiz gerekiyor.
+Bunu tarihle oynayarak da yapabiliriz, karakter vektörüne çevirip, yıldan sonrasını silerek de.
+Normal şartlarda ikincisi daha kolay olabilir ama şu an hâlihazırda verimiz `Date` tipinde olduğu için direkt yılı seçebiliriz.
+Tarihlerle uğraşmak ilk başlayanlar için biraz zor olabilir.
+`format()` fonksiyonunu kullanacağız, `"%Y"` ile yılı seçeceğiz.
+Onu da değiştirdiğimiz sütuna tekrardan atayacağız.
+
+```{r}
+peng_relocate$year <- format(peng_relocate$year, "%Y")
+head(peng_relocate)
+```
+
+Gördüğünüz gibi yıllar tamam!
+Sırada diğer değişkenler var.
+
+İlk olarak tür isimlerini kısaltmamız lazım.
+En zor işlerden birisi bu! Özellikle de ilk başlayanlar için.
+`sub()` ve `gsub` fonksiyonu, karakter vektöründeki seçtiğimiz kısmı, istediğimiz karakterle değiştirir.
+`sub()` sadece ilk esleşmeyi değiştirdiği için onu kullanacağız.
+`" .*"` ile boşluk sonrasındaki tüm karakterleri seçiyoruz ve `""` ile replace ediyoruz.
+Yani siliyoruz.
+Çünkü `""` içinde hiçbir şey yok. 
+Bu da bize tür isimlerinin boşluktan önceki kısmını veriyor tıpkı `penguins` verisinde olduğu gibi. 
+```{r}
+peng_relocate$species <- sub(" .*", "", peng_relocate$species)
+peng_relocate$sex <- tolower(peng_relocate$sex) # sex degiskenini kucuk harfe ceviriyoruz 
+
+head(peng_relocate)
+```
+
+Şu an `penguins` verisiyle aynı veriye sahibiz!
+
+```{r}
+identical(penguins, peng_relocate)
+```
+
+Aaa! 
+Değilmişiz!
+Fark ne acaba?
+
+```{r}
+str(penguins)
+```
+
+```{r}
+str(peng_relocate)
+```
+
+Gördüğünüz gibi sütun tipleri birbirinden farklı.
+Onları da değiştirelim.
+
+```{r}
+peng_relocate$species <- as.factor(peng_relocate$species)
+peng_relocate$island <- as.factor(peng_relocate$island)
+peng_relocate$flipper_len <- as.integer(peng_relocate$flipper_len)
+peng_relocate$body_mass <- as.integer(peng_relocate$body_mass)
+peng_relocate$sex <- as.factor(peng_relocate$sex)
+peng_relocate$year <- as.integer(peng_relocate$year)
+
+str(peng_relocate)
+```
+
+Değişmesi gereken tüm sütunları tek tek değiştirdik.
+
+```{r}
+identical(penguins, peng_relocate)
+```
+
+Gördüğünüz gibi artık verilerimiz eş!
+Hedefimize ulaştık, dağınık bir veriyi düzenli bir hâle getirdik.
+
+### Satır işlemleri
+
+`penguins_raw` verisini, `penguins` verisiyle eş bir hâle getirdiğimize göre hedefimize ulaştık ama bu yazının amacına ulaşması için satır ve grup işlemlerini de görmemiz gerekiyor.
+Sütunlarını düzenlediğimiz `peng_relocate` nesnesi üzerinde biraz oynayalım.
+
+Şimdi yalnızca Biscoe adasındaki penguenleri incelediğimizi varsayalım.
+Verimizi Biscoe adasına göre filtreleyeceğiz.
+Filtreleme işlemi, R kullanmaya ilk başladığımda beni en çok zorlayan, kafamı en çok karıştıran şeylerden birisiydi.
+Anlamadığınızı düşündüğünüz yerde kodu parçalara bölüp, ne yaptığını anlamaya çalışın.
+Oldukça faydalı olacaktır.
+
+```{r}
+peng_relocate[peng_relocate$island == "Biscoe", ]
+```
+
+Bakın sadece Biscoe adasındaki penguenleri seçmiş olduk.
+Peki burada ne yaptık?
+ 
+Öncelikle `island` vektörü içindeki adalardan hangilerinin Biscoe olduğunu mantıksal olarak sınayacağız.
+Bunu `==` operatörüyle yapacağız.
+Bu, bize `TRUE` `FALSE` olarak dönecek.
+
+```{r}
+peng_relocate$island == "Biscoe"
+```
+
+Buradan `TRUE` olanları seçmemiz gerekiyor.
+`peng_relocate` verimizin satır indeksi yerine bu mantıksal sonucu koyduğumuzda, `TRUE` olan satırları seçecektir.
+
+```{r}
+peng_biscoe <- peng_relocate[peng_relocate$island == "Biscoe", ]
+head(peng_biscoe)
+```
+
+Gördüğünüz gibi Biscoe adasındaki penguenleri seçtik ve `peng_biscoe` isimli bir nesneye atadık.
+
+```{r}
+summary(peng_biscoe)
+```
+
+Verinin özet istatistiklerine göz attığımızda bazı `NA` (Not Available - eksik değer) değerlerin olduğunu görüyoruz.
+Bu değerleri istemediğimizi ve onlardan kurtulmak istediğimizi varsayalım.
+Bunun için yine filtreleme yapabiliriz.
+
+Öncelikle en fazla NA değerine sahip `sex` değişkenindeki NA'lara bir bakalım.
+Bunun için `is.na()` isimli bir fonksiyonumuz var.
+```{r}
+is.na(peng_biscoe$sex)
+```
+
+Gördüğünüz gibi yine mantıksal bir sonuç döndü. 
+Şimdi bu sonuca göre bir filtreleme yapalım.
+
+```{r}
+peng_biscoe[is.na(peng_biscoe$sex), ]
+```
+
+NA değerleri seçmiş olduk ancak biz NA değerleri seçmek değil, silmek istiyorduk.
+Burada `!` operatörünü kullanacağız.
+Bu operatörümüz, bize "o" olmayan sonucu döndürecek.
+
+```{r}
+peng_biscoe_compl <- peng_biscoe[!is.na(peng_biscoe$sex), ]
+head(peng_biscoe_compl)
+```
+
+Evet şu an NA değerlere sahip olmayan `sex` değişkenine göre bir filtreleme yaptık.
+
+Veriye tekrardan göz atalım.
+
+```{r}
+summary(peng_biscoe_compl)
+```
+
+Tüm NA değerlerden kurtulmuşuz.
+Çünkü `bill_len`, `bill_dep`, `flipper_len` ve `body_mass` değişkenlerindeki tek NA değeri  272. satırdaydı ve bu satırdaki `sex` değeri de NA olduğu için o gidince hepsi gitmiş.
+
+Şimdi 48 mm'den daha küçük `bill_len` ve 5000 g'den daha büyük `body_mass` değerlerine göre filtrelememiz gerektiğini düşünelim.
+Eğer birden fazla değişkene göre filtreleme yapmamız gerekiyorsa `ve` için `&` operatörünü, `veya` için ise `|` operatörünü kullanıyoruz.
+```{r}
+
+peng_biscoe_filt <- peng_biscoe_compl[
+  peng_biscoe_compl$bill_len < 48 & peng_biscoe_compl$body_mass > 5000, 
+]
+peng_biscoe_filt
+```
+
+Gördüğünüz gibi filtreledik.
+Yalnızca Biscoe adasındaki Gentoo türü penguenlerin bir kısmı bu boyutlara sahipmiş. 
+
+Filtrelediğimiz veriyi bir grafikte görelim.
+
+```{r}
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1)) # mfrow ile grafigi 2 satira bolduk, mar ile margin ayarladik
+plot(
+  peng_biscoe_compl$bill_len,
+  peng_biscoe_compl$body_mass,
+  xlab = "Bill Length [mm]",                      # x ekseni basligi
+  ylab = "Body Mass [g]",                         # y ekseni basligi
+  pch = 20                                        # pch (plot characters) nokta sekli icin
+)
+rect(                                             # filtreledigimiz degerleri kirmizi bir diktortgen ile belirttik
+  xleft = min(peng_biscoe_filt$bill_len) - 0.2 ,  # minimum x ekseni degeri - 0.2
+  ybottom = min(peng_biscoe_filt$body_mass) - 20, # minimum y ekseni degeri - 20
+  xright = max(peng_biscoe_filt$bill_len) + 0.2,  # maksimum x ekseni degeri + 0.2
+  ytop = max(peng_biscoe_filt$body_mass) + 50,    # maksimum y ekseni degeri + 50
+  border = "red",                                 # kirmizi rengi 
+  lwd = 2                                         # lwd (linewidth) cizgi kalinligi
+)
+plot(
+  peng_biscoe_filt$bill_len, 
+  peng_biscoe_filt$body_mass,
+  xlab = "Bill Length [mm]",
+  ylab = "Body Mass [g]",
+  pch = 20
+)
+```
+
+Grafik, filtrelediğimiz değerleri daha iyi görmenizi sağlamıştır diye düşünüyorum.
+
+Şimdi de tekrardan `peng_biscoe_compl` verisini kullanarak 2008 ve 2009 yıllarındaki verileri filtreleyelim.
+Bunun için yine birden fazla yol var ancak biz bu sefer `%in%` operatörünü kullanacağız.
+R'da `%in%` operatörü, birden fazla değerle filtreleme yapıldığında kullanılıyor. 
+```{r}
+peng_biscoe_compl[peng_biscoe_compl$year %in% c(2008, 2009), ]
+```
+
+Bu iş de tamam!
+
+Sırada bir başka satır işlemi olan sıralama var.
+Sıralamayı base R ile yaparken `order()` fonksiyonunu kullanıyoruz.
+Bir de base R'a native pipe - `|>` geldikten sonra çıkan `sort_by()` fonksiyonu var.
+İkisine de bakacağız.
+
+`order()` fonksiyonu bir vektörün sıralanmış indekslerini veriyor.
+Biz de bu indeksleri satır indeksi yerine kullanarak sıralama yapabiliyoruz.
+
+Mesela filtrelemeden önceki verimiz olan `peng_relocate` verisinin `bill_len` sütunuyla `order()` fonksiyonunu kullanalım.
+
+```{r}
+
+order(peng_relocate$bill_len)
+
+```
+
+Gördüğünüz gibi bize bir indeks verdi.
+Bu indeksle sıralama yapalım.
+
+```{r}
+
+peng_relocate[order(peng_relocate$bill_len), ]
+
+```
+
+Ve verimiz sıralandı. 
+
+`sort_by()` ise daha fonksiyonel bir yaklaşımdan geliyor.
+Şimdi de onu deneyelim.
+
+```{r}
+sort_by(peng_relocate, peng_relocate$bill_len)
+```
+
+Eğer azalan bir sıralama istiyorsak `decreasing` argümanına `TRUE` değerini vermeli ya da değişkenin başına `-` eklemeliyiz.
+
+```{r}
+peng_relocate[order(peng_relocate$bill_len, decreasing = TRUE), ]
+peng_relocate[order(-peng_relocate$bill_len), ]
+
+```
+
+Gördüğünüz gibi büyükten küçüğe bir şekilde sıraladık.
+
+`sort_by()` ile de aynı şekilde, değişkenin başına `-` ekleyerek azalan bir biçimde sıralayabiliriz.
+```{r}
+sort_by(peng_relocate, -peng_relocate$bill_len)
+```
+
+Çoğu zaman sıralamaları birden fazla değişkenle yapmak isteyebiliriz.
+Bu durumda da `order()` fonksiyonuna diğer değişken isimlerini eklememiz gerekiyor.
+
+Öncelikle yıla göre, sonrasında da gaga uzunluğuna göre büyükten küçüğe sıralayalım.
+
+```{r}
+peng_relocate[order(-peng_relocate$year, -peng_relocate$bill_len), ]
+```
+
+`sort_by` fonksiyonuyla da aşağıdaki şekilde sıralayabilirsiniz.
+```{r}
+sort_by(peng_relocate, list(-peng_relocate$year, -peng_relocate$bill_len))
+```
+
+Son satır işlemi olarak da unique olan değerleri seçmeyi - silmeyi göreceğiz.
+Verimiz bunun için yeterince uygun değil ama bir uygulama yapalım.
+Eğer bir data.frame'de tekrar eden değerlerle ya da eşsiz değerlerle bir filtreleme yapmak istiyorsanız mantıksal bir değer dönen `duplicated()` fonksiyonunu kullanabilirsiniz.
+
+Mesela verimizi (data.frame), yalnızca eşsiz olan vücut kütlesi değerleri döndürmek istiyorsak aşağıdaki gibi filtreleyebiliriz. 
+```{r}
+peng_relocate[!duplicated(peng_relocate$body_mass), ]
+```
+
+Tekrar eden değerleri döndürmek istediğimizde de `!` operatörü kullanmadan yapabiliriz.
+
+```{r}
+peng_relocate[duplicated(peng_relocate$body_mass), ]
+
+```
+
+### Grup işlemleri
+
+Eğer `dplyr` fonksiyonlarına aşinaysanız `group_by() |> summarise()` ikilisini mutlaka biliyorsunuzdur.
+Özet istatistik tabloları oluşturmak için oldukça kullanışlı bir yöntem.
+`base R`'da da bunu `tapply()`, `aggregate()` ya da `by()` fonksiyonuyla yapabilirsiniz.
+Eğer `dplyr`'deki `group_by() |> mutate()` ikilisini base R ile yapmak istiyorsanız da `ave()` fonsiyonu güzel bir alternatif olabilir.
+`base R` basit gruplama + özetleme işlemleri için `dplyr`'a göre daha sezgisel, daha kolay ancak birden fazla fonksiyon kullanarak yapacağımız ve bir data.frame dönmesini istediğimiz işlerde `dplyr`'ı daha kullanışlı buluyorum.
+Neyse bu yazının konusu base R - tidyverse karşılaştırması değil.
+Bu konuda `dplyr` ve `base R`'a eşit oranda aşina olmayanlar için Excel'deki (kendilerini hiç sevmem :)) pivot table'a oldukça benzediğini söyleyebilirim.
+Özetle bir gruba göre özet istatistik tablosu oluşturacaksak yukarıda bahsettiğim fonksiyonlar tam da bu iş için. 
+
+Basit bir örnekle başlayalım.
+Diyelim ki ortalama bill_len'i hesaplamak istiyoruz.
+```{r}
+
+mean(peng_relocate$bill_len, na.rm = TRUE) # na.rm = TRUE kullanarak ortalama hesaplarken NA degerleri yok sayiyoruz.
+
+```
+
+Bunun için `mean()` fonksiyonunu kullanmamız yeterli.
+
+Ancak her bir grubun ortalamasını hesaplamak istiyorsak bunun için en iyi yöntem `tapply()` fonksiyonunu kullanmaktır.
+Son derece sezgisel, kolay bir fonksiyon.
+Daha önce `lapply()`, `sapply()` ya da `apply()` fonksiyonunu duymuş olabilirsiniz.
+R'da fonksiyonel programlama yaklaşımıyla, loop yazmadan tekrarlayan işleri yapmamıza yarayan `apply` ailesi fonksiyonları bunlar.
+`tapply()`'de bunlardan birisi.
+
+Her bir tür için ortamala gaga uzunluğunu öğrenmek istediğimizi varsayalım.
+İlk argüman olarak özetlemeyi istediğimiz değişkeni yazıyoruz.
+İkinci argüman olarak grupladığımız değişkeni ve üçüncü olarak da fonksiyonu.
+```{r}
+tapply(peng_relocate$bill_len, peng_relocate$species, mean, na.rm = TRUE)
+```
+
+Burada `na.rm` argümanı kafanızı karıştırmasın diye aşağıdaki şekillerde de yazabiliriz bu fonksiyonu.
+Son argümanı fonksiyon içinde gösteriyoruz.
+Bu da daha okunaklı oluyor.
+```{r}
+tapply(peng_relocate$bill_len, peng_relocate$species, function(x) mean(x, na.rm = TRUE))
+tapply(peng_relocate$bill_len, peng_relocate$species, \(x) mean(x, na.rm = TRUE))
+```
+
+`\()` anonymous function diye geçen bir fonksiyon.
+Daha önce görmemiş olabilirsiniz.
+R'ın 4.1.0 versiyonuyla beraber, native pipe (`|>`) ile birlikte gelen bir özellik.
+Tek satırlık bir fonksiyonunuz varsa `function(x)` yerine `\(x)` kullanabilirsiniz.
+Aynı işlevi görüyor. 
+
+Diyelim ki hem ada hem de türler için ortalama hesaplamak istiyoruz.
+O zaman grup değişkenlerini bir `list()` ile vermemiz gerekiyor.
+
+```{r}
+tapply(
+  peng_relocate$bill_len, 
+  list(peng_relocate$species, peng_relocate$island), 
+  \(x) mean(x, na.rm = TRUE)
+)
+```
+
+Eğer tek bir gruba ve birden çok fonksiyona göre özet istatistik çıkartacaksanız aşağıdaki gibi bir data.frame içerisinde tanımlayabilirsiniz.
+
+```{r}
+tapply(
+  peng_relocate$bill_len, 
+  peng_relocate$species, 
+  \(x) data.frame(
+    mean = mean(x, na.rm = TRUE),
+    median = median(x, na.rm = TRUE)
+  )
+)
+```
+
+Ancak birden fazla grup için birden fazla özet istatistik hesaplamak istiyorsanız `aggregate()` ya da `by()` fonksiyonunu kullanmanızı öneririm.
+`tapply()` bu durumda karmaşık hâle gelebilir.
+Ya da en azından ben basit yolunu bulamamışımdır.
+Basit bir yolunu bilen varsa yorumlarda belirtsin lütfen. :)  
+
+```{r}
+aggregate(
+  peng_relocate$bill_len, 
+  list(peng_relocate$species, peng_relocate$island), 
+  \(x) c(
+    mean = mean(x, na.rm = TRUE),
+    median = median(x, na.rm = TRUE)
+  )
+)
+```
+
+Ya da karmaşık işlerde en kullanışlı olan `by()` fonksiyonu.
+Aslında her üç fonksiyonun da argüman sırası benzer.
+Bu açıdan çok avantajlı.
+Sadece kullanımda bazı farklılıklar var.
+`by()` kullanırken eğer özet tabloda grup değerlerini de görmek istiyorsak -ki bence önemli- aşağıdaki gibi `x$species[1]` şeklinde göstermeliyiz.
+Bu, her bir tekrarda yalnızca ilk değeri alacaktır. 
+Ardından da `list()` benzeri bir veri döndürecektir.
+Eğer bu veriyi data.frame'e döndürmek istiyorsak `do.call()` fonksiyonu içinde `rbind()` kullanmamız gerekiyor.
+Biliyorum başta oldukça karmaşık geliyor ama zamanla o kadar da zor olmadığı anlaşılıyor.
+Bir fonksiyonu, argümanlarını list'ten alacak şekilde çağırmak istediğimiz her zaman `do.call()` kullanmak zorundayız. :)
+`lapply()` fonksiyonunu kullandığınızda -R'daki en önemli fonksiyonlardan birisi kesinlikle- `do.call()` fonksiyonunu da bolca kullanacaksınız.
+Zamanla oturacaktır.
+
+```{r}
+dat_by <- by(
+  peng_relocate, 
+  list(peng_relocate$species, peng_relocate$island), 
+  \(x) data.frame(
+    species = x$species[1], # sadece essiz degerleri almasi icin
+    island = x$island[1],   # sadece essiz degerleri almasi icin
+    mean = mean(x$bill_len, na.rm = TRUE),
+    median = median(x$bill_len, na.rm = TRUE)
+  )
+) 
+peng_summ <- do.call(rbind, dat_by)
+peng_summ
+```
+
+Temiz iş akışı, temiz sonuç!
+`dplyr` paketindeki `group_by() |> summarise()` ikilisine oldukça güçlü bir alternatif.
+Hem de `base R` sağlamlığıyla. 
+
+Son söz olarak tek fonksiyonlu özetler için `tapply()` ve `aggregate()`, çok fonksiyonlular için ise yine `aggregate()` ve özellikle de `by()` oldukça güçlü fonksiyonlar.
+
+## 3. Biraz da grafik
+Birçok temel şey gördüğümüze göre şimdi verimizi görselleştirmeye başlayabiliriz.
+En heyecanlı kısımlardan birisi bu çünkü emeğinizin karşılığını aldığınızı somut bir göstergesi.
+
+Bu yazıda yalnızca `base R` ile gelen `plot()` fonksiyonu ve onun kardeşlerini kullanacağız.
+Basit grafikler çizmek için çok kolay ve hızlı bir yol.
+İleride `ggplot2` gibi bir kütüphane kullansanız bile analiz esnasında veriyi hızlıca görmek için kullanabileceğiniz bir fonksiyon.
+Aslında birçok modern R kullanıcısı base R grafiklerini küçümseme eğiliminde çünkü `ggplot2` muhteşem bir paket ve karmaşık grafikler yapmak için eşsiz bir araç sunuyor ancak base R da düşünüldüğü gibi basit olmayan, aslında daha esnek ve istenildiği zaman çok farklı ve kompleks grafikler çizmeye olanak sağlayabiliyor.
+Meraklıları şu bağlantıları ziyaret edebilir:
+
+1. [https://github.com/karoliskoncevicius/r_notes/blob/main/baseplotting.md](https://github.com/karoliskoncevicius/r_notes/blob/main/baseplotting.md)
+2. [https://poisonalien.github.io/basegraphics/bamain/baseplotting.md](https://poisonalien.github.io/basegraphics/baseplots.htmlseplots.html)
+3. [https://plantarum.ca/2014/02/19/r-graphics/](https://plantarum.ca/2014/02/19/r-graphics/)
+4. [https://plantarum.ca/2023/02/13/terra-maps/](https://plantarum.ca/2023/02/13/terra-maps/)
+
+Biz tabi burada daha basit grafikler çizeceğiz. :) 
+
+Öncelikle `plot()` fonksiyonu ile bir data.frame'i direkt çizmek istersek tüm sütunları ve birbirleriyle ilişkisini çizecektir.
+Bu da 8x8'lik bir matrix demek.
+```{r}
+plot(penguins)
+```
+Oldukça karmaşık görünüyor değil mi?
+Bu gibi grafikleri kullandığımız zamanlar olabiliyor ama şu an hiç mi hiç gerek yok. 
+
+Öncelikle çizmek istediğimiz sütunları seçerek başlayalım, ilk sıraya x ekseninde istediğimiz değişkeni, ikinci sırada da y ekseninde istediğimiz değişkeni yazacağız.
+
+```{r}
+plot(penguins$flipper_len, penguins$bill_len)
+```
+
+Şimdi de `pch = 16` ile nokta şeklini belirleyelim.
+[Şuradan](https://r-charts.com/base-r/pch-symbols/) şekil kodlarına ilişkin daha fazla bilgi edinebilirsiniz.
+
+```{r}
+plot(penguins$flipper_len, penguins$bill_len, pch = 16)
+```
+
+Eksen başlıklarını değiştirelim.
+
+```{r}
+plot(
+  penguins$flipper_len, 
+  penguins$bill_len, 
+  pch = 16,
+  xlab = "Flipper Length [mm]",
+  ylab = "Bill Length [mm]"
+)
+```
+
+Noktaların rengini kırmızı yapalım.
+
+```{r}
+plot(
+  penguins$flipper_len, 
+  penguins$bill_len, 
+  col = "red",
+  pch = 16,
+  xlab = "Flipper Length [mm]",
+  ylab = "Bill Length [mm]"
+)
+```
+
+Şimdi de renkleri `species` değişkenine göre belirleyelim.
+
+```{r}
+plot(
+  penguins$flipper_len, 
+  penguins$bill_len, 
+  col = penguins$species,
+  pch = 16,
+  xlab = "Flipper Length [mm]",
+  ylab = "Bill Length [mm]"
+)
+```
+
+Bir de lejant ekleyelim.
+Base R plot fonksiyonunun en büyük dezavantajlarından birisi lejantı manuel olarak çizmeniz gerekmesi.
+Bu konuda [tinyplot](https://grantmcdermott.com/tinyplot/) paketine bakabilirsiniz.
+`tinyplot`, base graphics üzerine otomatik lejant gibi birçok kullanışlı özellik ekleyen, daha modern, daha basit ve sıfır bağımlılıklı bir paket.
+Bakmanızı mutlaka öneririm.
+
+```{r}
+plot(
+  penguins$flipper_len, 
+  penguins$bill_len, 
+  col = penguins$species,
+  pch = 16,
+  xlab = "Flipper Length [mm]",
+  ylab = "Bill Length [mm]"
+)
+legend("topright", legend = levels(penguins$species), col = 1:3, pch = 16, title = "Species")
+```
+
+Burada da nokta şekillerini de `species` değişkenine göre değiştiriyoruz.
+
+```{r}
+plot(
+  penguins$flipper_len, 
+  penguins$bill_len, 
+  col = penguins$species,
+  pch = as.integer(penguins$species),
+  xlab = "Flipper Length [mm]",
+  ylab = "Bill Length [mm]"
+)
+legend(
+  "topright", 
+  legend = levels(penguins$species),
+  col = 1:3, 
+  pch = unique(as.integer(penguins$species)), 
+  title = "Species"
+ )
+```
+
+```{r}
+#| echo: false
+ 
+dev.off()
+
+```
+
+Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.
+
+```{r}
+hist(penguins$bill_dep)
+```
+
+```{r}
+hist(
+  penguins$bill_dep, 
+  xlab = "Bill Depth [mm]", 
+  main = "Histogram of Bill Depth"
+)
+```
+
+Fazlasıyla uzun bir yazı oldu. 
+Umarım okucuyular için faydalı olur.
+En ufak bir sorunuz bile olsa lütfen sormaktan çekinmeyin.
+
+Bilimle ve huzurla kalınız!
