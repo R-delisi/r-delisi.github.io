@@ -41,7 +41,8 @@ Yalnızca o an gerekenleri, işinize yarayanları kullanmanız yeterli olacaktı
 Bir sonraki yazıda `dplyr` ve `ggplot2` versiyonunu göreceğiz. :)
 
 Henüz başlamamışken şu iki harika base R kılavuzunu buraya bırakayım:
-1. [Introduction to R](https://rspatial.org/intr/index.html)
+
+1. [Introduction to R](https://rspatial.org/intr/index.html)
 2. [fasteR: Fast Lane to Learning R!](https://github.com/matloff/fasteR)
 
 Şimdi `penguins` verisine bakalım. 
