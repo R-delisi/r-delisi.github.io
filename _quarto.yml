@@ -15,7 +15,7 @@ website:
         text: Blog
       - about.qmd
     right:
-      - icon: 'bluesky'
+      - icon: 'bsky'
         href: 'https://bsky.app/profile/mehmetgoktug.bsky.social'
       - icon: 'mastodon'
         href: 'https://ecoevo.social/@mehmet_goktu'
