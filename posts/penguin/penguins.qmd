@@ -19,7 +19,7 @@ image: figs/penguins.png
 **Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
 
 Bu yazıda, R'da son yılların en sevilen veri setlerinden birisini kullanarak birçok temel işi yapmayı, yeni başlayanlar için yol gösterici, yardımcı bir rehber oluşturmayı hedefliyorum.
-Arkadaşım Rüveyda ile R çalışırken, bu gibi bir yazının yeni başlayanlar için oldukça faydalı olabileceğini düşündüm ve bu yazıyı yazmaya karar verdim.
+R öğrenmeye yeni başlayan arkadaşım Rüveyda ile R çalışırken, bu gibi bir yazının yeni başlayanlar için oldukça faydalı olabileceğini düşündüm ve bu yazıyı yazmaya karar verdim.
 Önceki yazıların aksine ulaşılması daha kolay olan bir veri seti üzerinden çalışacağımız için, yazıyı okurken bir yandan da alıştırma yapmak daha kolay olacaktır.
 Bol bol alıştırma yapmanızı öneriyorum.
 Bazı yerlerde biraz ayrıntıya girmiş olabilirim, bu sizi korkutmasın, motivasyonunuzu kırmasın.
