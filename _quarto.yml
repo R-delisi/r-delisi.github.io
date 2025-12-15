@@ -15,7 +15,7 @@ website:
         text: Blog
       - about.qmd
     right:
-      - icon: 'bluesky'
+      - icon: bluesky
         href: 'https://bsky.app/profile/mehmetgoktug.bsky.social'
       - icon: 'mastodon'
         href: 'https://ecoevo.social/@mehmet_goktu'
@@ -24,7 +24,7 @@ website:
       - icon: 'linkedin'
         href: "https://www.linkedin.com/in/mehmetgoktug/"
   page-footer: 
-    center: R Delisi - 2025
+    center: R Delisi - 2026
   twitter-card: true
   open-graph: true
   comments:
