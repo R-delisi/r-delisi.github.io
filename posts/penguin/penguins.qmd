@@ -7,7 +7,6 @@ description: "Base R ile Veri Cambazlığı"
 categories:
   - R
   - base R
-  - tidyverse
   - palmerpenguins
 image: figs/penguins.png
 ---
