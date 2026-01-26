@@ -1,6 +1,6 @@
 ---
-title: "R ve Kuşlar - eBird Verilerinin R ile Analizi II"
-author: "Mehmet Göktuğ Öztürk"
+title: "R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ II"
+author: "Mehmet Göktuğ ÖZTÜRK"
 format: html
 date: 2023-12-10
 description: "R ile Kuş Verilerinin Analizi II"
@@ -9,12 +9,12 @@ categories:
   - gis
   - r-spatial
   - case_study
-image: figs/preview.png
+image: figs/preview.webp
 editor_options: 
   chunk_output_type: console
 ---
 
-![](figs/preview.png)
+![](figs/preview.webp)
 
 **Merhabalar, blogun *ikinci* yazısına hoş geldiniz. Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz. Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
 
@@ -28,7 +28,7 @@ Temel R ve GIS bilgisine sahip olmanız yazıdaki birçok yeri anlamanız için 
 
 --------------------------------------------------------------------------------
 
-### Yazınının Akışı
+### YAZININ AKIŞI
 
 Yazının genel akışı aşağıdaki gibidir:
 
@@ -39,7 +39,7 @@ Yazının genel akışı aşağıdaki gibidir:
 5.  Topografik hesaplamalar
 6.  Verinin görselleştirilmesi
 
-### 1. Paketlerin yüklenmesi
+### 1. PAKETLERİN YÜKLENMESİ
 
 ```{r}
 #| echo: false
@@ -76,7 +76,7 @@ library(mapview) # interaktif haritalar cizmek icin
 library(rgeoboundaries) # tr ilce sinirlarina erismek icin
 ```
 
-### 2. İlçe verisinin işleri
+### 2. İLÇE VERİSİNİN İŞLERİ
 
 İkinci soruya cevap verebilmek için kuş, ilçe sınırları ve dijital yükseklik modeline (DEM) ihtiyacımız var. İlk ilçeden başlayalım. Kuş ve DEM verisini işlemek için ilçeye ihtiyaç duyacağız ne de olsa.
 
@@ -96,9 +96,9 @@ mapview(khamam)
 
 Gördüğünüz gibi her şey yolunda. :)
 
-### 3. Kuş verisinin işleri
+### 3. KUŞ VERİSİNİN İŞLERİ
 
-![Kara akbaba. Kaynak: [Johann Andreas Naumann's ... Naturgeschichte der Vögel Deutschlands... | Leipzig, G. Fleischer, 1820-1860](https://www.biodiversitylibrary.org/page/33755019#page/5/mode/1up)](./figs/aegypius_monachus.jpg)
+![Kara akbaba. Kaynak: [Johann Andreas Naumann's ... Naturgeschichte der Vögel Deutschlands... | Leipzig, G. Fleischer, 1820-1860](https://www.biodiversitylibrary.org/page/33755019#page/5/mode/1up)](./figs/aegypius_monachus.webp)
 
 [Kara akbaba - _Aegypius monachus_](https://en.wikipedia.org/wiki/Cinereous_vulture), Avrasya'da geniş dağılıma sahip bir yırtıcı türü. 3 metreye varan kanat açıklığıyla en büyük kuşlardan birisi ve azalan bir popülasyona sahip. Türkiye, türün en önemli yaşam alanlarından birisi. Tür, özellikle Kuzey Anadolu'da, orman - bozkır geçişindeki yaşlı ormanları tercih ediyor. Bu alanlardan birisi de bu yazıda incelediğimiz yer olan Kızılcahamam. Kızılcahamam'ın yaşlı karaçam - _Pinus nigra_ ormanları, türün üremesi için oldukça elverişli. 
 
@@ -204,7 +204,7 @@ Hemen hızlıca mapview ile de bakalım.
 mapview(khamam, lwd = 3, alpha.regions = 0) + mapview(karaakbaba_subset)
 ```
 
-### 4. DEM verisinin işleri
+### 4. DEM VERİSİNİN İŞLERİ
 
 Kara akbabanın Kızılcahamam'daki dağılımını ortaya çıkarttık. Şimdi de bazı çevresel değişkenlerle ilişkisi nasılmış, -__kabaca__- ona bakalım. Ben, topografik değişkenlerle olan ilişkisini merak ettim ve bu sebeple DEM verisine bakacağız. 
 
@@ -212,7 +212,7 @@ Kara akbabanın Kızılcahamam'daki dağılımını ortaya çıkarttık. Şimdi 
 
 Burada [COP-DEM (Copernicus DEM)](https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model) kullandım. Veriye [şu](https://drive.google.com/drive/folders/1O9jRSbvqEVP8VeQIZHu2f6TSbwCa8EM8?usp=sharing) bağlantıdan ulaşabilirsiniz. Belki daha sonra bu verinin nereden, nasıl indirilebileceğiyle alakalı bir başka yazı yazarım.
 
-![Raster veri tipi. Kaynak: [Geocomputation with R](https://r.geocompx.org/spatial-class#raster-data)](./figs/raster-intro-plot-1.png)
+![Raster veri tipi. Kaynak: [Geocomputation with R](https://r.geocompx.org/spatial-class#raster-data)](./figs/raster-intro-plot-1.webp)
 
 DEM verisi, raster formatında bir veri. Raster veriyi, bir tür resim ya da bir tür matris olarak düşünebilirsiniz. Bu veri, hücrelerden - gridlerden oluşur ve her bir grid için bir değer içerir. __Genellikle__, yükseklik, eğim, sıcaklık, yağış gibi sürekli veriler bu formattadır.
 
@@ -243,7 +243,7 @@ dem_subset
 plot(dem_subset)
 ```
 
-### 5. Topografik hesaplamalar
+### 5. TOPOGRAFİK HESAPLAMALAR
 
 [terrain()](https://rdrr.io/cran/terra/man/terrain.html) ile eğim ve bakıyı hesaplayalım.
 ```{r}
@@ -295,7 +295,7 @@ karaakbaba_ext |>
 ```
 
 
-### 6. Verinin görselleştirilmesi
+### 6. VERİNİN GÖRSELLEŞTİRİLMESİ
 
 Uzun bir yazı oldu yine ancak sonuna geldik. Şimdi Kızılcahamam'daki kara akbaba gözlemlerinin dağılımını, DEM ile birlikte görselleştirmeye çalışalım.
 

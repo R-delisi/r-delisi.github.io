@@ -1,18 +1,18 @@
 ---
-title: "R ile Topografik Veri İndirme - DEM Verisi İndirme ve Görselleştirme"
-author: "Mehmet Göktuğ Öztürk"
+title: "R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME"
+author: "Mehmet Göktuğ ÖZTÜRK"
 format: html
 date: 2025-03-03
-description: "R ile Topografik Topografik Veri İndirme"
+description: "R ile Topografik Veri İndirme"
 categories:
   - R
   - gis
   - r-spatial
   - base R
-image: figs/preview.png
+image: figs/preview.webp
 ---
 
-![](figs/preview.png)
+![](figs/preview.webp)
 
 **Merhabalar, blogun *üçüncü* yazısına hoş geldiniz.** 
 **Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.** 
@@ -29,13 +29,13 @@ Ardından da `base R` kullanarak görselleştirmeler yapacağız.
 
 Bu yazı, öncekilerden daha kısa ve öz olacak. 
 
-## Yazının Akışı
+## YAZININ AKIŞI
 
 1.  Paketlerin yüklenmesi
 2.  DEM verisinin indirilmesi
 3.  Verinin görselleştirilmesi 
 
-## 1. Paketlerin yüklenmesi
+## 1. PAKETLERİN YÜKLENMESİ
 
 Hangi paketleri kullanacağımıza geçmeden önce size R programlama konusunda geçirdiğim zihinsel değişimden bahsetmek istiyorum.
 R öğrenmeye başladığımda -olması gerektiği gibi- ilk olarak R programlamanın temellerini öğrenmiş, ardından R ile veri analizine geçmiştim.
@@ -74,7 +74,7 @@ libs <- c(
 sapply(libs, require, character.only = TRUE)
 ```
 
-## 2. DEM verisinin indirilmesi 
+## 2. DEM VERİSİNİN İNDİRİLMESİ 
 
 DEM verisinden önceki yazıda kısaca bahsetmiştim. 
 Tekrardan hatırlamakta fayda var.
@@ -188,7 +188,7 @@ adm
 plot(adm)
 ```
 
-## 3. Verinin görselleştirilmesi
+## 3. VERİNİN GÖRSELLEŞTİRİLMESİ
 
 Şimdi güzel bir harita oluşturalım.
 Yazının en karmaşık kısmı nuhtemelen burası olacak.

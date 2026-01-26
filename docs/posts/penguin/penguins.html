@@ -6,11 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Mehmet Göktuğ Öztürk">
+<meta name="author" content="Mehmet Göktuğ ÖZTÜRK">
 <meta name="dcterms.date" content="2025-12-15">
 <meta name="description" content="Base R ile Veri Cambazlığı">
 
-<title>Penguins Verisi ile Base R’a Giriş – R Delisi</title>
+<title>PENGUINS VERİSİ İLE BASE R’A GİRİŞ – R DELİSİ</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -62,39 +62,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
 <link href="../../favicon.jpeg" rel="icon" type="image/jpeg">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-2e9dd08ddc76ffdabeca688d1541b1fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-222c6c5dd1a4cb2d35b5c8f65d1fe436.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-2e9dd08ddc76ffdabeca688d1541b1fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-49b5fa840c0f1a9482e326475defaf18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
-  "copy-button": false,
-  "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,182 +89,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Atkinson+Hyperlegible+Mono:wght@400;700&amp;display=swap">
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Penguins Verisi ile Base R’a Giriş – R Delisi">
+<meta property="og:title" content="PENGUINS VERİSİ İLE BASE R’A GİRİŞ – R DELİSİ">
 <meta property="og:description" content="Base R ile Veri Cambazlığı">
-<meta property="og:image" content="figs/penguins.png">
-<meta property="og:site_name" content="R Delisi">
-<meta name="twitter:title" content="Penguins Verisi ile Base R’a Giriş – R Delisi">
+<meta property="og:image" content="figs/penguins.webp">
+<meta property="og:site_name" content="R DELİSİ">
+<meta name="twitter:title" content="PENGUINS VERİSİ İLE BASE R’A GİRİŞ – R DELİSİ">
 <meta name="twitter:description" content="Base R ile Veri Cambazlığı">
-<meta name="twitter:image" content="figs/penguins.png">
+<meta name="twitter:image" content="figs/penguins.webp">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
-    const toggleBodyColorMode = (bsSheetEl) => {
-      const mode = bsSheetEl.getAttribute("data-mode");
-      const bodyEl = window.document.querySelector("body");
-      if (mode === "dark") {
-        bodyEl.classList.add("quarto-dark");
-        bodyEl.classList.remove("quarto-light");
-      } else {
-        bodyEl.classList.add("quarto-light");
-        bodyEl.classList.remove("quarto-dark");
-      }
-    }
-    const toggleBodyColorPrimary = () => {
-      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
-      if (bsSheetEl) {
-        toggleBodyColorMode(bsSheetEl);
-      }
-    }
-    const setColorSchemeToggle = (alternate) => {
-      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-      for (let i=0; i < toggles.length; i++) {
-        const toggle = toggles[i];
-        if (toggle) {
-          if (alternate) {
-            toggle.classList.add("alternate");
-          } else {
-            toggle.classList.remove("alternate");
-          }
-        }
-      }
-    };
-    const toggleColorMode = (alternate) => {
-      // Switch the stylesheets
-      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
-      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-      manageTransitions('#quarto-margin-sidebar .nav-link', false);
-      if (alternate) {
-        // note: dark is layered on light, we don't disable primary!
-        enableStylesheet(alternateStylesheets);
-        for (const sheetNode of alternateStylesheets) {
-          if (sheetNode.id === "quarto-bootstrap") {
-            toggleBodyColorMode(sheetNode);
-          }
-        }
-      } else {
-        disableStylesheet(alternateStylesheets);
-        enableStylesheet(primaryStylesheets)
-        toggleBodyColorPrimary();
-      }
-      manageTransitions('#quarto-margin-sidebar .nav-link', true);
-      // Switch the toggles
-      setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
-      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-        manageTransitions("body", false);
-        window.scrollTo(0, 1);
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-          manageTransitions("body", true);
-        }, 40);
-      }
-    }
-    const disableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        stylesheet.rel = 'disabled-stylesheet';
-      }
-    }
-    const enableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
-          stylesheet.rel = 'stylesheet';
-        }
-      }
-    }
-    const manageTransitions = (selector, allowTransitions) => {
-      const els = window.document.querySelectorAll(selector);
-      for (let i=0; i < els.length; i++) {
-        const el = els[i];
-        if (allowTransitions) {
-          el.classList.remove('notransition');
-        } else {
-          el.classList.add('notransition');
-        }
-      }
-    }
-    const isFileUrl = () => {
-      return window.location.protocol === 'file:';
-    }
-    const hasAlternateSentinel = () => {
-      let styleSentinel = getColorSchemeSentinel();
-      if (styleSentinel !== null) {
-        return styleSentinel === "alternate";
-      } else {
-        return false;
-      }
-    }
-    const setStyleSentinel = (alternate) => {
-      const value = alternate ? "alternate" : "default";
-      if (!isFileUrl()) {
-        window.localStorage.setItem("quarto-color-scheme", value);
-      } else {
-        localAlternateSentinel = value;
-      }
-    }
-    const getColorSchemeSentinel = () => {
-      if (!isFileUrl()) {
-        const storageValue = window.localStorage.getItem("quarto-color-scheme");
-        return storageValue != null ? storageValue : localAlternateSentinel;
-      } else {
-        return localAlternateSentinel;
-      }
-    }
-    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-      let newTheme = '';
-      if(authorPrefersDark) {
-        newTheme = isAlternate ? baseTheme : alternateTheme;
-      } else {
-        newTheme = isAlternate ? alternateTheme : baseTheme;
-      }
-      const changeGiscusTheme = () => {
-        // From: https://github.com/giscus/giscus/issues/336
-        const sendMessage = (message) => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-        }
-        sendMessage({
-          setConfig: {
-            theme: newTheme
-          }
-        });
-      }
-      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-      if (isGiscussLoaded) {
-        changeGiscusTheme();
-      }
-    };
-    const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
-      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-    // Dark / light mode switch
-    window.quartoToggleColorScheme = () => {
-      // Read the current dark / light value
-      let toAlternate = !hasAlternateSentinel();
-      toggleColorMode(toAlternate);
-      setStyleSentinel(toAlternate);
-      toggleGiscusIfUsed(toAlternate, darkModeDefault);
-      window.dispatchEvent(new Event('resize'));
-    };
-    // Switch to dark mode if need be
-    if (hasAlternateSentinel()) {
-      toggleColorMode(true);
-    } else {
-      toggleColorMode(false);
-    }
-  </script>
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -292,10 +112,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">R Delisi</span>
+    <span class="navbar-title">R DELİSİ</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -303,11 +122,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../index.html"> 
-<span class="menu-text">Blog</span></a>
+<span class="menu-text">BLOG</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">Hakkımda</span></a>
+<span class="menu-text">HAKKIMDA</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -329,7 +148,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -338,29 +156,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#giriş" id="toc-giriş" class="nav-link active" data-scroll-target="#giriş">1. Giriş</a></li>
-  <li><a href="#veri-cambazlığı" id="toc-veri-cambazlığı" class="nav-link" data-scroll-target="#veri-cambazlığı">2. Veri cambazlığı</a>
-  <ul class="collapse">
-  <li><a href="#sütun-işlemleri" id="toc-sütun-işlemleri" class="nav-link" data-scroll-target="#sütun-işlemleri">Sütun işlemleri</a></li>
-  <li><a href="#satır-işlemleri" id="toc-satır-işlemleri" class="nav-link" data-scroll-target="#satır-işlemleri">Satır işlemleri</a></li>
-  <li><a href="#grup-işlemleri" id="toc-grup-işlemleri" class="nav-link" data-scroll-target="#grup-işlemleri">Grup işlemleri</a></li>
-  </ul></li>
-  <li><a href="#biraz-da-grafik" id="toc-biraz-da-grafik" class="nav-link" data-scroll-target="#biraz-da-grafik">3. Biraz da grafik</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Penguins Verisi ile Base R’a Giriş</h1>
+<h1 class="title">PENGUINS VERİSİ İLE BASE R’A GİRİŞ</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
     <div class="quarto-category">base R</div>
@@ -380,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Mehmet Göktuğ Öztürk </p>
+             <p>Mehmet Göktuğ ÖZTÜRK </p>
           </div>
   </div>
     
@@ -401,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/penguins.png" class="img-fluid figure-img"></p>
+<p><img src="figs/penguins.webp" class="img-fluid figure-img"></p>
 <figcaption>Kaynak: <a href="https://allisonhorst.github.io/palmerpenguins/articles/art.html">Allison Horst</a></figcaption>
 </figure>
 </div>
@@ -410,12 +212,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>“Palmer Penguins” veri seti, son dönemde veri bilimi ve istatistik alanında en çok kullanılan eğitim-uygulama veri setlerinden birisi. Öncelikle <a href="https://allisonhorst.github.io/palmerpenguins/index.html">palmerpenguins</a> paketi yayımlanmış, gördüğü ilginin ardından da bu veri seti, R 4.5.0 sürümüyle beraber R’ı yüklediğimiz zaman varsayılan olarak (base R ile) gelen <code>{datasets}</code> paketine dahil edilmiştir. Veriyi daha iyi tanımak ve yapılan örnek çalışmaları görmek için <a href="https://allisonhorst.github.io/palmerpenguins/index.html">şu siteyi</a> mutlaka incelemenizi öneririm.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/penguins3.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<p><img src="figs/penguins3.webp" class="img-fluid figure-img" style="width:50.0%"></p>
 <figcaption>Kaynak: <a href="https://allisonhorst.github.io/palmerpenguins/articles/art.html">Allison Horst</a></figcaption>
 </figure>
 </div>
 <section id="giriş" class="level2">
-<h2 class="anchored" data-anchor-id="giriş">1. Giriş</h2>
+<h2 class="anchored" data-anchor-id="giriş">1. GİRİŞ</h2>
 <p>Bugün bu veri setini kullanarak R’daki birçok temel analizi yapacağız. Bu yazıda yalnızca <code>base R</code> (R programlama dilini yüklediğimiz zaman varsayılan olarak gelen paketler) kullanacağız. Hiçbir paket yüklemeye gerek kalmadan, <code>palmerpenguins</code> verisini inceleyecek, veriyle oynayacak ve basit grafikler çizeceğiz. Buradaki amacım bir data.frame üzerinde çalışırken <code>base R</code>’a dair birçok temel noktayı ele alabilmek. Dolayısıyla göreceğimiz fonksiyonların hepsini, bir veriyi analiz ederken mutlaka kullanmanız gerekmiyor. Yalnızca o an gerekenleri, işinize yarayanları kullanmanız yeterli olacaktır.<br>
 Bir sonraki yazıda <code>dplyr</code> ve <code>ggplot2</code> versiyonunu göreceğiz. :)</p>
 <p>Henüz başlamamışken şu iki harika base R kılavuzunu buraya bırakayım:</p>
@@ -744,8 +546,8 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 </div>
 <p>Gördüğünüz gibi iki değişkeni de kullanarak <code>table()</code> fonksiyonuyla bunu öğrenebiliyoruz.</p>
 </section>
-<section id="veri-cambazlığı" class="level2">
-<h2 class="anchored" data-anchor-id="veri-cambazlığı">2. Veri cambazlığı</h2>
+<section id="veri-cambazliği" class="level2">
+<h2 class="anchored" data-anchor-id="veri-cambazliği">2. VERİ CAMBAZLIĞI</h2>
 <p>Şu ana kadar bir data.frame üzerinden, R’da, vektörler, matrix’ler ve özellikle de data.frame’lerle yapabileceğimiz birçok temel işlemi gördük.</p>
 <p>Şimdi bir veri analizi - veri bilimi iş akışının en mühim kısımlarından olan veri cambazlığını nasıl yapabileceğimize bakacağız. Bunun için Hadley Wickham’ın R for Data Science kitabında anlattığı şekliyle <code>sütun</code>, <code>satır</code> ve <code>grup</code> işlemlerini, base R kullanarak yapacağız. Gerçek dünya verileriyle uğraştığımızda bu kısım, bir veri bilimi iş akışının genellikle büyük çoğunluğunu oluşturuyor.</p>
 <p>Bu bölümde yine palmerpenguins datasını kullanacağız ama bu sefer ham olan versiyonunu. Verinin ham hâlini kullanarak <code>penguins</code>’teki son hâline ulaşmaya çalışacağız. Bu veriye erişmek için <code>penguins_raw</code> yazabilirsiniz.</p>
@@ -886,12 +688,12 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/penguins2.png" class="img-fluid figure-img"></p>
+<p><img src="figs/penguins2.webp" class="img-fluid figure-img"></p>
 <figcaption>Kaynak: <a href="https://allisonhorst.github.io/palmerpenguins/articles/art.html">Allison Horst</a></figcaption>
 </figure>
 </div>
 <section id="sütun-işlemleri" class="level3">
-<h3 class="anchored" data-anchor-id="sütun-işlemleri">Sütun işlemleri</h3>
+<h3 class="anchored" data-anchor-id="sütun-işlemleri">SÜTUN İŞLEMLERİ</h3>
 <p><code>penguins</code> verisi 8 değişkenden oluşuyordu ancak <code>penguins_raw</code> verisi 17 değişkenden oluşuyor.</p>
 <p>Öncelikle <code>penguins</code>’te olan değişkenlerin bizim için önemli olduğunu varsayalım ve onları seçelim. penguins ismiyle çatışma olmasın diye önce verinin farklı isimli bir kopyasını oluşturacağım, ardından sütunları seçeceğim.</p>
 <p>Daha önce de gördüğümüz gibi sütunlarla ilgili bir işlem yapmak için 2. boyutu, yani virgülün sağını kullanıyoruz.</p>
@@ -1164,8 +966,8 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 </div>
 <p>Gördüğünüz gibi artık verilerimiz eş! Hedefimize ulaştık, dağınık bir veriyi düzenli bir hâle getirdik.</p>
 </section>
-<section id="satır-işlemleri" class="level3">
-<h3 class="anchored" data-anchor-id="satır-işlemleri">Satır işlemleri</h3>
+<section id="satir-işlemleri" class="level3">
+<h3 class="anchored" data-anchor-id="satir-işlemleri">SATIR İŞLEMLERİ</h3>
 <p><code>penguins_raw</code> verisini, <code>penguins</code> verisiyle eş bir hâle getirdiğimize göre hedefimize ulaştık ama bu yazının amacına ulaşması için satır ve grup işlemlerini de görmemiz gerekiyor. Sütunlarını düzenlediğimiz <code>peng_relocate</code> nesnesi üzerinde biraz oynayalım.</p>
 <p>Şimdi yalnızca Biscoe adasındaki penguenleri incelediğimizi varsayalım. Verimizi Biscoe adasına göre filtreleyeceğiz. Filtreleme işlemi, R kullanmaya ilk başladığımda beni en çok zorlayan, kafamı en çok karıştıran şeylerden birisiydi. Anlamadığınızı düşündüğünüz yerde kodu parçalara bölüp, ne yaptığını anlamaya çalışın. Oldukça faydalı olacaktır.</p>
 <div class="cell">
@@ -1747,7 +1549,7 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 </div>
 </section>
 <section id="grup-işlemleri" class="level3">
-<h3 class="anchored" data-anchor-id="grup-işlemleri">Grup işlemleri</h3>
+<h3 class="anchored" data-anchor-id="grup-işlemleri">GRUP İŞLEMLERİ</h3>
 <p>Eğer <code>dplyr</code> fonksiyonlarına aşinaysanız <code>group_by() |&gt; summarise()</code> ikilisini mutlaka biliyorsunuzdur. Özet istatistik tabloları oluşturmak için oldukça kullanışlı bir yöntem. <code>base R</code>’da da bunu <code>tapply()</code>, <code>aggregate()</code> ya da <code>by()</code> fonksiyonuyla yapabilirsiniz. Eğer <code>dplyr</code>’deki <code>group_by() |&gt; mutate()</code> ikilisini base R ile yapmak istiyorsanız da <code>ave()</code> fonsiyonu güzel bir alternatif olabilir. <code>base R</code> basit gruplama + özetleme işlemleri için <code>dplyr</code>’a göre daha sezgisel, daha kolay ancak birden fazla fonksiyon kullanarak yapacağımız ve bir data.frame dönmesini istediğimiz işlerde <code>dplyr</code>’ı daha kullanışlı buluyorum. Neyse bu yazının konusu base R - tidyverse karşılaştırması değil. Bu konuda <code>dplyr</code> ve <code>base R</code>’a eşit oranda aşina olmayanlar için Excel’deki (kendilerini hiç sevmem :)) pivot table’a oldukça benzediğini söyleyebilirim. Özetle bir gruba göre özet istatistik tablosu oluşturacaksak yukarıda bahsettiğim fonksiyonlar tam da bu iş için.</p>
 <p>Basit bir örnekle başlayalım. Diyelim ki ortalama bill_len’i hesaplamak istiyoruz.</p>
 <div class="cell">
@@ -1865,7 +1667,7 @@ $Gentoo
 </section>
 </section>
 <section id="biraz-da-grafik" class="level2">
-<h2 class="anchored" data-anchor-id="biraz-da-grafik">3. Biraz da grafik</h2>
+<h2 class="anchored" data-anchor-id="biraz-da-grafik">3. BİRAZ DA GRAFİK</h2>
 <p>Birçok temel şey gördüğümüze göre şimdi verimizi görselleştirmeye başlayabiliriz. En heyecanlı kısımlardan birisi bu çünkü emeğinizin karşılığını aldığınızı somut bir göstergesi.</p>
 <p>Bu yazıda yalnızca <code>base R</code> ile gelen <code>plot()</code> fonksiyonu ve onun kardeşlerini kullanacağız. Basit grafikler çizmek için çok kolay ve hızlı bir yol. İleride <code>ggplot2</code> gibi bir kütüphane kullansanız bile analiz esnasında veriyi hızlıca görmek için kullanabileceğiniz bir fonksiyon. Aslında birçok modern R kullanıcısı base R grafiklerini küçümseme eğiliminde çünkü <code>ggplot2</code> muhteşem bir paket ve karmaşık grafikler yapmak için eşsiz bir araç sunuyor ancak base R da düşünüldüğü gibi basit olmayan, aslında daha esnek ve istenildiği zaman çok farklı ve kompleks grafikler çizmeye olanak sağlayabiliyor. Meraklıları şu bağlantıları ziyaret edebilir:</p>
 <ol type="1">
@@ -2040,19 +1842,6 @@ $Gentoo
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    // Ensure there is a toggle, if there isn't float one in the top right
-    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-      const i = window.document.createElement("i");
-      i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
-    }
-    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -2459,7 +2248,7 @@ $Gentoo
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p>R Delisi - 2026</p>
+<p>R DELİSİ - 2026</p>
 </div>
     <div class="nav-footer-right">
       &nbsp;
