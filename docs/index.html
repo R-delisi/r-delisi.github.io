@@ -20,6 +20,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
 </style>
 
 
@@ -85,35 +86,6 @@ ul.task-list li input[type="checkbox"] {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Atkinson+Hyperlegible+Mono:wght@400;700&amp;display=swap">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="R DELİSİ">
@@ -177,7 +149,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="YmFzZSUyMFI=">base R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Y2FzZV9zdHVkeQ==">case_study <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZHBseXI=">dplyr <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2lz">gis <span class="quarto-category-count">(4)</span></div><div class="category" data-category="cGFsbWVycGVuZ3VpbnM=">palmerpenguins <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(6)</span></div><div class="category" data-category="ci1zcGF0aWFs">r-spatial <span class="quarto-category-count">(4)</span></div><div class="category" data-category="dGlkeXZlcnNl">tidyverse <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="YmFzZSUyMFI=">base R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Y2FzZV9zdHVkeQ==">case_study <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Z2lz">gis <span class="quarto-category-count">(4)</span></div><div class="category" data-category="cGFsbWVycGVuZ3VpbnM=">palmerpenguins <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(5)</span></div><div class="category" data-category="ci1zcGF0aWFs">r-spatial <span class="quarto-category-count">(4)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -190,43 +162,7 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ3RpZHl2ZXJzZSUyQ2RwbHlyJTJDcGFsbWVycGVuZ3VpbnM=" data-listing-date-sort="1767042000000" data-listing-file-modified-sort="1766744609600" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3602">
-<div class="thumbnail"><a href="./posts/penguin2/penguins.html" class="no-external">
-
-<img loading="lazy" src="./posts/penguin2/figs/penguins.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/penguin2/penguins.html" class="no-external">Penguins Verisi ile tidyverse’ye Giriş</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXZlcnNl'); return false;">tidyverse</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZHBseXI='); return false;">dplyr</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cGFsbWVycGVuZ3VpbnM='); return false;">palmerpenguins</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/penguin2/penguins.html" class="no-external">
-<p>tidyverse ile Veri Cambazlığı</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/penguin2/penguins.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2025
-</div>
-<div class="listing-author">
-Mehmet Göktuğ Öztürk
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ2Jhc2UlMjBSJTJDcGFsbWVycGVuZ3VpbnM=" data-listing-date-sort="1765746000000" data-listing-file-modified-sort="1769389107946" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3756">
+<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ2Jhc2UlMjBSJTJDcGFsbWVycGVuZ3VpbnM=" data-listing-date-sort="1765746000000" data-listing-file-modified-sort="1769389107946" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3756">
 <div class="thumbnail"><a href="./posts/penguin/penguins.html" class="no-external">
 
 <img loading="lazy" src="./posts/penguin/figs/penguins.webp" class="thumbnail-image">
@@ -260,7 +196,7 @@ Mehmet Göktuğ ÖZTÜRK
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1741554000000" data-listing-file-modified-sort="1769388720062" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1718">
+<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1741554000000" data-listing-file-modified-sort="1769388720062" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1718">
 <div class="thumbnail"><a href="./posts/dem2/dem2.html" class="no-external">
 
 <img loading="lazy" src="./posts/dem2/figs/preview.webp" class="thumbnail-image">
@@ -296,7 +232,7 @@ Mehmet Göktuğ ÖZTÜRK
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1740949200000" data-listing-file-modified-sort="1769388706976" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2041">
+<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1740949200000" data-listing-file-modified-sort="1769388706976" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2041">
 <div class="thumbnail"><a href="./posts/dem/dem.html" class="no-external">
 
 <img loading="lazy" src="./posts/dem/figs/preview.webp" class="thumbnail-image">
@@ -332,7 +268,7 @@ Mehmet Göktuğ ÖZTÜRK
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1702155600000" data-listing-file-modified-sort="1769388768777" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1653">
+<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1702155600000" data-listing-file-modified-sort="1769388768777" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1653">
 <div class="thumbnail"><a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">
 
 <img loading="lazy" src="./posts/ebird_R_2/figs/preview.webp" class="thumbnail-image">
@@ -368,7 +304,7 @@ Mehmet Göktuğ ÖZTÜRK
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1695762000000" data-listing-file-modified-sort="1769388755826" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2100">
+<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1695762000000" data-listing-file-modified-sort="1769388755826" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2100">
 <div class="thumbnail"><a href="./posts/ebird_R/ebird_r.html" class="no-external">
 
 <img loading="lazy" src="./posts/ebird_R/figs/preview.webp" class="thumbnail-image">

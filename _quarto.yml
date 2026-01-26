@@ -37,6 +37,7 @@ format:
     css: styles.css
     include-in-header: header.html
     toc: false
+    html-math-method: plain
 
 
 
