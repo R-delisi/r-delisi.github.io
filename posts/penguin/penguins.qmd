@@ -9,6 +9,7 @@ categories:
   - base R
   - palmerpenguins
 image: figs/penguins.webp
+lang: tr
 ---
 
 ![Kaynak: [Allison Horst](https://allisonhorst.github.io/palmerpenguins/articles/art.html)](figs/penguins.webp)
