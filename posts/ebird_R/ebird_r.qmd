@@ -28,18 +28,6 @@ Bu yazıda yalnızca birinci soruya odaklanacağız. İkinci soru için ikinci y
 
 --------------------------------------------------------------------------------
 
-### YAZININ AKIŞI
-
-Yazının genel akışı aşağıdaki gibidir:
-
-1.  Gerekli paketlerin yüklenmesi
-2.  Kuş verisinin yüklenip bu yazı için gerekli olan alt kümesinin alınması
-3.  Kuş verisinin mekânsallıştırılması
-4.  TR il katmanının yüklenmesi
-5.  Kuş verisinin gruplanıp özetlenmesi
-6.  Her bir il sınırı içinde kalan tür sayısının hesaplanması
-7.  Verinin görselleştirilmesi
-
 ### 1. GEREKLİ PAKETLERİN YÜKLENMESİ
 
 ```{r}

@@ -25,17 +25,6 @@ Temel R ve GIS bilgisine sahip olmanız yazıdaki birçok yeri anlamanız için 
 
 --------------------------------------------------------------------------------
 
-### YAZININ AKIŞI
-
-Yazının genel akışı aşağıdaki gibidir:
-
-1.  Paketlerin yüklenmesi
-2.  İlçe verisinin işleri
-3.  Kuş verisinin işleri
-4.  DEM verisinin işleri
-5.  Topografik hesaplamalar
-6.  Verinin görselleştirilmesi
-
 ### 1. PAKETLERİN YÜKLENMESİ
 
 ```{r}

@@ -28,12 +28,6 @@ Ardından da `base R` kullanarak görselleştirmeler yapacağız.
 
 Bu yazı, öncekilerden daha kısa ve öz olacak. 
 
-## YAZININ AKIŞI
-
-1.  Paketlerin yüklenmesi
-2.  DEM verisinin indirilmesi
-3.  Verinin görselleştirilmesi 
-
 ## 1. PAKETLERİN YÜKLENMESİ
 
 Hangi paketleri kullanacağımıza geçmeden önce size R programlama konusunda geçirdiğim zihinsel değişimden bahsetmek istiyorum.
