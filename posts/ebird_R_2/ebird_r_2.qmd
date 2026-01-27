@@ -9,9 +9,6 @@ categories:
   - gis
   - r-spatial
   - case_study
-image: figs/preview.webp
-editor_options: 
-  chunk_output_type: console
 ---
 
 ![](figs/preview.webp)

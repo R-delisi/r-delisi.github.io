@@ -1,11 +1,5 @@
 [
   {
-    "listing": "/blog.html",
-    "items": [
-      "/posts/ebird_R/ebird_r.html"
-    ]
-  },
-  {
     "listing": "/index.html",
     "items": [
       "/posts/penguin/penguins.html",

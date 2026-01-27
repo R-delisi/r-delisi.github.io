@@ -9,7 +9,6 @@ categories:
   - gis
   - r-spatial
   - case_study
-image: figs/preview.webp
 ---
 
 ![](figs/preview.webp)

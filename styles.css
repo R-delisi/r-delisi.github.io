@@ -1,16 +1,230 @@
 /* css styles */
+/* --- 1. FONTLAR VE TEMEL AYARLAR --- */
+:root {
+  --bg: #fdfdfd;            /* Kırık beyaz */
+  --text: #222222;          /* Koyu gri yazı */
+  --meta: #666666;          /* Tarih rengi */
+  --accent: #d81b60;        /* Link vurgu rengi */
+  --border: #eeeeee;        /* Ayraç rengi */
+  
+  /* Google Fonts Tanımları */
+  --font-body: "Crimson Pro", "Palatino Linotype", serif; 
+  --font-head: "Inter", system-ui, sans-serif;
+  --font-code: "JetBrains Mono", "Fira Code", monospace;
+}
+
 body {
-  font-family: "Atkinson Hyperlegible", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  font-size: 20px;
   font-weight: 400;
-  line-height: 1.65;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: Arial, Helvetica, sans-serif;
+/* Linkler */
+a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: #ccc;
+  text-underline-offset: 3px;
+  transition: all 0.2s;
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+  background-color: #fff0f5;
+}
+
+/* --- 2. HEADER DÜZENİ --- */
+header, .site-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.site-header__title {
+  font-family: var(--font-head); /* Başlık fontu */
   font-weight: 900;
+  font-size: 2.2rem;
+  text-decoration: none;
+  border: none;
+  color: #111;
+  display: block;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
 }
 
+.site-header__tagline {
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  color: var(--meta);
+  margin-bottom: 1.5rem;
+}
+
+nav.site-header__links a {
+  margin: 0 12px;
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  color: var(--meta);
+  border: none;
+  font-weight: 600;
+}
+
+nav.site-header__links a:hover {
+  color: var(--accent);
+  background: none;
+}
+
+/* --- 3. LİSTE DÜZENİ (Saf HTML / EJS Şablonu İçin) --- */
+
+/* Tüm listeyi kapsayan kutu */
+.blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* Araları margin ile açacağız */
+}
+
+/* Her bir blog yazısı satırı */
+.blog-post {
+  display: flex;
+  align-items: baseline; /* Tarih ve başlığı hizala */
+  padding: 10px 0;
+  border-bottom: 1px dashed #e0e0e0; /* kesik çizgi */
+  transition: background-color 0.2s;
+}
+
+/* Son satırın çizgisini kaldır */
+.blog-post:last-child {
+  border-bottom: none;
+}
+
+/* Tarih Kısmı */
+.blog-date {
+  flex: 0 0 140px; /* Sabit genişlik */
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  color: var(--meta);
+  text-align: right;
+  padding-right: 25px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Başlık Kısmı */
+.blog-title {
+  flex: 1;
+}
+
+.blog-title a {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+}
+
+.blog-title a:hover {
+  color: var(--accent);
+  background: none;
+}
+
+/* --- 4. GİZLEME (No Matching Items) --- */
+.listing-no-matching {
+    display: none !important;
+}
+
+/* --- Code ---------------------------------------------------------------- */
 code {
-  font-family: "Atkinson Hyperlegible Mono";
-  font-weight: 400;
+    font-size: 0.85rem;
+    font-weight: 300;
+    font-family: var(--font-code);
+    background-color: #e4e4e4;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+div.sourceCode,
+pre.sourceCode,
+pre.sourceCode {
+    font-size: 0.90rem;
+    font-family: var(--font-code);
+    line-height: 1.5;
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid #c7c7c7;
+    overflow-x: auto;
+    background-color: #e4e4e4;
+    font-variant-ligatures: normal;
+}
+
+.cell-output pre {
+    font-size: 0.90rem;
+    font-family: var(--font-code);
+    line-height: 1.5;
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid #c7c7c7;
+    overflow-x: auto;
+    background-color: #e4e4e4;
+    font-variant-ligatures: normal;
+}
+
+.comment {
+    color: #459;
+}
+
+/* --- HAKKIMDA SAYFASI ÖZELLEŞTİRMELERİ --- */
+
+/* Profil Resmi */
+.about-profile-img {
+  width: 180px;        /* Resim boyutu */
+  height: 180px;
+  object-fit: cover;   /* Resmi bozmadan kırp */
+  border-radius: 50%;  /* Tam yuvarlak yap (İstersen 10px yapıp kare bırakabilirsin) */
+  display: block;
+  margin: 0 auto 2rem auto; /* Ortala ve altından boşluk bırak */
+  border: 1px solid #ddd;   /* İnce bir çerçeve */
+  padding: 4px;             /* Çerçeve ile resim arası boşluk */
+  background: #fff;
+}
+
+/* Link Kutusu */
+.about-links-container {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border); /* Üstüne ince çizgi */
+  text-align: center;
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.about-links-container a {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--meta);
+  margin: 0 5px;
+}
+
+.about-links-container a:hover {
+  color: var(--accent);
+  background: none;
+}
+
+.about-links-container .separator {
+  color: #ddd; /* aradaki noktaların rengi */
+}
+
+/* TOC Başlığını ("Bu Sayfada") Gizle */
+h2#toc-title {
+    display: none !important;
 }

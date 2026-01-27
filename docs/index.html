@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.31">
@@ -24,36 +24,17 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<link href="./favicon.jpeg" rel="icon" type="image/jpeg">
+<link href="./favicon.webp" rel="icon">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-html-3311d5e9d1ddcd931736b782dfbd819d.min.css" rel="stylesheet" append-hash="true" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8c4a7f977591d9634c0ec5ca77f3c2b2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
-  "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
-  }
-}</script>
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
@@ -64,9 +45,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-project','listing-lang','listing-date-format','listing-website','listing-format','listing-language','listing-comments','listing-title','listing-author','listing-date','listing-description','listing-categories','listing-path','listing-outputHref','listing-date-modified','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-project","listing-lang","listing-date-format","listing-website","listing-format","listing-language","listing-comments","listing-title","listing-author","listing-date","listing-description","listing-categories","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -83,75 +64,31 @@ ul.task-list li input[type="checkbox"] {
     }
   })
   </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Atkinson+Hyperlegible+Mono:wght@400;700&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300..900;1,300..900&amp;family=Inter:wght@400;600;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="R DELİSİ">
-<meta property="og:image" content="./posts/dem2/figs/preview.webp">
-<meta property="og:site_name" content="R DELİSİ">
-<meta name="twitter:title" content="R DELİSİ">
-<meta name="twitter:image" content="./posts/dem2/figs/preview.webp">
-<meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body>
 
-<div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">R DELİSİ</span>
-    </a>
-  </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">BLOG</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">HAKKIMDA</span></a>
-  </li>  
-</ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://ecoevo.social/@mehmet_goktu"> <i class="bi bi-mastodon" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/mehmetgoktug"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/mehmetgoktug/"> <i class="bi bi-linkedin" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-            <div class="quarto-navbar-tools">
-</div>
-      </div> <!-- /container-fluid -->
+<header class="site-header">
+  <div class="site-header__inner">
+    
+    <div class="site-header__brand">
+      <a class="site-header__title" href="./">R DELİSİ</a>
+      <p class="site-header__tagline">R • Ekoloji • Veri Bilimi</p>
+    </div>
+
+    <nav class="site-header__links" aria-label="Kısayollar">
+      <a href="./">Blog</a>
+      <a href="./about.html">Hakkımda</a>
     </nav>
+
+  </div>
 </header>
-<!-- content -->
-<header id="title-block-header" class="quarto-title-block"></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
-<!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="YmFzZSUyMFI=">base R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Y2FzZV9zdHVkeQ==">case_study <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Z2lz">gis <span class="quarto-category-count">(4)</span></div><div class="category" data-category="cGFsbWVycGVuZ3VpbnM=">palmerpenguins <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(5)</span></div><div class="category" data-category="ci1zcGF0aWFs">r-spatial <span class="quarto-category-count">(4)</span></div></div></div>
-<!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
@@ -159,199 +96,12 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ2Jhc2UlMjBSJTJDcGFsbWVycGVuZ3VpbnM=" data-listing-date-sort="1765746000000" data-listing-file-modified-sort="1769424924256" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3756">
-<div class="thumbnail"><a href="./posts/penguin/penguins.html" class="no-external">
-
-<img loading="lazy" src="./posts/penguin/figs/penguins.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/penguin/penguins.html" class="no-external">PENGUINS VERİSİ İLE BASE R’A GİRİŞ</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YmFzZSUyMFI='); return false;">base R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cGFsbWVycGVuZ3VpbnM='); return false;">palmerpenguins</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/penguin/penguins.html" class="no-external">
-<p>Base R ile Veri Cambazlığı</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/penguin/penguins.html" class="no-external">
-<div class="listing-date">
-Dec 15, 2025
-</div>
-<div class="listing-author">
-Mehmet Göktuğ ÖZTÜRK
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1741554000000" data-listing-file-modified-sort="1769388720062" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1718">
-<div class="thumbnail"><a href="./posts/dem2/dem2.html" class="no-external">
-
-<img loading="lazy" src="./posts/dem2/figs/preview.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/dem2/dem2.html" class="no-external">R İLE TOPOGRAFİK VERİ İNDİRME 2 - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YmFzZSUyMFI='); return false;">base R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/dem2/dem2.html" class="no-external">
-<p>R ile Topografik Veri İndirme 2</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/dem2/dem2.html" class="no-external">
-<div class="listing-date">
-Mar 10, 2025
-</div>
-<div class="listing-author">
-Mehmet Göktuğ ÖZTÜRK
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1740949200000" data-listing-file-modified-sort="1769388706976" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2041">
-<div class="thumbnail"><a href="./posts/dem/dem.html" class="no-external">
-
-<img loading="lazy" src="./posts/dem/figs/preview.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/dem/dem.html" class="no-external">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YmFzZSUyMFI='); return false;">base R</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/dem/dem.html" class="no-external">
-<p>R ile Topografik Veri İndirme</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/dem/dem.html" class="no-external">
-<div class="listing-date">
-Mar 3, 2025
-</div>
-<div class="listing-author">
-Mehmet Göktuğ ÖZTÜRK
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1702155600000" data-listing-file-modified-sort="1769388768777" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1653">
-<div class="thumbnail"><a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">
-
-<img loading="lazy" src="./posts/ebird_R_2/figs/preview.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ II</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2FzZV9zdHVkeQ=='); return false;">case_study</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">
-<p>R ile Kuş Verilerinin Analizi II</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">
-<div class="listing-date">
-Dec 10, 2023
-</div>
-<div class="listing-author">
-Mehmet Göktuğ ÖZTÜRK
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1695762000000" data-listing-file-modified-sort="1769388755826" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2100">
-<div class="thumbnail"><a href="./posts/ebird_R/ebird_r.html" class="no-external">
-
-<img loading="lazy" src="./posts/ebird_R/figs/preview.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/ebird_R/ebird_r.html" class="no-external">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ I</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2FzZV9zdHVkeQ=='); return false;">case_study</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/ebird_R/ebird_r.html" class="no-external">
-<p>R ile Kuş Verilerinin Analizi</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/ebird_R/ebird_r.html" class="no-external">
-<div class="listing-date">
-Sep 27, 2023
-</div>
-<div class="listing-author">
-Mehmet Göktuğ ÖZTÜRK
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    const icon = "";
-    const anchorJS = new window.AnchorJS();
-    anchorJS.options = {
-      placement: 'right',
-      icon: icon
-    };
-    anchorJS.add('.anchored');
+    const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+    tabsets.forEach(function(tabset) {
+      const tabby = new Tabby('#' + tabset.id);
+    });
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     
@@ -368,12 +118,12 @@ Mehmet Göktuğ ÖZTÜRK
       // flash "checked"
       button.classList.add('code-copy-button-checked');
       var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copied!");
+      button.setAttribute("title", "Kopyalandı");
       let tooltip;
       if (window.bootstrap) {
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copied!");
+        button.setAttribute("data-bs-title", "Kopyalandı");
         tooltip = new bootstrap.Tooltip(button, 
           { trigger: "manual", 
             customClass: "code-copy-button-tooltip",
@@ -442,7 +192,7 @@ Mehmet Göktuğ ÖZTÜRK
         },
         interactive: true,
         interactiveBorder: 10,
-        theme: 'quarto',
+        theme: 'light-border',
         placement: 'bottom-start',
       };
       if (contentFn) {
@@ -455,140 +205,6 @@ Mehmet Göktuğ ÖZTÜRK
         config.onUntrigger = onUntriggerFn;
       }
       window.tippy(el, config); 
-    }
-    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-    for (var i=0; i<noterefs.length; i++) {
-      const ref = noterefs[i];
-      tippyHover(ref, function() {
-        // use id or data attribute instead here
-        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-        try { href = new URL(href).hash; } catch {}
-        const id = href.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note) {
-          return note.innerHTML;
-        } else {
-          return "";
-        }
-      });
-    }
-    const xrefs = window.document.querySelectorAll('a.quarto-xref');
-    const processXRef = (id, note) => {
-      // Strip column container classes
-      const stripColumnClz = (el) => {
-        el.classList.remove("page-full", "page-columns");
-        if (el.children) {
-          for (const child of el.children) {
-            stripColumnClz(child);
-          }
-        }
-      }
-      stripColumnClz(note)
-      if (id === null || id.startsWith('sec-')) {
-        // Special case sections, only their first couple elements
-        const container = document.createElement("div");
-        if (note.children && note.children.length > 2) {
-          container.appendChild(note.children[0].cloneNode(true));
-          for (let i = 1; i < note.children.length; i++) {
-            const child = note.children[i];
-            if (child.tagName === "P" && child.innerText === "") {
-              continue;
-            } else {
-              container.appendChild(child.cloneNode(true));
-              break;
-            }
-          }
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(container);
-          }
-          return container.innerHTML
-        } else {
-          if (window.Quarto?.typesetMath) {
-            window.Quarto.typesetMath(note);
-          }
-          return note.innerHTML;
-        }
-      } else {
-        // Remove any anchor links if they are present
-        const anchorLink = note.querySelector('a.anchorjs-link');
-        if (anchorLink) {
-          anchorLink.remove();
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        if (note.classList.contains("callout")) {
-          return note.outerHTML;
-        } else {
-          return note.innerHTML;
-        }
-      }
-    }
-    for (var i=0; i<xrefs.length; i++) {
-      const xref = xrefs[i];
-      tippyHover(xref, undefined, function(instance) {
-        instance.disable();
-        let url = xref.getAttribute('href');
-        let hash = undefined; 
-        if (url.startsWith('#')) {
-          hash = url;
-        } else {
-          try { hash = new URL(url).hash; } catch {}
-        }
-        if (hash) {
-          const id = hash.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note !== null) {
-            try {
-              const html = processXRef(id, note.cloneNode(true));
-              instance.setContent(html);
-            } finally {
-              instance.enable();
-              instance.show();
-            }
-          } else {
-            // See if we can fetch this
-            fetch(url.split('#')[0])
-            .then(res => res.text())
-            .then(html => {
-              const parser = new DOMParser();
-              const htmlDoc = parser.parseFromString(html, "text/html");
-              const note = htmlDoc.getElementById(id);
-              if (note !== null) {
-                const html = processXRef(id, note);
-                instance.setContent(html);
-              } 
-            }).finally(() => {
-              instance.enable();
-              instance.show();
-            });
-          }
-        } else {
-          // See if we can fetch a full url (with no hash to target)
-          // This is a special case and we should probably do some content thinning / targeting
-          fetch(url)
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.querySelector('main.content');
-            if (note !== null) {
-              // This should only happen for chapter cross references
-              // (since there is no id in the URL)
-              // remove the first header
-              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-                note.children[0].remove();
-              }
-              const html = processXRef(null, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      }, function(instance) {
-      });
     }
         let selectedAnnoteEl;
         const selectorForAnnotation = ( cell, annotation) => {
@@ -703,61 +319,54 @@ Mehmet Göktuğ ÖZTÜRK
             }
           });
         }
-    const findCites = (el) => {
-      const parentEl = el.parentElement;
-      if (parentEl) {
-        const cites = parentEl.dataset.cites;
-        if (cites) {
-          return {
-            el,
-            cites: cites.split(' ')
-          };
-        } else {
-          return findCites(el.parentElement)
-        }
-      } else {
-        return undefined;
-      }
-    };
-    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-    for (var i=0; i<bibliorefs.length; i++) {
-      const ref = bibliorefs[i];
-      const citeInfo = findCites(ref);
-      if (citeInfo) {
-        tippyHover(citeInfo.el, function() {
-          var popup = window.document.createElement('div');
-          citeInfo.cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
-          });
-          return popup.innerHTML;
-        });
-      }
-    }
   });
   </script>
-</div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">
-      &nbsp;
-    </div>   
-    <div class="nav-footer-center">
-<p>R DELİSİ - 2026</p>
+
+
+
+
+<div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
+<div class="blog-list">
+<div class="blog-post">
+<div class="blog-date">
+<p>15 Ara 2025</p>
 </div>
-    <div class="nav-footer-right">
-      &nbsp;
-    </div>
-  </div>
-</footer>
-
-
-
-
-</body></html>
+<div class="blog-title">
+<p><a href="./posts/penguin/penguins.html">PENGUINS VERİSİ İLE BASE R’A GİRİŞ</a></p>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+<p>10 Mar 2025</p>
+</div>
+<div class="blog-title">
+<p><a href="./posts/dem2/dem2.html">R İLE TOPOGRAFİK VERİ İNDİRME 2 - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a></p>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+<p>3 Mar 2025</p>
+</div>
+<div class="blog-title">
+<p><a href="./posts/dem/dem.html">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a></p>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+<p>10 Ara 2023</p>
+</div>
+<div class="blog-title">
+<p><a href="./posts/ebird_R_2/ebird_r_2.html">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ II</a></p>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+<p>27 Eyl 2023</p>
+</div>
+<div class="blog-title">
+<p><a href="./posts/ebird_R/ebird_r.html">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ I</a></p>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">Eşleşen öğe yok</div>
+</div></body></html>

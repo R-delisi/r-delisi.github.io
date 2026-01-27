@@ -9,7 +9,6 @@ categories:
   - gis
   - r-spatial
   - base R
-image: figs/preview.webp
 ---
 
 ![](figs/preview.webp)

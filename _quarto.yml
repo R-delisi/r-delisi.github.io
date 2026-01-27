@@ -2,42 +2,35 @@ project:
   type: website
   output-dir: docs
 
+lang: tr
+date-format: "D MMM YYYY"
+
 website:
   title: "R DELİSİ"
   description: "Açık ve Tekrarlanabilir Bilim"
-  favicon: "favicon.jpeg"
+  favicon: "favicon.webp"
   search: false
-  navbar:
-    background: "#000000"
-    foreground: "#FFFFFF"
-    pinned: true
-    left:
-      - href: index.qmd
-        text: BLOG
-      - about.qmd
-    right:
-      - icon: 'mastodon'
-        href: 'https://ecoevo.social/@mehmet_goktu'
-      - icon: 'github'
-        href: "https://github.com/mehmetgoktug"
-      - icon: 'linkedin'
-        href: "https://www.linkedin.com/in/mehmetgoktug/"
-  page-footer: 
-    center: R DELİSİ - 2026
-  twitter-card: true
-  open-graph: true
   comments:
     utterances:
       repo: 'R-delisi/r-delisi.github.io'
 
 format:
   html:
-    theme: simplex
-    fontsize: 1rem
-    css: styles.css
-    include-in-header: header.html
-    toc: false
+    theme: none
+    fontsize: 1.1rem
+    include-in-header: 
+      - header.html
+    include-before-body: 
+      - _includes/site-header.html
+    toc: true
+    toc-title: ""
     html-math-method: plain
-
+    css: styles.css
+    anchor-sections: false
+    citations-hover: false
+    smooth-scroll: false
+    footnotes-hover: false
+    crossrefs-hover: false
+    code-copy: true
 
 
