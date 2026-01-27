@@ -238,7 +238,7 @@ plot(
   add = TRUE,               # ilk plot'un uzerine cizebilmek icin
   legend = TRUE,
   plg = list(               # terra::plot'ta lejant ayarlari icin
-    loc = "bottom",         # lejanti asagiya ciz
+    x = "bottom",         # lejanti asagiya ciz
     size = c(0.6, 0.7),     # lejant boyutu
     cex = 0.8,              # yazi boyutu
     at = seq(0, 4500, 500), # lejant etiketleri
@@ -291,7 +291,7 @@ plot(
   add = TRUE,
   legend = TRUE,
   plg = list(
-    loc = "bottom",
+    x = "bottom",
     size = c(0.6, 0.7),
     cex = 0.8,
     at = seq(0, 4500, 500),
