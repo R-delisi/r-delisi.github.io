@@ -3,6 +3,7 @@ title: "HAKKIMDA"
 image: profile.webp
 comments: false
 page-layout: article
+lang: en
 ---
 
 <img src="profile.webp" class="about-profile-img" alt="Mehmet Göktuğ Öztürk">
