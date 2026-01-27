@@ -25,8 +25,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link href="./favicon.webp" rel="icon">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/tabby.min.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -35,35 +33,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html-3311d5e9d1ddcd931736b782dfbd819d.min.css" rel="stylesheet" append-hash="true" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-project','listing-lang','listing-date-format','listing-website','listing-format','listing-language','listing-comments','listing-title','listing-author','listing-date','listing-description','listing-categories','listing-path','listing-outputHref','listing-date-modified','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-date-modified-sort'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
-      
-      searchColumns: ["listing-project","listing-lang","listing-date-format","listing-website","listing-format","listing-language","listing-comments","listing-title","listing-author","listing-date","listing-description","listing-categories","listing-path","listing-outputHref","listing-date-modified","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300..900;1,300..900&amp;family=Inter:wght@400;600;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
@@ -93,7 +62,48 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-
+<div class="blog-list">
+<div class="blog-post">
+<div class="blog-date">
+15 Ara 2025
+</div>
+<div class="blog-title">
+<a href="posts/penguin/penguins.html">PENGUINS VERİSİ İLE BASE R’A GİRİŞ</a>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+10 Mar 2025
+</div>
+<div class="blog-title">
+<a href="posts/dem2/dem2.html">R İLE TOPOGRAFİK VERİ İNDİRME 2 - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+3 Mar 2025
+</div>
+<div class="blog-title">
+<a href="posts/dem/dem.html">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+10 Ara 2023
+</div>
+<div class="blog-title">
+<a href="posts/ebird_R_2/ebird_r_2.html">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ II</a>
+</div>
+</div>
+<div class="blog-post">
+<div class="blog-date">
+27 Eyl 2023
+</div>
+<div class="blog-title">
+<a href="posts/ebird_R/ebird_r.html">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ I</a>
+</div>
+</div>
+</div>
 
 
 <script id="quarto-html-after-body" type="application/javascript">
@@ -325,48 +335,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
-<div class="blog-list">
-<div class="blog-post">
-<div class="blog-date">
-<p>15 Ara 2025</p>
-</div>
-<div class="blog-title">
-<p><a href="./posts/penguin/penguins.html">PENGUINS VERİSİ İLE BASE R’A GİRİŞ</a></p>
-</div>
-</div>
-<div class="blog-post">
-<div class="blog-date">
-<p>10 Mar 2025</p>
-</div>
-<div class="blog-title">
-<p><a href="./posts/dem2/dem2.html">R İLE TOPOGRAFİK VERİ İNDİRME 2 - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a></p>
-</div>
-</div>
-<div class="blog-post">
-<div class="blog-date">
-<p>3 Mar 2025</p>
-</div>
-<div class="blog-title">
-<p><a href="./posts/dem/dem.html">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a></p>
-</div>
-</div>
-<div class="blog-post">
-<div class="blog-date">
-<p>10 Ara 2023</p>
-</div>
-<div class="blog-title">
-<p><a href="./posts/ebird_R_2/ebird_r_2.html">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ II</a></p>
-</div>
-</div>
-<div class="blog-post">
-<div class="blog-date">
-<p>27 Eyl 2023</p>
-</div>
-<div class="blog-title">
-<p><a href="./posts/ebird_R/ebird_r.html">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ I</a></p>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">Eşleşen öğe yok</div>
-</div></body></html>
+</body></html>
