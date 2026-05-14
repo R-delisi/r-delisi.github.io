@@ -109,8 +109,8 @@ Tabi artık Google yerine ChatGPT gibi yapay dil modellerinden de faydalanabilir
 Şimdi dokümantasyonda gördüğünüz `n` argümanını kullanarak kaç adet satır görüntülemek istediğinizi seçebilirsiniz.
 
 ```{r}
-head(penguins, n = 10)
-tail(penguins, n = 10)
+head(penguins, n=10)
+tail(penguins, n=10)
 ```
 
 Gördüğünüz gibi ilk ve son 10 satırı görebildik.
@@ -284,8 +284,8 @@ penguins ismiyle çatışma olmasın diye önce verinin farklı isimli bir kopya
 
 Daha önce de gördüğümüz gibi sütunlarla ilgili bir işlem yapmak için 2. boyutu, yani virgülün sağını kullanıyoruz. 
 ```{r}
-peng_raw <- penguins_raw
-head(peng_raw[, 1:3])
+raw <- penguins_raw
+head(raw[, 1:3])
 ```
 
 Yukarıda gördüğünüz gibi istediğimiz sütunların indeksini bir vektör olarak yazarak seçim yapabiliyoruz.
@@ -293,7 +293,7 @@ Yukarıda gördüğünüz gibi istediğimiz sütunların indeksini bir vektör o
 Bunun için sütun isimlerini de tercih edebiliriz.
 
 ```{r}
-head(peng_raw[, c("studyName", "Sample Number", "Species")])
+head(raw[, c("studyName", "Sample Number", "Species")])
 ```
 
 Gördüğünüz gibi sonuç aynı.
@@ -301,31 +301,30 @@ Gördüğünüz gibi sonuç aynı.
 Bu tür karmaşık verilerde indeksleri kullanıp seçim yapmak daha kolay olabiliyor ancak burada isimlere göre seçelim.
 Bu şekilde yaptığımız iş hataya daha az açık olacaktır.
 ```{r}
-names_raw <- c(
-  "Species", "Island", "Date Egg", "Culmen Length (mm)", "Culmen Depth (mm)",
-  "Flipper Length (mm)", "Body Mass (g)", "Sex"
-) 
-peng_sel <- peng_raw[, names_raw]
-head(peng_sel)
+nms <- c("Species", "Island", "Date Egg", "Culmen Length (mm)", 
+         "Culmen Depth (mm)", "Flipper Length (mm)", 
+         "Body Mass (g)", "Sex") 
+dat <- raw[, nms]
+head(dat)
 ```
 
 ```{r}
-str(peng_sel)
+str(dat)
 ```
 
 Şimdi de sütun isimlerini değiştirelim.
 
 Camel case kullanılan isimler, büyük harfle başlayan isimler, birimler, boşluklar derken standart olmayan birçok şey var.
-Ben, tidy style guide'da belirtildiği gibi snake_case kullanmayı tercih ediyor, bunun daha işlevsel olduğunu düşünüyorum.
-Yani tüm isimleri küçük harflerle yazacağız, Türkçe karakter kullanmayacağız ve boşlukları `_` ile ayıracağız.
+Ben, zaman zaman tidy style guide'da belirtildiği gibi snake_case kullanmayı tercih ediyorum.
+Zaman zamansa camelCase.
+Burada, `penguins` verisiyle aynı olması için snake_case kullanacağız.
+Yani kelimelerin arasına `_` koyacağız.
 
 Sütun isimlerine -data.frame'de names() fonksiyonunu da colnames() fonksiyonunu da kullanabiliriz- değiştirmek istediğimiz isimleri atıyoruz.
 ```{r}
-names(peng_sel) <- c(
-  "species", "island", "year", "bill_len", "bill_dep", 
-  "flipper_len", "body_mass","sex"
-)
-head(peng_sel)
+names(dat) <- c("species", "island", "year", "bill_len", "bill_dep", 
+                "flipper_len", "body_mass","sex")
+head(dat)
 ```
 
 Gördüğünüz gibi isimler `penguins` verisiyle aynı hâle geldi.
@@ -335,8 +334,8 @@ Bunun için sütunları istediğimiz sırada, indeksleriyle seçeceğiz.
 `penguins` ile tek fark `year` değişkeninin yeri.
 Dolayısıyla `year` değişkeninin indeksini en sona koyuyoruz.
 ```{r}
-peng_relocate <- peng_sel[, c(1, 2, 4, 5, 6, 7, 8, 3)]
-head(peng_relocate)
+dat <- dat[, c(1, 2, 4, 5, 6, 7, 8, 3)]
+head(dat)
 ```
 
 Bu iş de tamamdır!
@@ -349,7 +348,7 @@ Dikkat ettiyseniz `penguins` verisinde çok daha düzenli bir hâldeydi.
 Tarihi yıla çevirmemiz lazım.
 ```{r}
 
-peng_relocate$year
+dat$year
 
 ```
 
@@ -361,8 +360,8 @@ Tarihlerle uğraşmak ilk başlayanlar için biraz zor olabilir.
 Onu da değiştirdiğimiz sütuna tekrardan atayacağız.
 
 ```{r}
-peng_relocate$year <- format(peng_relocate$year, "%Y")
-head(peng_relocate)
+dat$year <- format(dat$year, "%Y")
+head(dat)
 ```
 
 Gördüğünüz gibi yıllar tamam!
@@ -377,16 +376,16 @@ Yani siliyoruz.
 Çünkü `""` içinde hiçbir şey yok. 
 Bu da bize tür isimlerinin boşluktan önceki kısmını veriyor tıpkı `penguins` verisinde olduğu gibi. 
 ```{r}
-peng_relocate$species <- sub(" .*", "", peng_relocate$species)
-peng_relocate$sex <- tolower(peng_relocate$sex) # sex degiskenini kucuk harfe ceviriyoruz 
+dat$species <- sub(" .*", "", dat$species)
+dat$sex <- tolower(dat$sex) # sex degiskenini kucuk harfe ceviriyoruz 
 
-head(peng_relocate)
+head(dat)
 ```
 
 Şu an `penguins` verisiyle aynı veriye sahibiz!
 
 ```{r}
-identical(penguins, peng_relocate)
+identical(penguins, dat)
 ```
 
 Aaa! 
@@ -398,27 +397,27 @@ str(penguins)
 ```
 
 ```{r}
-str(peng_relocate)
+str(dat)
 ```
 
 Gördüğünüz gibi sütun tipleri birbirinden farklı.
 Onları da değiştirelim.
 
 ```{r}
-peng_relocate$species <- as.factor(peng_relocate$species)
-peng_relocate$island <- as.factor(peng_relocate$island)
-peng_relocate$flipper_len <- as.integer(peng_relocate$flipper_len)
-peng_relocate$body_mass <- as.integer(peng_relocate$body_mass)
-peng_relocate$sex <- as.factor(peng_relocate$sex)
-peng_relocate$year <- as.integer(peng_relocate$year)
+dat$species <- as.factor(dat$species)
+dat$island <- as.factor(dat$island)
+dat$flipper_len <- as.integer(dat$flipper_len)
+dat$body_mass <- as.integer(dat$body_mass)
+dat$sex <- as.factor(dat$sex)
+dat$year <- as.integer(dat$year)
 
-str(peng_relocate)
+str(dat)
 ```
 
 Değişmesi gereken tüm sütunları tek tek değiştirdik.
 
 ```{r}
-identical(penguins, peng_relocate)
+identical(penguins, dat)
 ```
 
 Gördüğünüz gibi artık verilerimiz eş!
@@ -427,7 +426,7 @@ Hedefimize ulaştık, dağınık bir veriyi düzenli bir hâle getirdik.
 ### SATIR İŞLEMLERİ
 
 `penguins_raw` verisini, `penguins` verisiyle eş bir hâle getirdiğimize göre hedefimize ulaştık ama bu yazının amacına ulaşması için satır ve grup işlemlerini de görmemiz gerekiyor.
-Sütunlarını düzenlediğimiz `peng_relocate` nesnesi üzerinde biraz oynayalım.
+Sütunlarını düzenlediğimiz `dat` nesnesi üzerinde biraz oynayalım.
 
 Şimdi yalnızca Biscoe adasındaki penguenleri incelediğimizi varsayalım.
 Verimizi Biscoe adasına göre filtreleyeceğiz.
@@ -436,7 +435,7 @@ Anlamadığınızı düşündüğünüz yerde kodu parçalara bölüp, ne yaptı
 Oldukça faydalı olacaktır.
 
 ```{r}
-peng_relocate[peng_relocate$island == "Biscoe", ]
+dat[dat$island == "Biscoe", ]
 ```
 
 Bakın sadece Biscoe adasındaki penguenleri seçmiş olduk.
@@ -447,21 +446,21 @@ Bunu `==` operatörüyle yapacağız.
 Bu, bize `TRUE` `FALSE` olarak dönecek.
 
 ```{r}
-peng_relocate$island == "Biscoe"
+dat$island == "Biscoe"
 ```
 
 Buradan `TRUE` olanları seçmemiz gerekiyor.
-`peng_relocate` verimizin satır indeksi yerine bu mantıksal sonucu koyduğumuzda, `TRUE` olan satırları seçecektir.
+`dat` verimizin satır indeksi yerine bu mantıksal sonucu koyduğumuzda, `TRUE` olan satırları seçecektir.
 
 ```{r}
-peng_biscoe <- peng_relocate[peng_relocate$island == "Biscoe", ]
-head(peng_biscoe)
+datBiscoe <- dat[dat$island == "Biscoe", ]
+head(datBiscoe)
 ```
 
-Gördüğünüz gibi Biscoe adasındaki penguenleri seçtik ve `peng_biscoe` isimli bir nesneye atadık.
+Gördüğünüz gibi Biscoe adasındaki penguenleri seçtik ve `datBiscoe` isimli bir nesneye atadık.
 
 ```{r}
-summary(peng_biscoe)
+summary(datBiscoe)
 ```
 
 Verinin özet istatistiklerine göz attığımızda bazı `NA` (Not Available - eksik değer) değerlerin olduğunu görüyoruz.
@@ -471,14 +470,14 @@ Bunun için yine filtreleme yapabiliriz.
 Öncelikle en fazla NA değerine sahip `sex` değişkenindeki NA'lara bir bakalım.
 Bunun için `is.na()` isimli bir fonksiyonumuz var.
 ```{r}
-is.na(peng_biscoe$sex)
+is.na(datBiscoe$sex)
 ```
 
 Gördüğünüz gibi yine mantıksal bir sonuç döndü. 
 Şimdi bu sonuca göre bir filtreleme yapalım.
 
 ```{r}
-peng_biscoe[is.na(peng_biscoe$sex), ]
+datBiscoe[is.na(datBiscoe$sex), ]
 ```
 
 NA değerleri seçmiş olduk ancak biz NA değerleri seçmek değil, silmek istiyorduk.
@@ -486,8 +485,8 @@ Burada `!` operatörünü kullanacağız.
 Bu operatörümüz, bize "o" olmayan sonucu döndürecek.
 
 ```{r}
-peng_biscoe_compl <- peng_biscoe[!is.na(peng_biscoe$sex), ]
-head(peng_biscoe_compl)
+datBiscoe <- datBiscoe[!is.na(datBiscoe$sex), ]
+head(datBiscoe)
 ```
 
 Evet şu an NA değerlere sahip olmayan `sex` değişkenine göre bir filtreleme yaptık.
@@ -495,7 +494,7 @@ Evet şu an NA değerlere sahip olmayan `sex` değişkenine göre bir filtreleme
 Veriye tekrardan göz atalım.
 
 ```{r}
-summary(peng_biscoe_compl)
+summary(datBiscoe)
 ```
 
 Tüm NA değerlerden kurtulmuşuz.
@@ -505,10 +504,8 @@ Tüm NA değerlerden kurtulmuşuz.
 Eğer birden fazla değişkene göre filtreleme yapmamız gerekiyorsa `ve` için `&` operatörünü, `veya` için ise `|` operatörünü kullanıyoruz.
 ```{r}
 
-peng_biscoe_filt <- peng_biscoe_compl[
-  peng_biscoe_compl$bill_len < 48 & peng_biscoe_compl$body_mass > 5000, 
-]
-peng_biscoe_filt
+hs <- datBiscoe[datBiscoe$bill_len < 48 & datBiscoe$body_mass > 5000, ] # hs: heavy-short penguenler
+hs
 ```
 
 Gördüğünüz gibi filtreledik.
@@ -517,38 +514,38 @@ Yalnızca Biscoe adasındaki Gentoo türü penguenlerin bir kısmı bu boyutlara
 Filtrelediğimiz veriyi bir grafikte görelim.
 
 ```{r}
-par(mfrow = c(2, 1), mar = c(4, 4, 2, 1)) # mfrow ile grafigi 2 satira bolduk, mar ile margin ayarladik
+par(mfrow=c(2, 1), mar=c(4, 4, 2, 1)) # mfrow ile grafigi 2 satira bolduk, mar ile margin ayarladik
 plot(
-  peng_biscoe_compl$bill_len,
-  peng_biscoe_compl$body_mass,
-  xlab = "Bill Length [mm]",                      # x ekseni basligi
-  ylab = "Body Mass [g]",                         # y ekseni basligi
-  pch = 20                                        # pch (plot characters) nokta sekli icin
+    datBiscoe$bill_len,
+    datBiscoe$body_mass,
+    xlab="Bill Length [mm]",                      # x ekseni basligi
+    ylab="Body Mass [g]",                         # y ekseni basligi
+    pch=20                                        # pch (plot characters) nokta sekli icin
 )
 rect(                                             # filtreledigimiz degerleri kirmizi bir diktortgen ile belirttik
-  xleft = min(peng_biscoe_filt$bill_len) - 0.2 ,  # minimum x ekseni degeri - 0.2
-  ybottom = min(peng_biscoe_filt$body_mass) - 20, # minimum y ekseni degeri - 20
-  xright = max(peng_biscoe_filt$bill_len) + 0.2,  # maksimum x ekseni degeri + 0.2
-  ytop = max(peng_biscoe_filt$body_mass) + 50,    # maksimum y ekseni degeri + 50
-  border = "red",                                 # kirmizi rengi 
-  lwd = 2                                         # lwd (linewidth) cizgi kalinligi
+    xleft=min(hs$bill_len) - 0.2 ,                # minimum x ekseni degeri - 0.2
+    ybottom=min(hs$body_mass) - 20,               # minimum y ekseni degeri - 20
+    xright=max(hs$bill_len) + 0.2,                # maksimum x ekseni degeri + 0.2
+    ytop=max(hs$body_mass) + 50,                  # maksimum y ekseni degeri + 50
+    border="red",                                 # kirmizi rengi 
+    lwd=2                                         # lwd (linewidth) cizgi kalinligi
 )
 plot(
-  peng_biscoe_filt$bill_len, 
-  peng_biscoe_filt$body_mass,
-  xlab = "Bill Length [mm]",
-  ylab = "Body Mass [g]",
-  pch = 20
+    hs$bill_len, 
+    hs$body_mass,
+    xlab="Bill Length [mm]",
+    ylab="Body Mass [g]",
+    pch=20
 )
 ```
 
 Grafik, filtrelediğimiz değerleri daha iyi görmenizi sağlamıştır diye düşünüyorum.
 
-Şimdi de tekrardan `peng_biscoe_compl` verisini kullanarak 2008 ve 2009 yıllarındaki verileri filtreleyelim.
+Şimdi de tekrardan `datBiscoe` verisini kullanarak 2008 ve 2009 yıllarındaki verileri filtreleyelim.
 Bunun için yine birden fazla yol var ancak biz bu sefer `%in%` operatörünü kullanacağız.
 R'da `%in%` operatörü, birden fazla değerle filtreleme yapıldığında kullanılıyor. 
 ```{r}
-peng_biscoe_compl[peng_biscoe_compl$year %in% c(2008, 2009), ]
+datBiscoe[datBiscoe$year %in% c(2008, 2009), ]
 ```
 
 Bu iş de tamam!
@@ -561,11 +558,11 @@ Bir de base R'a native pipe - `|>` geldikten sonra çıkan `sort_by()` fonksiyon
 `order()` fonksiyonu bir vektörün sıralanmış indekslerini veriyor.
 Biz de bu indeksleri satır indeksi yerine kullanarak sıralama yapabiliyoruz.
 
-Mesela filtrelemeden önceki verimiz olan `peng_relocate` verisinin `bill_len` sütunuyla `order()` fonksiyonunu kullanalım.
+Mesela filtrelemeden önceki verimiz olan `dat` verisinin `bill_len` sütunuyla `order()` fonksiyonunu kullanalım.
 
 ```{r}
 
-order(peng_relocate$bill_len)
+order(dat$bill_len)
 
 ```
 
@@ -574,7 +571,7 @@ Bu indeksle sıralama yapalım.
 
 ```{r}
 
-peng_relocate[order(peng_relocate$bill_len), ]
+dat[order(dat$bill_len), ]
 
 ```
 
@@ -584,14 +581,14 @@ Ve verimiz sıralandı.
 Şimdi de onu deneyelim.
 
 ```{r}
-sort_by(peng_relocate, peng_relocate$bill_len)
+sort_by(dat, dat$bill_len)
 ```
 
 Eğer azalan bir sıralama istiyorsak `decreasing` argümanına `TRUE` değerini vermeli ya da değişkenin başına `-` eklemeliyiz.
 
 ```{r}
-peng_relocate[order(peng_relocate$bill_len, decreasing = TRUE), ]
-peng_relocate[order(-peng_relocate$bill_len), ]
+dat[order(dat$bill_len, decreasing=TRUE), ]
+dat[order(-dat$bill_len), ]
 
 ```
 
@@ -599,7 +596,7 @@ Gördüğünüz gibi büyükten küçüğe bir şekilde sıraladık.
 
 `sort_by()` ile de aynı şekilde, değişkenin başına `-` ekleyerek azalan bir biçimde sıralayabiliriz.
 ```{r}
-sort_by(peng_relocate, -peng_relocate$bill_len)
+sort_by(dat, -dat$bill_len)
 ```
 
 Çoğu zaman sıralamaları birden fazla değişkenle yapmak isteyebiliriz.
@@ -608,12 +605,12 @@ Bu durumda da `order()` fonksiyonuna diğer değişken isimlerini eklememiz gere
 Öncelikle yıla göre, sonrasında da gaga uzunluğuna göre büyükten küçüğe sıralayalım.
 
 ```{r}
-peng_relocate[order(-peng_relocate$year, -peng_relocate$bill_len), ]
+dat[order(-dat$year, -dat$bill_len), ]
 ```
 
 `sort_by` fonksiyonuyla da aşağıdaki şekilde sıralayabilirsiniz.
 ```{r}
-sort_by(peng_relocate, list(-peng_relocate$year, -peng_relocate$bill_len))
+sort_by(dat, list(-dat$year, -dat$bill_len))
 ```
 
 Son satır işlemi olarak da unique olan değerleri seçmeyi - silmeyi göreceğiz.
@@ -622,13 +619,13 @@ Eğer bir data.frame'de tekrar eden değerlerle ya da eşsiz değerlerle bir fil
 
 Mesela verimizi (data.frame), yalnızca eşsiz olan vücut kütlesi değerleri döndürmek istiyorsak aşağıdaki gibi filtreleyebiliriz. 
 ```{r}
-peng_relocate[!duplicated(peng_relocate$body_mass), ]
+dat[!duplicated(dat$body_mass), ]
 ```
 
 Tekrar eden değerleri döndürmek istediğimizde de `!` operatörü kullanmadan yapabiliriz.
 
 ```{r}
-peng_relocate[duplicated(peng_relocate$body_mass), ]
+dat[duplicated(dat$body_mass), ]
 
 ```
 
@@ -647,7 +644,7 @@ Basit bir örnekle başlayalım.
 Diyelim ki ortalama bill_len'i hesaplamak istiyoruz.
 ```{r}
 
-mean(peng_relocate$bill_len, na.rm = TRUE) # na.rm = TRUE kullanarak ortalama hesaplarken NA degerleri yok sayiyoruz.
+mean(dat$bill_len, na.rm=TRUE) # na.rm = TRUE kullanarak ortalama hesaplarken NA degerleri yok sayiyoruz.
 
 ```
 
@@ -663,15 +660,15 @@ Her bir tür için ortamala gaga uzunluğunu öğrenmek istediğimizi varsayalı
 İlk argüman olarak özetlemeyi istediğimiz değişkeni yazıyoruz.
 İkinci argüman olarak grupladığımız değişkeni ve üçüncü olarak da fonksiyonu.
 ```{r}
-tapply(peng_relocate$bill_len, peng_relocate$species, mean, na.rm = TRUE)
+tapply(dat$bill_len, dat$species, mean, na.rm=TRUE)
 ```
 
 Burada `na.rm` argümanı kafanızı karıştırmasın diye aşağıdaki şekillerde de yazabiliriz bu fonksiyonu.
 Son argümanı fonksiyon içinde gösteriyoruz.
 Bu da daha okunaklı oluyor.
 ```{r}
-tapply(peng_relocate$bill_len, peng_relocate$species, function(x) mean(x, na.rm = TRUE))
-tapply(peng_relocate$bill_len, peng_relocate$species, \(x) mean(x, na.rm = TRUE))
+tapply(dat$bill_len, dat$species, function(x) mean(x, na.rm=TRUE))
+tapply(dat$bill_len, dat$species, \(x) mean(x, na.rm=TRUE))
 ```
 
 `\()` anonymous function diye geçen bir fonksiyon.
@@ -684,24 +681,15 @@ Diyelim ki hem ada hem de türler için ortalama hesaplamak istiyoruz.
 O zaman grup değişkenlerini bir `list()` ile vermemiz gerekiyor.
 
 ```{r}
-tapply(
-  peng_relocate$bill_len, 
-  list(peng_relocate$species, peng_relocate$island), 
-  \(x) mean(x, na.rm = TRUE)
-)
+tapply(dat$bill_len, list(dat$species, dat$island), \(x) mean(x, na.rm=TRUE))
 ```
 
 Eğer tek bir gruba ve birden çok fonksiyona göre özet istatistik çıkartacaksanız aşağıdaki gibi bir data.frame içerisinde tanımlayabilirsiniz.
 
 ```{r}
-tapply(
-  peng_relocate$bill_len, 
-  peng_relocate$species, 
-  \(x) data.frame(
-    mean = mean(x, na.rm = TRUE),
-    median = median(x, na.rm = TRUE)
-  )
-)
+tapply(dat$bill_len, dat$species,
+       \(x) data.frame(mean=mean(x, na.rm=TRUE), 
+                       median=median(x, na.rm=TRUE)))
 ```
 
 Ancak birden fazla grup için birden fazla özet istatistik hesaplamak istiyorsanız `aggregate()` ya da `by()` fonksiyonunu kullanmanızı öneririm.
@@ -710,14 +698,9 @@ Ya da en azından ben basit yolunu bulamamışımdır.
 Basit bir yolunu bilen varsa yorumlarda belirtsin lütfen. :)  
 
 ```{r}
-aggregate(
-  peng_relocate$bill_len, 
-  list(peng_relocate$species, peng_relocate$island), 
-  \(x) c(
-    mean = mean(x, na.rm = TRUE),
-    median = median(x, na.rm = TRUE)
-  )
-)
+aggregate(dat$bill_len, list(dat$species, dat$island), function(x) {
+    c(mean=mean(x, na.rm=TRUE), median=median(x, na.rm=TRUE))
+})
 ```
 
 Ya da karmaşık işlerde en kullanışlı olan `by()` fonksiyonu.
@@ -734,16 +717,11 @@ Bir fonksiyonu, argümanlarını list'ten alacak şekilde çağırmak istediğim
 Zamanla oturacaktır.
 
 ```{r}
-dat_by <- by(
-  peng_relocate, 
-  list(peng_relocate$species, peng_relocate$island), 
-  \(x) data.frame(
-    species = x$species[1], # sadece essiz degerleri almasi icin
-    island = x$island[1],   # sadece essiz degerleri almasi icin
-    mean = mean(x$bill_len, na.rm = TRUE),
-    median = median(x$bill_len, na.rm = TRUE)
-  )
-) 
+dat_by <- by(dat, list(dat$species, dat$island), 
+             \(x) data.frame(species=x$species[1], # sadece essiz degerleri almasi icin 
+                             island=x$island[1],   # sadece essiz degerleri almasi icin 
+                             mean=mean(x$bill_len, na.rm = TRUE), 
+                             median=median(x$bill_len, na.rm = TRUE))) 
 peng_summ <- do.call(rbind, dat_by)
 peng_summ
 ```
@@ -790,45 +768,28 @@ plot(penguins$flipper_len, penguins$bill_len)
 [Şuradan](https://r-charts.com/base-r/pch-symbols/) şekil kodlarına ilişkin daha fazla bilgi edinebilirsiniz.
 
 ```{r}
-plot(penguins$flipper_len, penguins$bill_len, pch = 16)
+plot(penguins$flipper_len, penguins$bill_len, pch=16)
 ```
 
 Eksen başlıklarını değiştirelim.
 
 ```{r}
-plot(
-  penguins$flipper_len, 
-  penguins$bill_len, 
-  pch = 16,
-  xlab = "Flipper Length [mm]",
-  ylab = "Bill Length [mm]"
-)
+plot(penguins$flipper_len, penguins$bill_len, pch=16, 
+     xlab="Flipper Length [mm]", ylab="Bill Length [mm]")
 ```
 
 Noktaların rengini kırmızı yapalım.
 
 ```{r}
-plot(
-  penguins$flipper_len, 
-  penguins$bill_len, 
-  col = "red",
-  pch = 16,
-  xlab = "Flipper Length [mm]",
-  ylab = "Bill Length [mm]"
-)
+plot(penguins$flipper_len, penguins$bill_len, col="red", pch=16,
+     xlab="Flipper Length [mm]", ylab="Bill Length [mm]")
 ```
 
 Şimdi de renkleri `species` değişkenine göre belirleyelim.
 
 ```{r}
-plot(
-  penguins$flipper_len, 
-  penguins$bill_len, 
-  col = penguins$species,
-  pch = 16,
-  xlab = "Flipper Length [mm]",
-  ylab = "Bill Length [mm]"
-)
+plot(penguins$flipper_len, penguins$bill_len, col=penguins$species, pch=16, 
+     xlab="Flipper Length [mm]", ylab="Bill Length [mm]")
 ```
 
 Bir de lejant ekleyelim.
@@ -838,35 +799,20 @@ Bu konuda [tinyplot](https://grantmcdermott.com/tinyplot/) paketine bakabilirsin
 Bakmanızı mutlaka öneririm.
 
 ```{r}
-plot(
-  penguins$flipper_len, 
-  penguins$bill_len, 
-  col = penguins$species,
-  pch = 16,
-  xlab = "Flipper Length [mm]",
-  ylab = "Bill Length [mm]"
-)
-legend("topright", legend = levels(penguins$species), col = 1:3, pch = 16, title = "Species")
+plot(penguins$flipper_len, penguins$bill_len, col=penguins$species, pch = 16, 
+     xlab="Flipper Length [mm]", ylab="Bill Length [mm]")
+legend("topright", legend=levels(penguins$species), col=1:3, pch=16, 
+       title="Species")
 ```
 
 Burada da nokta şekillerini de `species` değişkenine göre değiştiriyoruz.
 
 ```{r}
-plot(
-  penguins$flipper_len, 
-  penguins$bill_len, 
-  col = penguins$species,
-  pch = as.integer(penguins$species),
-  xlab = "Flipper Length [mm]",
-  ylab = "Bill Length [mm]"
-)
-legend(
-  "topright", 
-  legend = levels(penguins$species),
-  col = 1:3, 
-  pch = unique(as.integer(penguins$species)), 
-  title = "Species"
- )
+plot(penguins$flipper_len, penguins$bill_len, col=penguins$species, 
+     pch=as.integer(penguins$species), xlab="Flipper Length [mm]", 
+     ylab="Bill Length [mm]")
+legend("topright", legend=levels(penguins$species), col=1:3, 
+       pch=1:nlevels(penguins$species), title="Species")
 ```
 
 ```{r}
@@ -885,11 +831,7 @@ hist(penguins$bill_dep)
 ```
 
 ```{r}
-hist(
-  penguins$bill_dep, 
-  xlab = "Bill Depth [mm]", 
-  main = "Histogram of Bill Depth"
-)
+hist(penguins$bill_dep, xlab="Bill Depth [mm]", main="Histogram of Bill Depth")
 ```
 
 Fazlasıyla uzun bir yazı oldu. 

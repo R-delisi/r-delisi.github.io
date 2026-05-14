@@ -1,47 +1,13 @@
 ---
-toc: false
-page-layout: article
+listing:
+  feed: true
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
 comments: false
 ---
-
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-#| results: asis
-
-library(rmarkdown)
-
-# Dosyaları bul
-files <- list.files("posts", pattern = "\\.qmd$", recursive = TRUE, full.names = TRUE)
-
-if (length(files) > 0) {
-  # Verileri çek
-  posts_data <- lapply(files, function(f) {
-    meta <- rmarkdown::yaml_front_matter(f)
-    date_val <- if (!is.null(meta$date)) as.Date(meta$date) else as.Date("1970-01-01")
-    # Link düzeltme
-    path <- gsub("\\.qmd$", ".html", f)
-    list(title = meta$title, date = date_val, path = path)
-  })
-
-  # Sırala
-  posts_data <- posts_data[order(sapply(posts_data, function(x) x$date), decreasing = TRUE)]
-
-  # Bas
-  tr_months <- c("Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara")
-  
-  cat('<div class="blog-list">')
-  for (post in posts_data) {
-    d <- as.POSIXlt(post$date)
-    date_str <- paste(d$mday, tr_months[d$mon + 1], d$year + 1900)
-    cat(sprintf(
-      '<div class="blog-post"><div class="blog-date">%s</div><div class="blog-title"><a href="%s">%s</a></div></div>', 
-      date_str, post$path, post$title
-    ))
-  }
-  cat('</div>')
-} else {
-  cat("Yazı bulunamadı.")
-}
-```
