@@ -211,13 +211,13 @@ glimpse(dat)
 Şimdi de sütun isimlerini değiştirelim.
 
 Camel case kullanılan isimler, büyük harfle başlayan isimler, birimler, boşluklar derken standart olmayan birçok şey var.
-Ben, genelde tidy style guide'de belirtildiği gibi snake_case kullanmayı tercih ediyorum.
+Buradaki isimleri, orijinal veriye sadık kalarak değiştireceğiz.
+
+Biraz adlandırma stillerinden bahsetmek gerekirse; ben, genelde tidy style guide'de belirtildiği gibi snake_case kullanmayı tercih ediyorum.
 Son zamanlarda camelCase de kullanmaya başladım.
 Bunun tek bir doğrusu yok, önemli olan okunaklı, tutarlı ve kolay hata ayıklanabilen kodlar yazmak.
 R için çok sayıda style guide mevcut. 
 Şuradaki linkleri incelemenizi öneririm; [Google](https://google.github.io/styleguide/Rguide.html), [tidy](https://style.tidyverse.org/), [bioconductor](https://bioconductor.github.io/bioc_mentorship_docs/style-guide.html), [Norm Matloff](https://github.com/matloff/R-Style-Guide).
-
-Bu yazıda da, aslında tidyverse'nin oldukça katı olduğu snake_case kullanımını esnetmek ve okuyucular için göz alışkanlığı olması için camelCase kullandım. 
 
 ```{r}
 dat |> 
