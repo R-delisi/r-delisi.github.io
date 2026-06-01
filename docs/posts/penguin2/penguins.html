@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Mehmet Göktuğ ÖZTÜRK">
+<meta name="dcterms.date" content="2026-05-14">
+<meta name="description" content="dplyr ile Veri Cambazlığı">
+
+<title>PENGUINS VERİSİ İLE DPLYR’YE GİRİŞ – R DELİSİ</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.webp" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2e9dd08ddc76ffdabeca688d1541b1fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-222c6c5dd1a4cb2d35b5c8f65d1fe436.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-2e9dd08ddc76ffdabeca688d1541b1fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sonuç yok",
+    "search-matching-documents-text": "eşleşen belgeler",
+    "search-copy-link-title": "Aramak için bağlantıyı kopyalayın",
+    "search-hide-matches-text": "Ek eşleşmeleri gizle",
+    "search-more-match-text": "bu belgede bir tane daha eşleşme",
+    "search-more-matches-text": "bu belgede daha fazla eşleşme",
+    "search-clear-button-title": "Temizle",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "İptal et",
+    "search-submit-button-title": "Gönder",
+    "search-label": "Ara"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="PENGUINS VERİSİ İLE DPLYR’YE GİRİŞ – R DELİSİ">
+<meta property="og:description" content="dplyr ile Veri Cambazlığı">
+<meta property="og:image" content="figs/penguins.webp">
+<meta property="og:site_name" content="R DELİSİ">
+<meta name="twitter:title" content="PENGUINS VERİSİ İLE DPLYR’YE GİRİŞ – R DELİSİ">
+<meta name="twitter:description" content="dplyr ile Veri Cambazlığı">
+<meta name="twitter:image" content="figs/penguins.webp">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">R DELİSİ</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Ara"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Gezinmeyi değiştir" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Hakkımda</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://ecoevo.social/@mehmet_goktu"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/mehmetgoktug"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/mehmetgoktug/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Karanlık modu değiştir"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Bu sayfada</h2>
+   
+  <ul>
+  <li><a href="#giriş" id="toc-giriş" class="nav-link active" data-scroll-target="#giriş">1. GİRİŞ</a></li>
+  <li><a href="#veri-cambazliği" id="toc-veri-cambazliği" class="nav-link" data-scroll-target="#veri-cambazliği">2. VERİ CAMBAZLIĞI</a>
+  <ul class="collapse">
+  <li><a href="#sütun-işlemleri" id="toc-sütun-işlemleri" class="nav-link" data-scroll-target="#sütun-işlemleri">SÜTUN İŞLEMLERİ</a></li>
+  <li><a href="#satir-işlemleri" id="toc-satir-işlemleri" class="nav-link" data-scroll-target="#satir-işlemleri">SATIR İŞLEMLERİ</a></li>
+  <li><a href="#grup-işlemleri" id="toc-grup-işlemleri" class="nav-link" data-scroll-target="#grup-işlemleri">GRUP İŞLEMLERİ</a></li>
+  </ul></li>
+  <li><a href="#biraz-da-grafik" id="toc-biraz-da-grafik" class="nav-link" data-scroll-target="#biraz-da-grafik">3. BİRAZ DA GRAFİK</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">PENGUINS VERİSİ İLE DPLYR’YE GİRİŞ</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">dplyr</div>
+    <div class="quarto-category">tidyverse</div>
+    <div class="quarto-category">palmerpenguins</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    dplyr ile Veri Cambazlığı
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Yazar</div>
+    <div class="quarto-title-meta-contents">
+             <p>Mehmet Göktuğ ÖZTÜRK </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Yayınlanma Tarihi</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">14 May 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/penguins.webp" class="img-fluid figure-img"></p>
+<figcaption>Kaynak: <a href="https://allisonhorst.github.io/palmerpenguins/articles/art.html">Allison Horst</a></figcaption>
+</figure>
+</div>
+<p><strong>Merhabalar, blogun yeni yazısına hoş geldiniz.</strong> <strong>Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.</strong> <strong>Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.</strong></p>
+<p>Bir önceki yazıda penguins verisi ile <code>base R</code>’a bir giriş yapmış, birçok temel veri işini <code>base R</code> ile yapmayı anlatmıştım. Bu yazıda ise aynı işlemleri <code>{tidyverse}</code>’nin meşhur paketi <code>{dplyr}</code>’yi kullanarak yapacağız. Veri görselleştirme için ise <code>ggplot2</code> paketini kullanacağız. Bu sefer yazıyı daha kısa tutacağım. R kullanmaya yeni başlayanların, <code>tidyverse</code> öğrenmeden önce dilin temel kavramlarını öğrenmelerinin önemli olduğunu düşünüyorum. Bu sebeple öncelikle bir önceki yazıya ve o yazıda önerdiğim linklere bakmanızı öneririm.</p>
+<p>Daha önce de çok kez tekrar ettiğim gibi, <code>tidyverse</code>, veri bilimi için geliştirilmiş çok sayıda işlevsel paket barındıran bir paket koleksiyonu. <code>dplyr</code> ve daha genel olarak <code>tidyverse</code>, R dünyasının en çok kullandığı ve aynı zamanda üzerine en çok tartıştığı paketlerden. Bu konudaki görüşlerimi <a href="https://r-delisi.github.io/posts/dem/dem.html">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a> yazısında belirtmiştim. Son dönemde <code>base R</code> ağırlıklı bir R kullanımını tercih etsem de, gerektiğinde <code>data.table</code> ve <code>tidyverse</code> de kullanıyorum. “Kadim” <code>base R</code> vs.&nbsp;<code>tidyverse</code> ya da <code>tidyverse</code> vs.&nbsp;<code>data.table</code> savaşını alevlendirmeye de niyetim yok. :) Parsimoni ilkesi gereği basiti ve minimali seçmeyi, yaptığım analizlerin, yazdığım programların arkasında neler döndüğünü bilmeyi tercih ediyorum. İlginizi çekebileceğini düşündüğüm şu iki linki bırakıyor ve ardından yazıya başlıyorum; <a href="https://dirk.eddelbuettel.com/blog/2021/12/08/">Less Is More</a>, <a href="https://www.tinyverse.org/">tinyverse</a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/penguins3.webp" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Kaynak: <a href="https://allisonhorst.github.io/palmerpenguins/articles/art.html">Allison Horst</a></figcaption>
+</figure>
+</div>
+<section id="giriş" class="level2">
+<h2 class="anchored" data-anchor-id="giriş">1. GİRİŞ</h2>
+<p>Adettendir, önce paketleri R’a yükleyelim ve ardından veri setine bakarak başlayalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eger henuz kurmadiysanız, asagidaki kodu yorumdan cikartip calistirabilirsiniz</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("dplyr")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>penguins</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   species    island bill_len bill_dep flipper_len body_mass    sex year
+1   Adelie Torgersen     39.1     18.7         181      3750   male 2007
+2   Adelie Torgersen     39.5     17.4         186      3800 female 2007
+3   Adelie Torgersen     40.3     18.0         195      3250 female 2007
+4   Adelie Torgersen       NA       NA          NA        NA   &lt;NA&gt; 2007
+5   Adelie Torgersen     36.7     19.3         193      3450 female 2007
+6   Adelie Torgersen     39.3     20.6         190      3650   male 2007
+7   Adelie Torgersen     38.9     17.8         181      3625 female 2007
+8   Adelie Torgersen     39.2     19.6         195      4675   male 2007
+9   Adelie Torgersen     34.1     18.1         193      3475   &lt;NA&gt; 2007
+10  Adelie Torgersen     42.0     20.2         190      4250   &lt;NA&gt; 2007
+11  Adelie Torgersen     37.8     17.1         186      3300   &lt;NA&gt; 2007
+12  Adelie Torgersen     37.8     17.3         180      3700   &lt;NA&gt; 2007
+13  Adelie Torgersen     41.1     17.6         182      3200 female 2007
+14  Adelie Torgersen     38.6     21.2         191      3800   male 2007
+15  Adelie Torgersen     34.6     21.1         198      4400   male 2007
+16  Adelie Torgersen     36.6     17.8         185      3700 female 2007
+17  Adelie Torgersen     38.7     19.0         195      3450 female 2007
+18  Adelie Torgersen     42.5     20.7         197      4500   male 2007
+19  Adelie Torgersen     34.4     18.4         184      3325 female 2007
+20  Adelie Torgersen     46.0     21.5         194      4200   male 2007
+21  Adelie    Biscoe     37.8     18.3         174      3400 female 2007
+22  Adelie    Biscoe     37.7     18.7         180      3600   male 2007
+23  Adelie    Biscoe     35.9     19.2         189      3800 female 2007
+24  Adelie    Biscoe     38.2     18.1         185      3950   male 2007
+25  Adelie    Biscoe     38.8     17.2         180      3800   male 2007
+ [ reached 'max' / getOption("max.print") -- omitted 319 rows ]</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi birçok satır ve sütundan oluşan bir veri tablosu. Öncesinde R konsolunun kaç tane değer yazdıracağını ayarlamadıysanız veriyi bu şekilde çağırmak, tüm veri tablosunu konsola yazdıracaktır. Bu durum, büyük veri tablolarında istenmeyen bir durum. Bundan kaçınmak için önceki yazıda bahsettiğim gibi <code>head()</code> ve <code>tail()</code> fonksiyonlarını kullanabilirsiniz ancak ben bu sefer veriyi, bir tür <code>data.frame</code> yapısı olan <code>tibble</code>’ye dönüştüreceğim. <code>tidyverse</code> ile çalışırken <code>tibble</code> kullanmak daha rahat hissettiriyor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(penguins)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>peng</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species island    bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;        &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Adelie  Torgersen     39.1     18.7         181      3750 male    2007
+ 2 Adelie  Torgersen     39.5     17.4         186      3800 female  2007
+ 3 Adelie  Torgersen     40.3     18           195      3250 female  2007
+ 4 Adelie  Torgersen     NA       NA            NA        NA &lt;NA&gt;    2007
+ 5 Adelie  Torgersen     36.7     19.3         193      3450 female  2007
+ 6 Adelie  Torgersen     39.3     20.6         190      3650 male    2007
+ 7 Adelie  Torgersen     38.9     17.8         181      3625 female  2007
+ 8 Adelie  Torgersen     39.2     19.6         195      4675 male    2007
+ 9 Adelie  Torgersen     34.1     18.1         193      3475 &lt;NA&gt;    2007
+10 Adelie  Torgersen     42       20.2         190      4250 &lt;NA&gt;    2007
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi <code>data.frame</code>’nin kaç değişken ve gözlemden oluştuğundan, sütunlardaki veri tiplerine kadar birçok bilgi ekrana basılıyor ve veri, daha kompakt bir hâlde görüntülenebiliyor. Ancak bir konuda da uyarmam gerekiyor. <code>tibble</code> veri yapısı, klasik data.frame’den farklı davranışlara sahip. Bu sebeple <code>tidyverse</code> fonksiyonları dışında <code>tibble</code> kullanırken dikkatli olmanızı, mümkünse <code>data.frame</code> kullanmanızı tavsiye ediyorum.</p>
+<p>Şimdi verinin yapısına daha ayrıntılı bakmak için <code>glimpse()</code> fonksiyonunu kullanalım. Bu fonksiyon, <code>base R</code>’daki <code>str()</code> ile aynı işleve sahip.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peng)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ species     &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Ad…
+$ island      &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Tor…
+$ bill_len    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, …
+$ bill_dep    &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, …
+$ flipper_len &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180,…
+$ body_mass   &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, …
+$ sex         &lt;fct&gt; male, female, female, NA, female, male, female, male, NA, …
+$ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi 344 gözlem ve 8 değişkenden oluşan bir veri tablosu.</p>
+<p>Şimdi basit olarak nasıl satır ve sütun seçeceğimize bakalım. Sütun seçmek için <code>select()</code> fonksiyonunu, indeksine göre satır seçmek için ise <code>slice()</code> fonksiyonunu kullacağız.</p>
+<p>İlk 6 satırı seçelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">slice</span>(peng, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  species island    bill_len bill_dep flipper_len body_mass sex     year
+  &lt;fct&gt;   &lt;fct&gt;        &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+1 Adelie  Torgersen     39.1     18.7         181      3750 male    2007
+2 Adelie  Torgersen     39.5     17.4         186      3800 female  2007
+3 Adelie  Torgersen     40.3     18           195      3250 female  2007
+4 Adelie  Torgersen     NA       NA            NA        NA &lt;NA&gt;    2007
+5 Adelie  Torgersen     36.7     19.3         193      3450 female  2007
+6 Adelie  Torgersen     39.3     20.6         190      3650 male    2007</code></pre>
+</div>
+</div>
+<p>Şimdi de ilk iki sütunu ve ilk 10 satırı seçelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="fu">slice</span>(peng, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  species island   
+  &lt;fct&gt;   &lt;fct&gt;    
+1 Adelie  Torgersen
+2 Adelie  Torgersen
+3 Adelie  Torgersen
+4 Adelie  Torgersen
+5 Adelie  Torgersen
+6 Adelie  Torgersen</code></pre>
+</div>
+</div>
+<p><code>[]</code> kullanımından daha karmaşık görünüyor. Özellikle de iç içe fonksiyonla yazıldığı zaman. Ancak bir yol daha var. İlk olarak <code>tidyverse</code> ile gelen ve ardından <code>base R</code>’a eklenen pipe - <code>|&gt;</code> operatörü ile veri işleme fonksiyonlarını birbirine bağlayabiliriz. Bu, en fazla birkaç satırdan oluşan pipeline’ler kurulduğu sürece daha okunaklı. Debugging’i zorlaştırsa da kısa ve iyi yazılmış pipeline’ler ile veri analizi daha kolay hâle geliyor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  species island   
+  &lt;fct&gt;   &lt;fct&gt;    
+1 Adelie  Torgersen
+2 Adelie  Torgersen
+3 Adelie  Torgersen
+4 Adelie  Torgersen
+5 Adelie  Torgersen
+6 Adelie  Torgersen</code></pre>
+</div>
+</div>
+<p>Çok uzun olmayan pipe’leri tek satır hâlinde de yazabiliriz. Tek satırda 80 karakteri geçmemeyi kural hâline getirirseniz kodlarınız da daha okunaklı olacaktır.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  species island   
+  &lt;fct&gt;   &lt;fct&gt;    
+1 Adelie  Torgersen
+2 Adelie  Torgersen
+3 Adelie  Torgersen
+4 Adelie  Torgersen
+5 Adelie  Torgersen
+6 Adelie  Torgersen</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi sütun isimlerini kullanırken ne tırnak içerisinde yazdık, ne de <code>c()</code> ile bir vektör oluşturduk. İşte <code>dplyr</code> burada bir sihir yapıyor. Bir tür <a href="https://adv-r.hadley.nz/metaprogramming.html">metaprogramming</a> hilesi. Buna Non-Standard Evaluation (NSE) deniliyor. Ya da <code>tidyverse</code>’nin geliştirdiği versiyonuyla <a href="https://dplyr.tidyverse.org/articles/programming.html">tidy evaluation</a>. Veri analizi yaparken işleri oldukça kolaylaştıran bu sihir, programlama yaparken tam bir kâbusa dönüşebilir.</p>
+<p>Şimdi de <code>species</code> değişkeni için kaç adet eşsiz (unique) değer olduğuna bakalım. Diğer kategorik değişkenler için de aynı yöntemi kullanabilirsiniz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">distinct</span>(species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 1
+  species  
+  &lt;fct&gt;    
+1 Adelie   
+2 Gentoo   
+3 Chinstrap</code></pre>
+</div>
+</div>
+<p><code>base R</code>’daki <code>unique()</code> fonksiyonuyla benzer işleve sahip <code>distinct()</code> fonksiyonunu kullandık. Bu fonksiyon, eşsiz değerleri bir <code>tibble</code> olarak döndürdü.</p>
+<p>Şimdi de bu eşsiz değerlerin sıklık tablosuna bakalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species       n
+  &lt;fct&gt;     &lt;int&gt;
+1 Adelie      152
+2 Chinstrap    68
+3 Gentoo      124</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  island        n
+  &lt;fct&gt;     &lt;int&gt;
+1 Biscoe      168
+2 Dream       124
+3 Torgersen    52</code></pre>
+</div>
+</div>
+<p>Tek tek faktör değişkenlerimizin sıklık tablosuna baktığımıza göre şimdi de, iki farklı değişken kullanarak bakabiliriz.</p>
+<p>Hangi adada hangi türden kaç tane penguen mevcut?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  species   island        n
+  &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
+1 Adelie    Biscoe       44
+2 Adelie    Dream        56
+3 Adelie    Torgersen    52
+4 Chinstrap Dream        68
+5 Gentoo    Biscoe      124</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi iki değişkeni de kullanarak bunu öğrenebiliyoruz.</p>
+</section>
+<section id="veri-cambazliği" class="level2">
+<h2 class="anchored" data-anchor-id="veri-cambazliği">2. VERİ CAMBAZLIĞI</h2>
+<p>Şu ana kadar bir önceki yazının işleyişini takip ederek, temel kavramlara değindik.</p>
+<p>Şimdi bir veri analizi - veri bilimi iş akışının en mühim kısımlarından olan veri cambazlığını nasıl yapabileceğimize bakacağız. Bunun için Hadley Wickham’ın <a href="https://r4ds.hadley.nz/">R for Data Science</a> - <a href="https://tr.r4ds.hadley.nz/">İlk baskının TR çevirisi</a> kitabında anlattığı şekliyle <code>sütun</code>, <code>satır</code> ve <code>grup</code> işlemlerini yapacağız. Gerçek dünya verileriyle uğraştığımızda bu kısım, bir veri bilimi iş akışının genellikle büyük çoğunluğunu oluşturuyor.</p>
+<p>Bu bölümde yine palmerpenguins datasını kullanacağız ama bu sefer ham olan versiyonunu. Verinin ham hâlini kullanarak <code>penguins</code>’teki son hâline ulaşmaya çalışacağız. Bu veriye erişmek için <code>penguins_raw</code> yazabilirsiniz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>penguins_raw</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   studyName Sample Number                             Species Region    Island
+1    PAL0708             1 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+2    PAL0708             2 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+3    PAL0708             3 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+4    PAL0708             4 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+5    PAL0708             5 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+6    PAL0708             6 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+7    PAL0708             7 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+8    PAL0708             8 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+9    PAL0708             9 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+10   PAL0708            10 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+11   PAL0708            11 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
+                Stage Individual ID Clutch Completion   Date Egg
+1  Adult, 1 Egg Stage          N1A1               Yes 2007-11-11
+2  Adult, 1 Egg Stage          N1A2               Yes 2007-11-11
+3  Adult, 1 Egg Stage          N2A1               Yes 2007-11-16
+4  Adult, 1 Egg Stage          N2A2               Yes 2007-11-16
+5  Adult, 1 Egg Stage          N3A1               Yes 2007-11-16
+6  Adult, 1 Egg Stage          N3A2               Yes 2007-11-16
+7  Adult, 1 Egg Stage          N4A1                No 2007-11-15
+8  Adult, 1 Egg Stage          N4A2                No 2007-11-15
+9  Adult, 1 Egg Stage          N5A1               Yes 2007-11-09
+10 Adult, 1 Egg Stage          N5A2               Yes 2007-11-09
+11 Adult, 1 Egg Stage          N6A1               Yes 2007-11-09
+   Culmen Length (mm) Culmen Depth (mm) Flipper Length (mm) Body Mass (g)
+1                39.1              18.7                 181          3750
+2                39.5              17.4                 186          3800
+3                40.3              18.0                 195          3250
+4                  NA                NA                  NA            NA
+5                36.7              19.3                 193          3450
+6                39.3              20.6                 190          3650
+7                38.9              17.8                 181          3625
+8                39.2              19.6                 195          4675
+9                34.1              18.1                 193          3475
+10               42.0              20.2                 190          4250
+11               37.8              17.1                 186          3300
+      Sex Delta 15 N (o/oo) Delta 13 C (o/oo)
+1    MALE                NA                NA
+2  FEMALE           8.94956         -24.69454
+3  FEMALE           8.36821         -25.33302
+4    &lt;NA&gt;                NA                NA
+5  FEMALE           8.76651         -25.32426
+6    MALE           8.66496         -25.29805
+7  FEMALE           9.18718         -25.21799
+8    MALE           9.46060         -24.89958
+9    &lt;NA&gt;                NA                NA
+10   &lt;NA&gt;           9.13362         -25.09368
+11   &lt;NA&gt;           8.63243         -25.21315
+                                Comments
+1         Not enough blood for isotopes.
+2                                   &lt;NA&gt;
+3                                   &lt;NA&gt;
+4                     Adult not sampled.
+5                                   &lt;NA&gt;
+6                                   &lt;NA&gt;
+7  Nest never observed with full clutch.
+8  Nest never observed with full clutch.
+9              No blood sample obtained.
+10  No blood sample obtained for sexing.
+11  No blood sample obtained for sexing.
+ [ reached 'max' / getOption("max.print") -- omitted 333 rows ]</code></pre>
+</div>
+</div>
+<p>Öncelikle <code>tibble</code>’ye çevirelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(penguins_raw)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>raw</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 17
+   studyName `Sample Number` Species         Region Island Stage `Individual ID`
+   &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;          
+ 1 PAL0708                 1 Adelie Penguin… Anvers Torge… Adul… N1A1           
+ 2 PAL0708                 2 Adelie Penguin… Anvers Torge… Adul… N1A2           
+ 3 PAL0708                 3 Adelie Penguin… Anvers Torge… Adul… N2A1           
+ 4 PAL0708                 4 Adelie Penguin… Anvers Torge… Adul… N2A2           
+ 5 PAL0708                 5 Adelie Penguin… Anvers Torge… Adul… N3A1           
+ 6 PAL0708                 6 Adelie Penguin… Anvers Torge… Adul… N3A2           
+ 7 PAL0708                 7 Adelie Penguin… Anvers Torge… Adul… N4A1           
+ 8 PAL0708                 8 Adelie Penguin… Anvers Torge… Adul… N4A2           
+ 9 PAL0708                 9 Adelie Penguin… Anvers Torge… Adul… N5A1           
+10 PAL0708                10 Adelie Penguin… Anvers Torge… Adul… N5A2           
+# ℹ 334 more rows
+# ℹ 10 more variables: `Clutch Completion` &lt;chr&gt;, `Date Egg` &lt;date&gt;,
+#   `Culmen Length (mm)` &lt;dbl&gt;, `Culmen Depth (mm)` &lt;dbl&gt;,
+#   `Flipper Length (mm)` &lt;dbl&gt;, `Body Mass (g)` &lt;dbl&gt;, Sex &lt;chr&gt;,
+#   `Delta 15 N (o/oo)` &lt;dbl&gt;, `Delta 13 C (o/oo)` &lt;dbl&gt;, Comments &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Şimdi veriye hızlıca göz atalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(raw)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 17
+$ studyName             &lt;chr&gt; "PAL0708", "PAL0708", "PAL0708", "PAL0708", "PAL…
+$ `Sample Number`       &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1…
+$ Species               &lt;chr&gt; "Adelie Penguin (Pygoscelis adeliae)", "Adelie P…
+$ Region                &lt;chr&gt; "Anvers", "Anvers", "Anvers", "Anvers", "Anvers"…
+$ Island                &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgerse…
+$ Stage                 &lt;chr&gt; "Adult, 1 Egg Stage", "Adult, 1 Egg Stage", "Adu…
+$ `Individual ID`       &lt;chr&gt; "N1A1", "N1A2", "N2A1", "N2A2", "N3A1", "N3A2", …
+$ `Clutch Completion`   &lt;chr&gt; "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", …
+$ `Date Egg`            &lt;date&gt; 2007-11-11, 2007-11-11, 2007-11-16, 2007-11-16,…
+$ `Culmen Length (mm)`  &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34…
+$ `Culmen Depth (mm)`   &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18…
+$ `Flipper Length (mm)` &lt;dbl&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190,…
+$ `Body Mass (g)`       &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 34…
+$ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "MALE"…
+$ `Delta 15 N (o/oo)`   &lt;dbl&gt; NA, 8.94956, 8.36821, NA, 8.76651, 8.66496, 9.18…
+$ `Delta 13 C (o/oo)`   &lt;dbl&gt; NA, -24.69454, -25.33302, NA, -25.32426, -25.298…
+$ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "Adult…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(raw)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  studyName         Sample Number      Species             Region         
+ Length:344         Min.   :  1.00   Length:344         Length:344        
+ Class :character   1st Qu.: 29.00   Class :character   Class :character  
+ Mode  :character   Median : 58.00   Mode  :character   Mode  :character  
+                    Mean   : 63.15                                        
+                    3rd Qu.: 95.25                                        
+                    Max.   :152.00                                        
+                                                                          
+    Island             Stage           Individual ID      Clutch Completion 
+ Length:344         Length:344         Length:344         Length:344        
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+    Date Egg          Culmen Length (mm) Culmen Depth (mm) Flipper Length (mm)
+ Min.   :2007-11-09   Min.   :32.10      Min.   :13.10     Min.   :172.0      
+ 1st Qu.:2007-11-28   1st Qu.:39.23      1st Qu.:15.60     1st Qu.:190.0      
+ Median :2008-11-09   Median :44.45      Median :17.30     Median :197.0      
+ Mean   :2008-11-27   Mean   :43.92      Mean   :17.15     Mean   :200.9      
+ 3rd Qu.:2009-11-16   3rd Qu.:48.50      3rd Qu.:18.70     3rd Qu.:213.0      
+ Max.   :2009-12-01   Max.   :59.60      Max.   :21.50     Max.   :231.0      
+                      NA's   :2          NA's   :2         NA's   :2          
+ Body Mass (g)      Sex            Delta 15 N (o/oo) Delta 13 C (o/oo)
+ Min.   :2700   Length:344         Min.   : 7.632    Min.   :-27.02   
+ 1st Qu.:3550   Class :character   1st Qu.: 8.300    1st Qu.:-26.32   
+ Median :4050   Mode  :character   Median : 8.652    Median :-25.83   
+ Mean   :4202                      Mean   : 8.733    Mean   :-25.69   
+ 3rd Qu.:4750                      3rd Qu.: 9.172    3rd Qu.:-25.06   
+ Max.   :6300                      Max.   :10.025    Max.   :-23.79   
+ NA's   :2                         NA's   :14        NA's   :13       
+   Comments        
+ Length:344        
+ Class :character  
+ Mode  :character  
+                   
+                   
+                   
+                   </code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/penguins2.webp" class="img-fluid figure-img"></p>
+<figcaption>Kaynak: <a href="https://allisonhorst.github.io/palmerpenguins/articles/art.html">Allison Horst</a></figcaption>
+</figure>
+</div>
+<section id="sütun-işlemleri" class="level3">
+<h3 class="anchored" data-anchor-id="sütun-işlemleri">SÜTUN İŞLEMLERİ</h3>
+<p>Bu kısımda temel olarak <code>select()</code>, <code>mutate()</code>, <code>rename()</code> ve <code>relocate()</code> fonksiyonunu kullanacağız.</p>
+<p><code>penguins</code> verisi 8 değişkenden oluşuyordu ancak <code>penguins_raw</code> verisi 17 değişkenden oluşuyor.</p>
+<p>Öncelikle <code>penguins</code>’te olan değişkenlerin bizim için önemli olduğunu varsayalım ve onları seçelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> raw <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"Island"</span>, <span class="st">"Date Egg"</span>, <span class="st">"Culmen Length (mm)"</span>, </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Culmen Depth (mm)"</span>, <span class="st">"Flipper Length (mm)"</span>, </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Body Mass (g)"</span>, <span class="st">"Sex"</span>))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   Species            Island `Date Egg` `Culmen Length (mm)` `Culmen Depth (mm)`
+   &lt;chr&gt;              &lt;chr&gt;  &lt;date&gt;                    &lt;dbl&gt;               &lt;dbl&gt;
+ 1 Adelie Penguin (P… Torge… 2007-11-11                 39.1                18.7
+ 2 Adelie Penguin (P… Torge… 2007-11-11                 39.5                17.4
+ 3 Adelie Penguin (P… Torge… 2007-11-16                 40.3                18  
+ 4 Adelie Penguin (P… Torge… 2007-11-16                 NA                  NA  
+ 5 Adelie Penguin (P… Torge… 2007-11-16                 36.7                19.3
+ 6 Adelie Penguin (P… Torge… 2007-11-16                 39.3                20.6
+ 7 Adelie Penguin (P… Torge… 2007-11-15                 38.9                17.8
+ 8 Adelie Penguin (P… Torge… 2007-11-15                 39.2                19.6
+ 9 Adelie Penguin (P… Torge… 2007-11-09                 34.1                18.1
+10 Adelie Penguin (P… Torge… 2007-11-09                 42                  20.2
+# ℹ 334 more rows
+# ℹ 3 more variables: `Flipper Length (mm)` &lt;dbl&gt;, `Body Mass (g)` &lt;dbl&gt;,
+#   Sex &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi seçeceğimiz sütunun isimlerini tırnak içerisinde, bir vektör olarak da verebiliriz. Hatta <code>Culmen Length (mm)</code> gibi boşluk, parantez gibi karakterler içeren isimleri bu şekilde vermek daha sağlıklı.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ Species               &lt;chr&gt; "Adelie Penguin (Pygoscelis adeliae)", "Adelie P…
+$ Island                &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgerse…
+$ `Date Egg`            &lt;date&gt; 2007-11-11, 2007-11-11, 2007-11-16, 2007-11-16,…
+$ `Culmen Length (mm)`  &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34…
+$ `Culmen Depth (mm)`   &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18…
+$ `Flipper Length (mm)` &lt;dbl&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190,…
+$ `Body Mass (g)`       &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 34…
+$ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "MALE"…</code></pre>
+</div>
+</div>
+<p>Şimdi de sütun isimlerini değiştirelim.</p>
+<p>Camel case kullanılan isimler, büyük harfle başlayan isimler, birimler, boşluklar derken standart olmayan birçok şey var. Ben, genelde tidy style guide’de belirtildiği gibi snake_case kullanmayı tercih ediyorum. Son zamanlarda camelCase de kullanmaya başladım. Bunun tek bir doğrusu yok, önemli olan okunaklı, tutarlı ve kolay hata ayıklanabilen kodlar yazmak. R için çok sayıda style guide mevcut. Şuradaki linkleri incelemenizi öneririm: 1. <a href="https://google.github.io/styleguide/Rguide.html">Google</a> 2. <a href="https://style.tidyverse.org/">tidy</a> 3. <a href="https://bioconductor.github.io/bioc_mentorship_docs/style-guide.html">bioconductor</a>. 4. <a href="https://github.com/matloff/R-Style-Guide">Norm Matloff</a> Bu yazıda da, aslında tidyverse’nin oldukça katı olduğu snake_case kullanımını esnetmek ve okuyucular için göz alışkanlığı olması için camelCase kullandım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"island"</span>, <span class="st">"year"</span>, <span class="st">"bill_len"</span>, <span class="st">"bill_dep"</span>, </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">"flipper_len"</span>, <span class="st">"body_mass"</span>, <span class="st">"sex"</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species       island year       bill_len bill_dep flipper_len body_mass sex  
+   &lt;chr&gt;         &lt;chr&gt;  &lt;date&gt;        &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;
+ 1 Adelie Pengu… Torge… 2007-11-11     39.1     18.7         181      3750 MALE 
+ 2 Adelie Pengu… Torge… 2007-11-11     39.5     17.4         186      3800 FEMA…
+ 3 Adelie Pengu… Torge… 2007-11-16     40.3     18           195      3250 FEMA…
+ 4 Adelie Pengu… Torge… 2007-11-16     NA       NA            NA        NA &lt;NA&gt; 
+ 5 Adelie Pengu… Torge… 2007-11-16     36.7     19.3         193      3450 FEMA…
+ 6 Adelie Pengu… Torge… 2007-11-16     39.3     20.6         190      3650 MALE 
+ 7 Adelie Pengu… Torge… 2007-11-15     38.9     17.8         181      3625 FEMA…
+ 8 Adelie Pengu… Torge… 2007-11-15     39.2     19.6         195      4675 MALE 
+ 9 Adelie Pengu… Torge… 2007-11-09     34.1     18.1         193      3475 &lt;NA&gt; 
+10 Adelie Pengu… Torge… 2007-11-09     42       20.2         190      4250 &lt;NA&gt; 
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Sütun isimlerini, <code>base R</code>’dan gelen <code>setNames()</code> fonksiyonuyla değiştirebileceğimiz gibi, <code>rename()</code> fonksiyonunu kullanarak da değiştirebiliriz. Ardından pipe ile bağlayarak sütunları <code>penguins</code> verisindeki sırayla sıralayalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">species=</span>Species, </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">island=</span>Island, </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">year=</span><span class="st">`</span><span class="at">Date Egg</span><span class="st">`</span>, </span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">bill_len=</span><span class="st">`</span><span class="at">Culmen Length (mm)</span><span class="st">`</span>, </span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">bill_dep=</span><span class="st">`</span><span class="at">Culmen Depth (mm)</span><span class="st">`</span>, </span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">flipper_len=</span><span class="st">`</span><span class="at">Flipper Length (mm)</span><span class="st">`</span>, </span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">body_mass=</span><span class="st">`</span><span class="at">Body Mass (g)</span><span class="st">`</span>, </span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span>Sex) <span class="sc">|&gt;</span> </span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(year, <span class="at">.after=</span>sex)</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species       island bill_len bill_dep flipper_len body_mass sex   year      
+   &lt;chr&gt;         &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;date&gt;    
+ 1 Adelie Pengu… Torge…     39.1     18.7         181      3750 MALE  2007-11-11
+ 2 Adelie Pengu… Torge…     39.5     17.4         186      3800 FEMA… 2007-11-11
+ 3 Adelie Pengu… Torge…     40.3     18           195      3250 FEMA… 2007-11-16
+ 4 Adelie Pengu… Torge…     NA       NA            NA        NA &lt;NA&gt;  2007-11-16
+ 5 Adelie Pengu… Torge…     36.7     19.3         193      3450 FEMA… 2007-11-16
+ 6 Adelie Pengu… Torge…     39.3     20.6         190      3650 MALE  2007-11-16
+ 7 Adelie Pengu… Torge…     38.9     17.8         181      3625 FEMA… 2007-11-15
+ 8 Adelie Pengu… Torge…     39.2     19.6         195      4675 MALE  2007-11-15
+ 9 Adelie Pengu… Torge…     34.1     18.1         193      3475 &lt;NA&gt;  2007-11-09
+10 Adelie Pengu… Torge…     42       20.2         190      4250 &lt;NA&gt;  2007-11-09
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi isimler ve sütunların sırası <code>penguins</code> verisiyle aynı hâle geldi.</p>
+<p>Bu iş de tamamdır!</p>
+<p>Şimdi de görevimizi biraz daha zorlaştıralım. Her sütunun içindeki değerleri düzenleyeceğiz. Dikkat ettiyseniz <code>penguins</code> verisinde çok daha düzenli bir hâldeydi.</p>
+<p>İlk olarak yılla başlayalım. Tarihi yıla çevirmemiz lazım.</p>
+<p>İlk olarak klasik <code>$</code> operatörüyle erişelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>year</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "2007-11-11" "2007-11-11" "2007-11-16" "2007-11-16" "2007-11-16"
+  [6] "2007-11-16" "2007-11-15" "2007-11-15" "2007-11-09" "2007-11-09"
+ [11] "2007-11-09" "2007-11-09" "2007-11-15" "2007-11-15" "2007-11-16"
+ [16] "2007-11-16" "2007-11-12" "2007-11-12" "2007-11-16" "2007-11-16"
+ [21] "2007-11-12" "2007-11-12" "2007-11-12" "2007-11-12" "2007-11-10"
+ [26] "2007-11-10" "2007-11-12" "2007-11-12" "2007-11-10" "2007-11-10"
+ [31] "2007-11-09" "2007-11-09" "2007-11-09" "2007-11-09" "2007-11-16"
+ [36] "2007-11-16" "2007-11-16" "2007-11-16" "2007-11-13" "2007-11-13"
+ [41] "2007-11-16" "2007-11-16" "2007-11-19" "2007-11-19" "2007-11-16"
+ [46] "2007-11-16" "2007-11-13" "2007-11-13" "2007-11-13" "2007-11-13"
+ [51] "2008-11-06" "2008-11-06" "2008-11-09" "2008-11-09" "2008-11-09"
+ [56] "2008-11-09" "2008-11-15" "2008-11-15" "2008-11-15" "2008-11-15"
+ [61] "2008-11-13" "2008-11-13" "2008-11-13" "2008-11-13" "2008-11-13"
+ [66] "2008-11-13" "2008-11-06" "2008-11-06" "2008-11-11" "2008-11-11"
+ [71] "2008-11-14" "2008-11-14" "2008-11-11" "2008-11-11" "2008-11-08"
+ [76] "2008-11-08" "2008-11-06" "2008-11-06" "2008-11-09" "2008-11-09"
+ [81] "2008-11-02" "2008-11-02" "2008-11-07" "2008-11-07" "2008-11-17"
+ [86] "2008-11-17" "2008-11-08" "2008-11-08" "2008-11-08" "2008-11-08"
+ [91] "2008-11-14" "2008-11-14" "2008-11-05" "2008-11-05" "2008-11-17"
+ [96] "2008-11-17" "2008-11-08" "2008-11-08" "2008-11-10" "2008-11-10"
+[101] "2009-11-09" "2009-11-09" "2009-11-15" "2009-11-15" "2009-11-15"
+[106] "2009-11-15" "2009-11-15" "2009-11-15" "2009-11-20" "2009-11-20"
+[111] "2009-11-12" "2009-11-12" "2009-11-15" "2009-11-15" "2009-11-17"
+[116] "2009-11-17" "2009-11-18" "2009-11-18" "2009-11-22" "2009-11-22"
+[121] "2009-11-17" "2009-11-17" "2009-11-16" "2009-11-16" "2009-11-18"
+[126] "2009-11-18" "2009-11-21" "2009-11-21" "2009-11-18" "2009-11-18"
+[131] "2009-11-23" "2009-11-23" "2009-11-10" "2009-11-10" "2009-11-13"
+[136] "2009-11-13" "2009-11-16" "2009-11-16" "2009-11-16" "2009-11-16"
+[141] "2009-11-14" "2009-11-14" "2009-11-16" "2009-11-16" "2009-11-16"
+[146] "2009-11-16" "2009-11-13" "2009-11-13" "2009-11-17" "2009-11-17"
+[151] "2009-11-17" "2009-11-17" "2007-11-27" "2007-11-27" "2007-11-27"
+[156] "2007-11-27" "2007-11-18" "2007-11-18" "2007-11-27" "2007-11-27"
+[161] "2007-11-27" "2007-11-27" "2007-11-27" "2007-11-27" "2007-11-29"
+[166] "2007-11-29" "2007-12-03" "2007-12-03" "2007-11-27" "2007-11-27"
+[171] "2007-11-27" "2007-11-27" "2007-11-27" "2007-11-27" "2007-11-27"
+[176] "2007-11-27" "2007-11-29" "2007-11-29" "2007-11-29" "2007-11-29"
+[181] "2007-11-29" "2007-11-29" "2007-11-29" "2007-11-29" "2007-12-03"
+[186] "2007-12-03" "2008-11-13" "2008-11-13" "2008-11-02" "2008-11-02"
+[191] "2008-11-09" "2008-11-09" "2008-11-04" "2008-11-04" "2008-11-04"
+[196] "2008-11-04" "2008-11-03" "2008-11-03" "2008-11-09" "2008-11-09"
+ [ reached 'max' / getOption("max.print") -- omitted 144 entries ]</code></pre>
+</div>
+</div>
+<p>Gördüğünüz yıl vektöründen ay ve günü silmemiz gerekiyor. Bunu tarihle oynayarak da yapabiliriz, karakter vektörüne çevirip, yıldan sonrasını silerek de. Normal şartlarda ikincisi daha kolay olabilir ama şu an hâlihazırda verimiz <code>Date</code> tipinde olduğu için direkt yılı seçebiliriz. Tarihlerle uğraşmak ilk başlayanlar için biraz zor olabilir. <code>format()</code> fonksiyonunu kullanacağız, <code>"%Y"</code> ile yılı seçeceğiz. Onu da değiştirdiğimiz sütuna tekrardan atayacağız.</p>
+<p>Bunun için <code>mutate()</code> fonksiyonunu kullanacağız.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">format</span>(year, <span class="st">"%Y"</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species            island bill_len bill_dep flipper_len body_mass sex   year 
+   &lt;chr&gt;              &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 Adelie Penguin (P… Torge…     39.1     18.7         181      3750 MALE  2007 
+ 2 Adelie Penguin (P… Torge…     39.5     17.4         186      3800 FEMA… 2007 
+ 3 Adelie Penguin (P… Torge…     40.3     18           195      3250 FEMA… 2007 
+ 4 Adelie Penguin (P… Torge…     NA       NA            NA        NA &lt;NA&gt;  2007 
+ 5 Adelie Penguin (P… Torge…     36.7     19.3         193      3450 FEMA… 2007 
+ 6 Adelie Penguin (P… Torge…     39.3     20.6         190      3650 MALE  2007 
+ 7 Adelie Penguin (P… Torge…     38.9     17.8         181      3625 FEMA… 2007 
+ 8 Adelie Penguin (P… Torge…     39.2     19.6         195      4675 MALE  2007 
+ 9 Adelie Penguin (P… Torge…     34.1     18.1         193      3475 &lt;NA&gt;  2007 
+10 Adelie Penguin (P… Torge…     42       20.2         190      4250 &lt;NA&gt;  2007 
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi yıllar tamam! Sırada diğer değişkenler var.</p>
+<p>İlk olarak tür isimlerini kısaltmamız lazım. En zor işlerden birisi bu! Özellikle de ilk başlayanlar için. <code>sub()</code> ve <code>gsub()</code> fonksiyonu, karakter vektöründeki seçtiğimiz kısmı, istediğimiz karakterle değiştirir. <code>sub()</code> sadece ilk esleşmeyi değiştirdiği için onu kullanacağız. <code>" .*"</code> ile boşluk sonrasındaki tüm karakterleri seçiyoruz ve <code>""</code> ile replace ediyoruz. Yani siliyoruz. Çünkü <code>""</code> içinde hiçbir şey yok. Bu da bize tür isimlerinin boşluktan önceki kısmını veriyor tıpkı <code>penguins</code> verisinde olduğu gibi.</p>
+<p>Bir önceki kod bloğunda yıl değişkenini düzenlemiş ama herhangi bir nesneye atamamıştık. Şimdi tüm işlemleri bir arada yapalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">format</span>(year, <span class="st">"%Y"</span>), </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">species=</span><span class="fu">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, dat<span class="sc">$</span>species), </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">tolower</span>(dat<span class="sc">$</span>sex))</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species island    bill_len bill_dep flipper_len body_mass sex    year 
+   &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;
+ 1 Adelie  Torgersen     39.1     18.7         181      3750 male   2007 
+ 2 Adelie  Torgersen     39.5     17.4         186      3800 female 2007 
+ 3 Adelie  Torgersen     40.3     18           195      3250 female 2007 
+ 4 Adelie  Torgersen     NA       NA            NA        NA &lt;NA&gt;   2007 
+ 5 Adelie  Torgersen     36.7     19.3         193      3450 female 2007 
+ 6 Adelie  Torgersen     39.3     20.6         190      3650 male   2007 
+ 7 Adelie  Torgersen     38.9     17.8         181      3625 female 2007 
+ 8 Adelie  Torgersen     39.2     19.6         195      4675 male   2007 
+ 9 Adelie  Torgersen     34.1     18.1         193      3475 &lt;NA&gt;   2007 
+10 Adelie  Torgersen     42       20.2         190      4250 &lt;NA&gt;   2007 
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Bu işlemler için <code>tidyverse</code> içindeki <code>lubridate</code> ve <code>stringr</code> paketlerini de kullanabiliriz ama amacım temel veri manipülasyonu işlemlerini göstermek olduğundan bu yazıda <code>dplyr</code> dışında paket kullanmak istemiyorum.</p>
+<p>Şu an <code>penguins</code> verisiyle aynı veriye sahibiz!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(penguins, <span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<p>Aaa! Değilmişiz! Fark ne acaba?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ species     &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Ad…
+$ island      &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Tor…
+$ bill_len    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, …
+$ bill_dep    &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, …
+$ flipper_len &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180,…
+$ body_mass   &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, …
+$ sex         &lt;fct&gt; male, female, female, NA, female, male, female, male, NA, …
+$ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(<span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ species     &lt;chr&gt; "Adelie", "Adelie", "Adelie", "Adelie", "Adelie", "Adelie"…
+$ island      &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgersen", "Torge…
+$ bill_len    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, …
+$ bill_dep    &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, …
+$ flipper_len &lt;dbl&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180,…
+$ body_mass   &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, …
+$ sex         &lt;chr&gt; "male", "female", "female", NA, "female", "male", "female"…
+$ year        &lt;chr&gt; "2007", "2007", "2007", "2007", "2007", "2007", "2007", "2…</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi sütun tipleri birbirinden farklı. Onları da değiştirelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">species=</span><span class="fu">as.factor</span>(species), </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">island=</span><span class="fu">as.factor</span>(island),</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">flipper_len=</span><span class="fu">as.integer</span>(flipper_len), </span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">body_mass=</span><span class="fu">as.integer</span>(body_mass), </span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">as.factor</span>(sex), </span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">year=</span><span class="fu">as.integer</span>(year))</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 344
+Columns: 8
+$ species     &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Ad…
+$ island      &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgersen, Tor…
+$ bill_len    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, …
+$ bill_dep    &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, …
+$ flipper_len &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180,…
+$ body_mass   &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, …
+$ sex         &lt;fct&gt; male, female, female, NA, female, male, female, male, NA, …
+$ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…</code></pre>
+</div>
+</div>
+<p>Değişmesi gereken tüm sütunları tek tek değiştirdik.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(penguins, <span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi artık verilerimiz eş! Hedefimize ulaştık, dağınık bir veriyi düzenli bir hâle getirdik.</p>
+</section>
+<section id="satir-işlemleri" class="level3">
+<h3 class="anchored" data-anchor-id="satir-işlemleri">SATIR İŞLEMLERİ</h3>
+<p>Bu kısımda temel olarak <code>filter()</code>, <code>arrange()</code> ve <code>distinct()</code> fonksiyonunu kullanacağız.</p>
+<p><code>penguins_raw</code> verisini, <code>penguins</code> verisiyle eş bir hâle getirdiğimize göre hedefimize ulaştık ama bu yazının amacına ulaşması için satır ve grup işlemlerini de görmemiz gerekiyor. Sütunlarını düzenlediğimiz <code>dat</code> nesnesi üzerinde biraz oynayalım.</p>
+<p>Şimdi yalnızca Biscoe adasındaki penguenleri incelediğimizi varsayalım. Verimizi Biscoe adasına göre filtreleyeceğiz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(island <span class="sc">==</span> <span class="st">"Biscoe"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Gördüğünüz gibi Biscoe adasındaki penguenleri seçtik ve <code>pengBiscoe</code> isimli bir nesneye atadık.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pengBiscoe)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      species          island       bill_len        bill_dep    
+ Adelie   : 44   Biscoe   :168   Min.   :34.50   Min.   :13.10  
+ Chinstrap:  0   Dream    :  0   1st Qu.:42.00   1st Qu.:14.50  
+ Gentoo   :124   Torgersen:  0   Median :45.80   Median :15.50  
+                                 Mean   :45.26   Mean   :15.87  
+                                 3rd Qu.:48.70   3rd Qu.:17.00  
+                                 Max.   :59.60   Max.   :21.10  
+                                 NA's   :1       NA's   :1      
+  flipper_len      body_mass        sex          year     
+ Min.   :172.0   Min.   :2850   female:80   Min.   :2007  
+ 1st Qu.:199.5   1st Qu.:4200   male  :83   1st Qu.:2007  
+ Median :214.0   Median :4775   NA's  : 5   Median :2008  
+ Mean   :209.7   Mean   :4716               Mean   :2008  
+ 3rd Qu.:220.0   3rd Qu.:5325               3rd Qu.:2009  
+ Max.   :231.0   Max.   :6300               Max.   :2009  
+ NA's   :1       NA's   :1                                </code></pre>
+</div>
+</div>
+<p>Verinin özet istatistiklerine göz attığımızda bazı <code>NA</code> (Not Available - eksik değer) değerlerin olduğunu görüyoruz. Bu değerleri istemediğimizi ve onlardan kurtulmak istediğimizi varsayalım. Bunun için yine filtreleme yapabiliriz. <code>is.na()</code> ile NA olanların <code>TRUE</code> dönmesini sağladık ve ardından filtreledik.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(sex))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 8
+  species island bill_len bill_dep flipper_len body_mass sex    year
+  &lt;fct&gt;   &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt; &lt;int&gt;
+1 Gentoo  Biscoe     44.5     14.3         216      4100 &lt;NA&gt;   2007
+2 Gentoo  Biscoe     46.2     14.4         214      4650 &lt;NA&gt;   2008
+3 Gentoo  Biscoe     47.3     13.8         216      4725 &lt;NA&gt;   2009
+4 Gentoo  Biscoe     44.5     15.7         217      4875 &lt;NA&gt;   2009
+5 Gentoo  Biscoe     NA       NA            NA        NA &lt;NA&gt;   2009</code></pre>
+</div>
+</div>
+<p>NA değerleri seçmiş olduk ancak biz NA değerleri seçmek değil, silmek istiyorduk. Burada <code>!</code> operatörünü kullanacağız. Bu operatörümüz, bize “o” olmayan sonucu döndürecek.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="ot">&lt;-</span> pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sex))</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>pengBiscoe</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 163 × 8
+   species island bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Adelie  Biscoe     37.8     18.3         174      3400 female  2007
+ 2 Adelie  Biscoe     37.7     18.7         180      3600 male    2007
+ 3 Adelie  Biscoe     35.9     19.2         189      3800 female  2007
+ 4 Adelie  Biscoe     38.2     18.1         185      3950 male    2007
+ 5 Adelie  Biscoe     38.8     17.2         180      3800 male    2007
+ 6 Adelie  Biscoe     35.3     18.9         187      3800 female  2007
+ 7 Adelie  Biscoe     40.6     18.6         183      3550 male    2007
+ 8 Adelie  Biscoe     40.5     17.9         187      3200 female  2007
+ 9 Adelie  Biscoe     37.9     18.6         172      3150 female  2007
+10 Adelie  Biscoe     40.5     18.9         180      3950 male    2007
+# ℹ 153 more rows</code></pre>
+</div>
+</div>
+<p>Bu işlemi <code>dplyr 1.2.0</code> versiyonu ile gelen <code>filter_out()</code> fonksiyonuyla da yapabiliriz. Her bir eylem için yeni bir fonksiyon oluşturmanın bilişsel yük yarattığını düşünüyorum. Aynı zamanda paketin API’sinin sürekli değişmesiyle de tekrarlanabilirlik zarar görüyor. Bunu daha önce <code>mutate_at()</code>, <code>gather()</code> vb. çok sayıda fonksiyonda gördük. Ancak yine de bilmekte fayda var.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter_out</span>(<span class="fu">is.na</span>(sex))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 163 × 8
+   species island bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Adelie  Biscoe     37.8     18.3         174      3400 female  2007
+ 2 Adelie  Biscoe     37.7     18.7         180      3600 male    2007
+ 3 Adelie  Biscoe     35.9     19.2         189      3800 female  2007
+ 4 Adelie  Biscoe     38.2     18.1         185      3950 male    2007
+ 5 Adelie  Biscoe     38.8     17.2         180      3800 male    2007
+ 6 Adelie  Biscoe     35.3     18.9         187      3800 female  2007
+ 7 Adelie  Biscoe     40.6     18.6         183      3550 male    2007
+ 8 Adelie  Biscoe     40.5     17.9         187      3200 female  2007
+ 9 Adelie  Biscoe     37.9     18.6         172      3150 female  2007
+10 Adelie  Biscoe     40.5     18.9         180      3950 male    2007
+# ℹ 153 more rows</code></pre>
+</div>
+</div>
+<p>Evet şu an NA değerlere sahip olmayan <code>sex</code> değişkenine göre bir filtreleme yaptık.</p>
+<p>Veriye tekrardan göz atalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pengBiscoe)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      species          island       bill_len        bill_dep    
+ Adelie   : 44   Biscoe   :163   Min.   :34.50   Min.   :13.10  
+ Chinstrap:  0   Dream    :  0   1st Qu.:41.85   1st Qu.:14.50  
+ Gentoo   :119   Torgersen:  0   Median :45.80   Median :15.60  
+                                 Mean   :45.25   Mean   :15.91  
+                                 3rd Qu.:48.75   3rd Qu.:17.00  
+                                 Max.   :59.60   Max.   :21.10  
+  flipper_len      body_mass        sex          year     
+ Min.   :172.0   Min.   :2850   female:80   Min.   :2007  
+ 1st Qu.:198.5   1st Qu.:4200   male  :83   1st Qu.:2007  
+ Median :213.0   Median :4800               Median :2008  
+ Mean   :209.6   Mean   :4719               Mean   :2008  
+ 3rd Qu.:220.0   3rd Qu.:5350               3rd Qu.:2009  
+ Max.   :231.0   Max.   :6300               Max.   :2009  </code></pre>
+</div>
+</div>
+<p>Tüm NA değerlerden kurtulmuşuz. Çünkü <code>bill_len</code>, <code>bill_dep</code>, <code>flipper_len</code> ve <code>body_mass</code> değişkenlerindeki tek NA değeri 272. satırdaydı ve bu satırdaki <code>sex</code> değeri de NA olduğu için o gidince hepsi gitmiş.</p>
+<p>Şimdi 48 mm’den daha küçük <code>bill_len</code> ve 5000 g’den daha büyük <code>body_mass</code> değerlerine göre filtrelememiz gerektiğini düşünelim. Eğer birden fazla değişkene göre filtreleme yapmamız gerekiyorsa <code>ve</code> için <code>&amp;</code> operatörünü, <code>veya</code> için ise <code>|</code> operatörünü kullanıyoruz. <code>filter()</code> fonksiyonunda <code>ve</code> için <code>,</code> de kullanabiliriz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>hs <span class="ot">&lt;-</span> pengBiscoe <span class="sc">|&gt;</span> <span class="co"># hs: heavy-short penguenler</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bill_len <span class="sc">&lt;</span> <span class="dv">48</span> <span class="sc">&amp;</span> body_mass <span class="sc">&gt;</span> <span class="dv">5000</span>)</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>hs</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 17 × 8
+   species island bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Gentoo  Biscoe     47.6     14.5         215      5400 male    2007
+ 2 Gentoo  Biscoe     46.7     15.3         219      5200 male    2007
+ 3 Gentoo  Biscoe     46.8     15.4         215      5150 male    2007
+ 4 Gentoo  Biscoe     46.3     15.8         215      5050 male    2007
+ 5 Gentoo  Biscoe     46.1     15.1         215      5100 male    2007
+ 6 Gentoo  Biscoe     47.8     15           215      5650 male    2007
+ 7 Gentoo  Biscoe     47.3     15.3         222      5250 male    2007
+ 8 Gentoo  Biscoe     45.1     14.5         207      5050 female  2007
+ 9 Gentoo  Biscoe     44.4     17.3         219      5250 male    2008
+10 Gentoo  Biscoe     44.9     13.3         213      5100 female  2008
+11 Gentoo  Biscoe     45.2     15.8         215      5300 male    2008
+12 Gentoo  Biscoe     45       15.4         220      5050 male    2008
+13 Gentoo  Biscoe     46.2     14.9         221      5300 male    2008
+14 Gentoo  Biscoe     46.5     14.8         217      5200 female  2008
+15 Gentoo  Biscoe     45.2     16.4         223      5950 male    2008
+16 Gentoo  Biscoe     46.8     16.1         215      5500 male    2009
+17 Gentoo  Biscoe     45.2     14.8         212      5200 female  2009</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi filtreledik. Yalnızca Biscoe adasındaki Gentoo türü penguenlerin bir kısmı bu boyutlara sahipmiş.</p>
+<p>Filtrelediğimiz veriyi bir grafikte görelim. Ama öncesinde ilk yazıdaki gibi alt alta iki farklı grafik çizmek için <code>patchwork</code> paketini kurmamız ve R’a yüklememiz gerekiyor. Bu, en kolay yöntem.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>pengBiscoe, <span class="fu">aes</span>(bill_len, body_mass)) <span class="sc">+</span></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>,          <span class="co"># diktortgen ekledik</span></span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin=</span><span class="fu">min</span>(hs<span class="sc">$</span>bill_len) <span class="sc">-</span> <span class="fl">0.2</span>,</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmax=</span><span class="fu">max</span>(hs<span class="sc">$</span>bill_len) <span class="sc">+</span> <span class="fl">0.2</span>,</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin=</span><span class="fu">min</span>(hs<span class="sc">$</span>body_mass) <span class="sc">-</span> <span class="dv">20</span>,</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymax=</span><span class="fu">max</span>(hs<span class="sc">$</span>body_mass) <span class="sc">+</span> <span class="dv">50</span>,</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">"red"</span>,   <span class="co"># cerceve rengi</span></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="cn">NA</span>,       <span class="co"># icini bos biraktik</span></span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">linewidth=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="co"># cizgi kalinligi (eski adi: size)</span></span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length [mm]"</span>,</span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Body Mass [g]"</span>)</span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>hs, <span class="fu">aes</span>(bill_len, body_mass)) <span class="sc">+</span></span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length [mm]"</span>,</span>
+<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Body Mass [g]"</span>)</span>
+<span id="cb74-20"><a href="#cb74-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-21"><a href="#cb74-21" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Grafik, filtrelediğimiz değerleri daha iyi görmenizi sağlamıştır diye düşünüyorum.</p>
+<p>Şimdi de tekrardan <code>pengBiscoe</code> verisini kullanarak 2008 ve 2009 yıllarındaki verileri filtreleyelim. Bunun için yine birden fazla yol var ancak biz bu sefer <code>%in%</code> operatörünü kullanacağız. R’da <code>%in%</code> operatörü, birden fazla değerle filtreleme yapıldığında kullanılıyor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2008</span>, <span class="dv">2009</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 120 × 8
+   species island bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Adelie  Biscoe     39.6     17.7         186      3500 female  2008
+ 2 Adelie  Biscoe     40.1     18.9         188      4300 male    2008
+ 3 Adelie  Biscoe     35       17.9         190      3450 female  2008
+ 4 Adelie  Biscoe     42       19.5         200      4050 male    2008
+ 5 Adelie  Biscoe     34.5     18.1         187      2900 female  2008
+ 6 Adelie  Biscoe     41.4     18.6         191      3700 male    2008
+ 7 Adelie  Biscoe     39       17.5         186      3550 female  2008
+ 8 Adelie  Biscoe     40.6     18.8         193      3800 male    2008
+ 9 Adelie  Biscoe     36.5     16.6         181      2850 female  2008
+10 Adelie  Biscoe     37.6     19.1         194      3750 male    2008
+# ℹ 110 more rows</code></pre>
+</div>
+</div>
+<p>Bu iş de tamam!</p>
+<p>Sırada bir başka satır işlemi olan sıralama var.</p>
+<p>Mesela filtrelemeden önceki verimiz olan <code>dat</code> verisinin <code>bill_len</code> sütunuyla <code>arrange()</code> fonksiyonunu kullanalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species island    bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;        &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Adelie  Dream         32.1     15.5         188      3050 female  2009
+ 2 Adelie  Dream         33.1     16.1         178      2900 female  2008
+ 3 Adelie  Torgersen     33.5     19           190      3600 female  2008
+ 4 Adelie  Dream         34       17.1         185      3400 female  2008
+ 5 Adelie  Torgersen     34.1     18.1         193      3475 &lt;NA&gt;    2007
+ 6 Adelie  Torgersen     34.4     18.4         184      3325 female  2007
+ 7 Adelie  Biscoe        34.5     18.1         187      2900 female  2008
+ 8 Adelie  Torgersen     34.6     21.1         198      4400 male    2007
+ 9 Adelie  Torgersen     34.6     17.2         189      3200 female  2008
+10 Adelie  Biscoe        35       17.9         190      3450 female  2008
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Eğer azalan bir sıralama istiyorsak değişkeni <code>desc()</code> fonksiyonu içinde yazmalı ya da değişkenin başına <code>-</code> eklemeliyiz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(bill_len))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species   island bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;     &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Gentoo    Biscoe     59.6     17           230      6050 male    2007
+ 2 Chinstrap Dream      58       17.8         181      3700 female  2007
+ 3 Gentoo    Biscoe     55.9     17           228      5600 male    2009
+ 4 Chinstrap Dream      55.8     19.8         207      4000 male    2009
+ 5 Gentoo    Biscoe     55.1     16           230      5850 male    2009
+ 6 Gentoo    Biscoe     54.3     15.7         231      5650 male    2008
+ 7 Chinstrap Dream      54.2     20.8         201      4300 male    2008
+ 8 Chinstrap Dream      53.5     19.9         205      4500 male    2008
+ 9 Gentoo    Biscoe     53.4     15.8         219      5500 male    2009
+10 Chinstrap Dream      52.8     20           205      4550 male    2008
+# ℹ 334 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species   island bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;     &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Gentoo    Biscoe     59.6     17           230      6050 male    2007
+ 2 Chinstrap Dream      58       17.8         181      3700 female  2007
+ 3 Gentoo    Biscoe     55.9     17           228      5600 male    2009
+ 4 Chinstrap Dream      55.8     19.8         207      4000 male    2009
+ 5 Gentoo    Biscoe     55.1     16           230      5850 male    2009
+ 6 Gentoo    Biscoe     54.3     15.7         231      5650 male    2008
+ 7 Chinstrap Dream      54.2     20.8         201      4300 male    2008
+ 8 Chinstrap Dream      53.5     19.9         205      4500 male    2008
+ 9 Gentoo    Biscoe     53.4     15.8         219      5500 male    2009
+10 Chinstrap Dream      52.8     20           205      4550 male    2008
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi büyükten küçüğe bir şekilde sıraladık.</p>
+<p>Çoğu zaman sıralamaları birden fazla değişkenle yapmak isteyebiliriz. Bu durumda da diğer değişken isimlerini eklememiz gerekiyor.</p>
+<p>Öncelikle yıla göre, sonrasında da gaga uzunluğuna göre büyükten küçüğe sıralayalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>year, <span class="sc">-</span>bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 8
+   species   island bill_len bill_dep flipper_len body_mass sex    year
+   &lt;fct&gt;     &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt; &lt;int&gt;
+ 1 Gentoo    Biscoe     55.9     17           228      5600 male   2009
+ 2 Chinstrap Dream      55.8     19.8         207      4000 male   2009
+ 3 Gentoo    Biscoe     55.1     16           230      5850 male   2009
+ 4 Gentoo    Biscoe     53.4     15.8         219      5500 male   2009
+ 5 Gentoo    Biscoe     52.5     15.6         221      5450 male   2009
+ 6 Gentoo    Biscoe     52.2     17.1         228      5400 male   2009
+ 7 Chinstrap Dream      52.2     18.8         197      3450 male   2009
+ 8 Gentoo    Biscoe     52.1     17           230      5550 male   2009
+ 9 Chinstrap Dream      51.9     19.5         206      3950 male   2009
+10 Gentoo    Biscoe     51.5     16.3         230      5500 male   2009
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>Son satır işlemi olarak da unique olan değerleri seçmeyi - silmeyi göreceğiz. Verimiz bunun için yeterince uygun değil ama bir uygulama yapalım. Eğer bir data.frame’de tekrar eden değerlerle ya da eşsiz değerlerle bir filtreleme yapmak istiyorsanız <code>distinct()</code> fonksiyonunu kullanabilirsiniz.</p>
+<p>Mesela verimizi, yalnızca eşsiz olan vücut kütlesi değerleri döndürmek istiyorsak aşağıdaki gibi filtreleyebiliriz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">distinct</span>(body_mass)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 95 × 1
+   body_mass
+       &lt;int&gt;
+ 1      3750
+ 2      3800
+ 3      3250
+ 4        NA
+ 5      3450
+ 6      3650
+ 7      3625
+ 8      4675
+ 9      3475
+10      4250
+# ℹ 85 more rows</code></pre>
+</div>
+</div>
+<p>Eğer tüm değişkenleri korumak istersek <code>.keep.all</code> argümanını kullanabiliriz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">distinct</span>(body_mass, <span class="at">.keep_all=</span><span class="cn">TRUE</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 95 × 8
+   species island    bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;        &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Adelie  Torgersen     39.1     18.7         181      3750 male    2007
+ 2 Adelie  Torgersen     39.5     17.4         186      3800 female  2007
+ 3 Adelie  Torgersen     40.3     18           195      3250 female  2007
+ 4 Adelie  Torgersen     NA       NA            NA        NA &lt;NA&gt;    2007
+ 5 Adelie  Torgersen     36.7     19.3         193      3450 female  2007
+ 6 Adelie  Torgersen     39.3     20.6         190      3650 male    2007
+ 7 Adelie  Torgersen     38.9     17.8         181      3625 female  2007
+ 8 Adelie  Torgersen     39.2     19.6         195      4675 male    2007
+ 9 Adelie  Torgersen     34.1     18.1         193      3475 &lt;NA&gt;    2007
+10 Adelie  Torgersen     42       20.2         190      4250 &lt;NA&gt;    2007
+# ℹ 85 more rows</code></pre>
+</div>
+</div>
+<p>Tekrar eden değerleri döndürmek istediğimizde ise bir önceki yazıda bahsettiğim <code>duplicated()</code> fonksiyonunu <code>filter()</code> içinde kullanabilriz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">duplicated</span>(body_mass))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 249 × 8
+   species island    bill_len bill_dep flipper_len body_mass sex     year
+   &lt;fct&gt;   &lt;fct&gt;        &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt;     &lt;int&gt; &lt;fct&gt;  &lt;int&gt;
+ 1 Adelie  Torgersen     38.6     21.2         191      3800 male    2007
+ 2 Adelie  Torgersen     36.6     17.8         185      3700 female  2007
+ 3 Adelie  Torgersen     38.7     19           195      3450 female  2007
+ 4 Adelie  Biscoe        35.9     19.2         189      3800 female  2007
+ 5 Adelie  Biscoe        38.8     17.2         180      3800 male    2007
+ 6 Adelie  Biscoe        35.3     18.9         187      3800 female  2007
+ 7 Adelie  Biscoe        40.5     17.9         187      3200 female  2007
+ 8 Adelie  Biscoe        40.5     18.9         180      3950 male    2007
+ 9 Adelie  Dream         39.5     16.7         178      3250 female  2007
+10 Adelie  Dream         39.5     17.8         188      3300 female  2007
+# ℹ 239 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="grup-işlemleri" class="level3">
+<h3 class="anchored" data-anchor-id="grup-işlemleri">GRUP İŞLEMLERİ</h3>
+<p>Şimdi gelelim <code>dplyr</code>’nin parladığı yere. Bu bölümde grup işlemlerini göreceğiz. Grup işlemleri özet istatistik tabloları oluşturmak için oldukça kullanışlı bir yöntem. Bu konuya aşina olmayanlar için Excel’deki (kendilerini hiç sevmem :)) pivot table’a oldukça benzediğini söyleyebilirim.</p>
+<p>Basit bir örnekle başlayalım. Diyelim ki ortalama bill_len’i hesaplamak istiyoruz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dat<span class="sc">$</span>bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="co"># na.rm=TRUE kullanarak ortalama hesaplarken NA degerleri yok sayiyoruz.</span></span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 43.92193</code></pre>
+</div>
+</div>
+<p>Bunun için <code>mean()</code> fonksiyonunu kullanmamız yeterli.</p>
+<p>Ancak her bir grubun ortalamasını hesaplamak istiyorsak bunun için en iyi yöntem <code>data |&gt; group_by() |&gt; summarize()</code> fonksiyonlarını kullanmak olacaktır. Bu yöntem oldukça güçlü ancak bir kez grupladığımız veri, <code>ungroup()</code> yapmadığımız sürece grupluymuş gibi çalışabilir. Özellikle de birden çok grup olduğunda. Bu da hatalara yol açabilir. Bu sebeple bu kullanıma bir alternatif olarak geliştirilmiş <code>data |&gt; summarize(by = )</code> yaklaşımı daha temiz.</p>
+<p>Her bir tür için ortamala gaga uzunluğunu öğrenmek istediğimizi varsayalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len=</span><span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species   mean_bill_len
+  &lt;fct&gt;             &lt;dbl&gt;
+1 Adelie             38.8
+2 Chinstrap          48.8
+3 Gentoo             47.5</code></pre>
+</div>
+</div>
+<p>Gördüğünüz gibi hesapladık. Alternatif ve daha çok sevdiğim yöntem ise şu şekilde:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species   mean_bill_len
+  &lt;fct&gt;             &lt;dbl&gt;
+1 Adelie             38.8
+2 Gentoo             47.5
+3 Chinstrap          48.8</code></pre>
+</div>
+</div>
+<p>Diyelim ki hem ada hem de türler için ortalama hesaplamak istiyoruz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> <span class="fu">c</span>(species, island))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  species   island    mean_bill_len
+  &lt;fct&gt;     &lt;fct&gt;             &lt;dbl&gt;
+1 Adelie    Torgersen          39.0
+2 Adelie    Biscoe             39.0
+3 Adelie    Dream              38.5
+4 Gentoo    Biscoe             47.5
+5 Chinstrap Dream              48.8</code></pre>
+</div>
+</div>
+<p>Eğer tek bir gruba ve birden çok fonksiyona göre özet istatistik çıkartacaksanız aşağıdaki gibi yapabilirsiniz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">median_bill_len =</span> <span class="fu">median</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  species   mean_bill_len median_bill_len
+  &lt;fct&gt;             &lt;dbl&gt;           &lt;dbl&gt;
+1 Adelie             38.8            38.8
+2 Gentoo             47.5            47.3
+3 Chinstrap          48.8            49.6</code></pre>
+</div>
+</div>
+<p>Eğer birden fazla grup için birden fazla özet istatistik hesaplamak istiyorsanız da aşağıdaki gibi yapabilirsiniz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">median_bill_len =</span> <span class="fu">median</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> <span class="fu">c</span>(species, island))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  species   island    mean_bill_len median_bill_len
+  &lt;fct&gt;     &lt;fct&gt;             &lt;dbl&gt;           &lt;dbl&gt;
+1 Adelie    Torgersen          39.0            38.9
+2 Adelie    Biscoe             39.0            38.7
+3 Adelie    Dream              38.5            38.6
+4 Gentoo    Biscoe             47.5            47.3
+5 Chinstrap Dream              48.8            49.6</code></pre>
+</div>
+</div>
+<p>Girişte de bahsettiğim gibi <code>dplyr</code>’nin parladığı yer burası. <code>base R</code> ile de zor değil, <code>tapply</code> bu konuda çok daha esnek ve güçlü ancak <code>dplyr</code>, karmaşık gruplamalarda işleri kolaylaştırıyor.</p>
+</section>
+</section>
+<section id="biraz-da-grafik" class="level2">
+<h2 class="anchored" data-anchor-id="biraz-da-grafik">3. BİRAZ DA GRAFİK</h2>
+<p>Birçok temel şey gördüğümüze göre şimdi verimizi görselleştirmeye başlayabiliriz. En heyecanlı kısımlardan birisi bu çünkü emeğinizin karşılığını aldığınızı somut bir göstergesi. Burada <code>ggplot2</code> paketini kullanacağız. Basit grafikler, esneklik ve hız için <code>base R</code> kullanışlı ancak işler karmaşıklaştıkça <code>ggplot2</code> daha kullanışlı hâle geliyor. <code>ggplot2</code>, otomatik lejant çizmesi, birçok varsayılan tema barındırması, ek paketler ve öğrenmek için çok sayıda kaynağa sahip olması gibi özelliklerle, R’daki en önemli veri görselleştirme paketi.</p>
+<p><code>ggplot2</code> paketi ile, grafik özelliklerini katman katman belirtebiliyoruz. Öncelikle ggplot() fonksiyonuyla katmanlar ekleyebileceğimiz bir koordinat sistemi oluşturuyoruz ve ardından <code>geom_point()</code> ile nokta katmanı ekliyoruz.</p>
+<p>Ayrıntılı bir rehber için R for Data Science kitabının <a href="https://tr.r4ds.hadley.nz/veri-g%C3%B6rselle%C5%9Ftirme.html">veri görselleştirme bölümüne</a> bakabilirsiniz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Eksen başlıklarını değiştirelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Noktaların rengini kırmızı yapalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">colour=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Şimdi de renkleri <code>species</code> değişkenine göre belirleyelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, <span class="at">colour=</span>species)) <span class="sc">+</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Burada da nokta şekillerini de <code>species</code> değişkenine göre değiştiriyoruz.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, </span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colour=</span>species, <span class="at">shape=</span>species)) <span class="sc">+</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Şimdi de temayı değiştirelim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, <span class="at">colour=</span>species, </span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">shape=</span>species)) <span class="sc">+</span></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>, <span class="at">colour=</span><span class="st">"Species"</span>,</span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">shape=</span><span class="st">"Species"</span>) <span class="sc">+</span></span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">16</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<pre><code>
+Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.
+
+
+::: {.cell}
+
+```{.r .cell-code}
+ggplot(data=penguins, aes(bill_dep)) + 
+    geom_histogram() +
+    labs(x="Bill Depth [mm]", 
+         y="Count",
+         title="Histogram of Bill Depth") +
+    theme_bw(base_size=16)</code></pre>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="penguins_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<p>:::</p>
+<p>En ufak bir sorunuz bile olsa lütfen sormaktan çekinmeyin.</p>
+<p>Bilimle ve huzurla kalınız!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopyalandı");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopyalandı");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<script src="https://utteranc.es/client.js" repo="R-delisi/r-delisi.github.io" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>R Delisi - 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

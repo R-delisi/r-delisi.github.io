@@ -1,0 +1,646 @@
+---
+title: "PENGUINS VERİSİ İLE DPLYR'YE GİRİŞ"
+author: "Mehmet Göktuğ ÖZTÜRK"
+format: html
+date: 2026-05-14
+description: "dplyr ile Veri Cambazlığı"
+categories:
+  - R
+  - dplyr
+  - tidyverse
+  - palmerpenguins
+---
+
+![Kaynak: [Allison Horst](https://allisonhorst.github.io/palmerpenguins/articles/art.html)](figs/penguins.webp)
+
+**Merhabalar, blogun yeni yazısına hoş geldiniz.**
+**Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.**
+**Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.**
+
+Bir önceki yazıda penguins verisi ile `base R`'a bir giriş yapmış, birçok temel veri işini `base R` ile yapmayı anlatmıştım.
+Bu yazıda ise aynı işlemleri `{tidyverse}`'nin meşhur paketi `{dplyr}`'yi kullanarak yapacağız.
+Veri görselleştirme için ise `ggplot2` paketini kullanacağız.
+Bu sefer yazıyı daha kısa tutacağım.
+R kullanmaya yeni başlayanların, `tidyverse` öğrenmeden önce dilin temel kavramlarını öğrenmelerinin önemli olduğunu düşünüyorum.
+Bu sebeple öncelikle bir önceki yazıya ve o yazıda önerdiğim linklere bakmanızı öneririm.
+
+Daha önce de çok kez tekrar ettiğim gibi, `tidyverse`, veri bilimi için geliştirilmiş çok sayıda işlevsel paket barındıran bir paket koleksiyonu.
+`dplyr` ve daha genel olarak `tidyverse`, R dünyasının en çok kullandığı ve aynı zamanda üzerine en çok tartıştığı paketlerden.
+Bu konudaki görüşlerimi [R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME](https://r-delisi.github.io/posts/dem/dem.html) yazısında belirtmiştim.
+Son dönemde `base R` ağırlıklı bir R kullanımını tercih etsem de, gerektiğinde `data.table` ve `tidyverse` de kullanıyorum.
+"Kadim" `base R` vs. `tidyverse` ya da `tidyverse` vs. `data.table` savaşını alevlendirmeye de niyetim yok. :)
+Parsimoni ilkesi gereği basiti ve minimali seçmeyi, yaptığım analizlerin, yazdığım programların arkasında neler döndüğünü bilmeyi tercih ediyorum.
+İlginizi çekebileceğini düşündüğüm şu iki linki bırakıyor ve ardından yazıya başlıyorum; [Less Is More](https://dirk.eddelbuettel.com/blog/2021/12/08/), [tinyverse](https://www.tinyverse.org/)
+
+![Kaynak: [Allison Horst](https://allisonhorst.github.io/palmerpenguins/articles/art.html)](figs/penguins3.webp){width=50%}
+
+## 1. GİRİŞ
+
+Adettendir, önce paketleri R'a yükleyelim ve ardından veri setine bakarak başlayalım.
+
+```{r}
+# Eger henuz kurmadiysanız, asagidaki kodu yorumdan cikartip calistirabilirsiniz
+# install.packages("dplyr")
+# install.packages("ggplot2")
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+penguins
+```
+
+Gördüğünüz gibi birçok satır ve sütundan oluşan bir veri tablosu.
+Öncesinde R konsolunun kaç tane değer yazdıracağını ayarlamadıysanız veriyi bu şekilde çağırmak, tüm veri tablosunu konsola yazdıracaktır.
+Bu durum, büyük veri tablolarında istenmeyen bir durum.
+Bundan kaçınmak için önceki yazıda bahsettiğim gibi `head()` ve `tail()` fonksiyonlarını kullanabilirsiniz ancak ben bu sefer veriyi, bir tür `data.frame` yapısı olan `tibble`'ye dönüştüreceğim.
+`tidyverse` ile çalışırken `tibble` kullanmak daha rahat hissettiriyor.
+
+```{r}
+peng <- as_tibble(penguins)
+peng
+```
+
+Gördüğünüz gibi `data.frame`'nin kaç değişken ve gözlemden oluştuğundan, sütunlardaki veri tiplerine kadar birçok bilgi ekrana basılıyor ve veri, daha kompakt bir hâlde görüntülenebiliyor.
+Ancak bir konuda da uyarmam gerekiyor.
+`tibble` veri yapısı, klasik data.frame'den farklı davranışlara sahip.
+Bu sebeple `tidyverse` fonksiyonları dışında `tibble` kullanırken dikkatli olmanızı, mümkünse `data.frame` kullanmanızı tavsiye ediyorum. 
+
+Şimdi verinin yapısına daha ayrıntılı bakmak için `glimpse()` fonksiyonunu kullanalım.
+Bu fonksiyon, `base R`'daki `str()` ile aynı işleve sahip.
+
+```{r}
+glimpse(peng)
+```
+
+Gördüğünüz gibi 344 gözlem ve 8 değişkenden oluşan bir veri tablosu.
+
+Şimdi basit olarak nasıl satır ve sütun seçeceğimize bakalım. 
+Sütun seçmek için `select()` fonksiyonunu, indeksine göre satır seçmek için ise `slice()` fonksiyonunu kullacağız.
+
+İlk 6 satırı seçelim.
+
+```{r}
+slice(peng, 1:6)
+```
+
+Şimdi de ilk iki sütunu ve ilk 10 satırı seçelim.
+
+```{r}
+select(slice(peng, 1:6), 1:2)
+```
+
+`[]` kullanımından daha karmaşık görünüyor.
+Özellikle de iç içe fonksiyonla yazıldığı zaman.
+Ancak bir yol daha var.
+İlk olarak `tidyverse` ile gelen ve ardından `base R`'a eklenen pipe - `|>` operatörü ile veri işleme fonksiyonlarını birbirine bağlayabiliriz.
+Bu, en fazla birkaç satırdan oluşan pipeline'ler kurulduğu sürece daha okunaklı.
+Debugging'i zorlaştırsa da kısa ve iyi yazılmış pipeline'ler ile veri analizi daha kolay hâle geliyor.
+
+```{r}
+peng |>
+    slice(1:6) |>
+    select(1:2)
+```
+
+Çok uzun olmayan pipe'leri tek satır hâlinde de yazabiliriz.
+Tek satırda 80 karakteri geçmemeyi kural hâline getirirseniz kodlarınız da daha okunaklı olacaktır.
+
+```{r}
+peng |> slice(1:6) |> select(species, island)
+```
+
+Gördüğünüz gibi sütun isimlerini kullanırken ne tırnak içerisinde yazdık, ne de `c()` ile bir vektör oluşturduk.
+İşte `dplyr` burada bir sihir yapıyor.
+Bir tür [metaprogramming](https://adv-r.hadley.nz/metaprogramming.html) hilesi.
+Buna Non-Standard Evaluation (NSE) deniliyor.
+Ya da `tidyverse`'nin geliştirdiği versiyonuyla [tidy evaluation](https://dplyr.tidyverse.org/articles/programming.html).
+Veri analizi yaparken işleri oldukça kolaylaştıran bu sihir, programlama yaparken tam bir kâbusa dönüşebilir.
+
+Şimdi de `species` değişkeni için kaç adet eşsiz (unique) değer olduğuna bakalım.
+Diğer kategorik değişkenler için de aynı yöntemi kullanabilirsiniz.
+
+```{r}
+peng |> distinct(species)
+```
+
+`base R`'daki `unique()` fonksiyonuyla benzer işleve sahip `distinct()` fonksiyonunu kullandık.
+Bu fonksiyon, eşsiz değerleri bir `tibble` olarak döndürdü. 
+
+Şimdi de bu eşsiz değerlerin sıklık tablosuna bakalım.
+
+```{r}
+peng |> count(species)
+```
+
+```{r}
+peng |> count(island)
+```
+
+Tek tek faktör değişkenlerimizin sıklık tablosuna baktığımıza göre şimdi de, iki farklı değişken kullanarak bakabiliriz.
+
+Hangi adada hangi türden kaç tane penguen mevcut?
+
+```{r}
+peng |> count(species, island)
+```
+
+Gördüğünüz gibi iki değişkeni de kullanarak bunu öğrenebiliyoruz.
+
+## 2. VERİ CAMBAZLIĞI
+
+Şu ana kadar bir önceki yazının işleyişini takip ederek, temel kavramlara değindik.
+
+Şimdi bir veri analizi - veri bilimi iş akışının en mühim kısımlarından olan veri cambazlığını nasıl yapabileceğimize bakacağız.
+Bunun için Hadley Wickham'ın [R for Data Science](https://r4ds.hadley.nz/) - [İlk baskının TR çevirisi](https://tr.r4ds.hadley.nz/) kitabında anlattığı şekliyle `sütun`, `satır` ve `grup` işlemlerini yapacağız.
+Gerçek dünya verileriyle uğraştığımızda bu kısım, bir veri bilimi iş akışının genellikle büyük çoğunluğunu oluşturuyor.
+
+Bu bölümde yine palmerpenguins datasını kullanacağız ama bu sefer ham olan versiyonunu.
+Verinin ham hâlini kullanarak `penguins`'teki son hâline ulaşmaya çalışacağız.
+Bu veriye erişmek için `penguins_raw` yazabilirsiniz.
+
+```{r}
+penguins_raw
+```
+
+Öncelikle `tibble`'ye çevirelim.
+
+```{r}
+raw <- as_tibble(penguins_raw)
+raw
+```
+
+Şimdi veriye hızlıca göz atalım.
+
+```{r}
+glimpse(raw)
+```
+
+```{r}
+summary(raw)
+```
+
+![Kaynak: [Allison Horst](https://allisonhorst.github.io/palmerpenguins/articles/art.html)](figs/penguins2.webp)
+
+### SÜTUN İŞLEMLERİ
+
+Bu kısımda temel olarak `select()`, `mutate()`, `rename()` ve `relocate()` fonksiyonunu kullanacağız.
+
+`penguins` verisi 8 değişkenden oluşuyordu ancak `penguins_raw` verisi 17 değişkenden oluşuyor.
+
+Öncelikle `penguins`'te olan değişkenlerin bizim için önemli olduğunu varsayalım ve onları seçelim.
+
+```{r}
+dat <- raw |> 
+    select(c("Species", "Island", "Date Egg", "Culmen Length (mm)", 
+             "Culmen Depth (mm)", "Flipper Length (mm)", 
+             "Body Mass (g)", "Sex"))
+dat
+```
+
+Gördüğünüz gibi seçeceğimiz sütunun isimlerini tırnak içerisinde, bir vektör olarak da verebiliriz.
+Hatta `Culmen Length (mm)` gibi boşluk, parantez gibi karakterler içeren isimleri bu şekilde vermek daha sağlıklı. 
+
+```{r}
+glimpse(dat)
+```
+
+Şimdi de sütun isimlerini değiştirelim.
+
+Camel case kullanılan isimler, büyük harfle başlayan isimler, birimler, boşluklar derken standart olmayan birçok şey var.
+Ben, genelde tidy style guide'de belirtildiği gibi snake_case kullanmayı tercih ediyorum.
+Son zamanlarda camelCase de kullanmaya başladım.
+Bunun tek bir doğrusu yok, önemli olan okunaklı, tutarlı ve kolay hata ayıklanabilen kodlar yazmak.
+R için çok sayıda style guide mevcut. 
+Şuradaki linkleri incelemenizi öneririm:
+    1. [Google](https://google.github.io/styleguide/Rguide.html)
+    2. [tidy](https://style.tidyverse.org/)
+    3. [bioconductor](https://bioconductor.github.io/bioc_mentorship_docs/style-guide.html). 
+    4. [Norm Matloff](https://github.com/matloff/R-Style-Guide)
+Bu yazıda da, aslında tidyverse'nin oldukça katı olduğu snake_case kullanımını esnetmek ve okuyucular için göz alışkanlığı olması için camelCase kullandım. 
+
+```{r}
+dat |> 
+    setNames(c("species", "island", "year", "bill_len", "bill_dep", 
+               "flipper_len", "body_mass", "sex"))
+```
+
+Sütun isimlerini, `base R`'dan gelen `setNames()` fonksiyonuyla değiştirebileceğimiz gibi, `rename()` fonksiyonunu kullanarak da değiştirebiliriz.
+Ardından pipe ile bağlayarak sütunları `penguins` verisindeki sırayla sıralayalım.
+
+```{r}
+dat <- dat |> 
+    rename(species=Species, 
+           island=Island, 
+           year=`Date Egg`, 
+           bill_len=`Culmen Length (mm)`, 
+           bill_dep=`Culmen Depth (mm)`, 
+           flipper_len=`Flipper Length (mm)`, 
+           body_mass=`Body Mass (g)`, 
+           sex=Sex) |> 
+    relocate(year, .after=sex)
+dat
+```
+
+Gördüğünüz gibi isimler ve sütunların sırası `penguins` verisiyle aynı hâle geldi.
+
+Bu iş de tamamdır!
+
+Şimdi de görevimizi biraz daha zorlaştıralım.
+Her sütunun içindeki değerleri düzenleyeceğiz.
+Dikkat ettiyseniz `penguins` verisinde çok daha düzenli bir hâldeydi.
+
+İlk olarak yılla başlayalım.
+Tarihi yıla çevirmemiz lazım.
+
+İlk olarak klasik `$` operatörüyle erişelim.
+
+```{r}
+dat$year
+```
+
+Gördüğünüz yıl vektöründen ay ve günü silmemiz gerekiyor.
+Bunu tarihle oynayarak da yapabiliriz, karakter vektörüne çevirip, yıldan sonrasını silerek de.
+Normal şartlarda ikincisi daha kolay olabilir ama şu an hâlihazırda verimiz `Date` tipinde olduğu için direkt yılı seçebiliriz.
+Tarihlerle uğraşmak ilk başlayanlar için biraz zor olabilir.
+`format()` fonksiyonunu kullanacağız, `"%Y"` ile yılı seçeceğiz.
+Onu da değiştirdiğimiz sütuna tekrardan atayacağız.
+
+Bunun için `mutate()` fonksiyonunu kullanacağız.
+
+```{r}
+dat |> mutate(year=format(year, "%Y"))
+```
+
+Gördüğünüz gibi yıllar tamam!
+Sırada diğer değişkenler var.
+
+İlk olarak tür isimlerini kısaltmamız lazım.
+En zor işlerden birisi bu! Özellikle de ilk başlayanlar için.
+`sub()` ve `gsub()` fonksiyonu, karakter vektöründeki seçtiğimiz kısmı, istediğimiz karakterle değiştirir.
+`sub()` sadece ilk esleşmeyi değiştirdiği için onu kullanacağız.
+`" .*"` ile boşluk sonrasındaki tüm karakterleri seçiyoruz ve `""` ile replace ediyoruz.
+Yani siliyoruz.
+Çünkü `""` içinde hiçbir şey yok.
+Bu da bize tür isimlerinin boşluktan önceki kısmını veriyor tıpkı `penguins` verisinde olduğu gibi.
+
+Bir önceki kod bloğunda yıl değişkenini düzenlemiş ama herhangi bir nesneye atamamıştık.
+Şimdi tüm işlemleri bir arada yapalım.
+```{r}
+dat <- dat |> 
+    mutate(year=format(year, "%Y"), 
+           species=sub(" .*", "", dat$species), 
+           sex=tolower(dat$sex))
+dat
+```
+
+Bu işlemler için `tidyverse` içindeki `lubridate` ve `stringr` paketlerini de kullanabiliriz ama amacım temel veri manipülasyonu işlemlerini göstermek olduğundan bu yazıda `dplyr` dışında paket kullanmak istemiyorum.
+
+Şu an `penguins` verisiyle aynı veriye sahibiz!
+
+```{r}
+identical(penguins, as.data.frame(dat))
+```
+
+Aaa!
+Değilmişiz!
+Fark ne acaba?
+
+```{r}
+glimpse(penguins)
+```
+
+```{r}
+glimpse(as.data.frame(dat))
+```
+
+Gördüğünüz gibi sütun tipleri birbirinden farklı.
+Onları da değiştirelim.
+
+```{r}
+dat <- dat |> 
+    mutate(species=as.factor(species), 
+           island=as.factor(island),
+           flipper_len=as.integer(flipper_len), 
+           body_mass=as.integer(body_mass), 
+           sex=as.factor(sex), 
+           year=as.integer(year))
+glimpse(dat)
+```
+
+Değişmesi gereken tüm sütunları tek tek değiştirdik.
+
+```{r}
+identical(penguins, as.data.frame(dat))
+```
+
+Gördüğünüz gibi artık verilerimiz eş!
+Hedefimize ulaştık, dağınık bir veriyi düzenli bir hâle getirdik.
+
+### SATIR İŞLEMLERİ
+
+Bu kısımda temel olarak `filter()`, `arrange()` ve `distinct()` fonksiyonunu kullanacağız.
+
+`penguins_raw` verisini, `penguins` verisiyle eş bir hâle getirdiğimize göre hedefimize ulaştık ama bu yazının amacına ulaşması için satır ve grup işlemlerini de görmemiz gerekiyor.
+Sütunlarını düzenlediğimiz `dat` nesnesi üzerinde biraz oynayalım.
+
+Şimdi yalnızca Biscoe adasındaki penguenleri incelediğimizi varsayalım.
+Verimizi Biscoe adasına göre filtreleyeceğiz.
+
+```{r}
+pengBiscoe <- dat |> filter(island == "Biscoe")
+```
+
+Gördüğünüz gibi Biscoe adasındaki penguenleri seçtik ve `pengBiscoe` isimli bir nesneye atadık.
+
+```{r}
+summary(pengBiscoe)
+```
+
+Verinin özet istatistiklerine göz attığımızda bazı `NA` (Not Available - eksik değer) değerlerin olduğunu görüyoruz.
+Bu değerleri istemediğimizi ve onlardan kurtulmak istediğimizi varsayalım.
+Bunun için yine filtreleme yapabiliriz.
+`is.na()` ile NA olanların `TRUE` dönmesini sağladık ve ardından filtreledik.
+
+```{r}
+pengBiscoe |> filter(is.na(sex))
+```
+
+NA değerleri seçmiş olduk ancak biz NA değerleri seçmek değil, silmek istiyorduk.
+Burada `!` operatörünü kullanacağız.
+Bu operatörümüz, bize "o" olmayan sonucu döndürecek.
+
+```{r}
+pengBiscoe <- pengBiscoe |> filter(!is.na(sex))
+pengBiscoe
+```
+
+Bu işlemi `dplyr 1.2.0` versiyonu ile gelen `filter_out()` fonksiyonuyla da yapabiliriz.
+Her bir eylem için yeni bir fonksiyon oluşturmanın bilişsel yük yarattığını düşünüyorum.
+Aynı zamanda paketin API'sinin sürekli değişmesiyle de tekrarlanabilirlik zarar görüyor. 
+Bunu daha önce `mutate_at()`, `gather()` vb. çok sayıda fonksiyonda gördük.
+Ancak yine de bilmekte fayda var.
+
+```{r}
+pengBiscoe |> filter_out(is.na(sex))
+```
+
+Evet şu an NA değerlere sahip olmayan `sex` değişkenine göre bir filtreleme yaptık.
+
+Veriye tekrardan göz atalım.
+
+```{r}
+summary(pengBiscoe)
+```
+
+Tüm NA değerlerden kurtulmuşuz.
+Çünkü `bill_len`, `bill_dep`, `flipper_len` ve `body_mass` değişkenlerindeki tek NA değeri  272. satırdaydı ve bu satırdaki `sex` değeri de NA olduğu için o gidince hepsi gitmiş.
+
+Şimdi 48 mm'den daha küçük `bill_len` ve 5000 g'den daha büyük `body_mass` değerlerine göre filtrelememiz gerektiğini düşünelim.
+Eğer birden fazla değişkene göre filtreleme yapmamız gerekiyorsa `ve` için `&` operatörünü, `veya` için ise `|` operatörünü kullanıyoruz.
+`filter()` fonksiyonunda `ve` için `,` de kullanabiliriz.
+
+```{r}
+hs <- pengBiscoe |> # hs: heavy-short penguenler
+  filter(bill_len < 48 & body_mass > 5000)
+hs
+```
+
+Gördüğünüz gibi filtreledik.
+Yalnızca Biscoe adasındaki Gentoo türü penguenlerin bir kısmı bu boyutlara sahipmiş.
+
+Filtrelediğimiz veriyi bir grafikte görelim.
+Ama öncesinde ilk yazıdaki gibi alt alta iki farklı grafik çizmek için `patchwork` paketini kurmamız ve R'a yüklememiz gerekiyor.
+Bu, en kolay yöntem.
+
+```{r}
+library(patchwork)
+
+p1 <- ggplot(data=pengBiscoe, aes(bill_len, body_mass)) +
+  geom_point() +
+  annotate("rect",          # diktortgen ekledik
+           xmin=min(hs$bill_len) - 0.2,
+           xmax=max(hs$bill_len) + 0.2,
+           ymin=min(hs$body_mass) - 20,
+           ymax=max(hs$body_mass) + 50,
+           color="red",   # cerceve rengi
+           fill=NA,       # icini bos biraktik
+           linewidth=1) + # cizgi kalinligi (eski adi: size)
+  labs(x="Bill Length [mm]",
+       y="Body Mass [g]")
+
+p2 <- ggplot(data=hs, aes(bill_len, body_mass)) +
+  geom_point() +
+  labs(x="Bill Length [mm]",
+       y="Body Mass [g]")
+
+p1 / p2
+```
+
+Grafik, filtrelediğimiz değerleri daha iyi görmenizi sağlamıştır diye düşünüyorum.
+
+Şimdi de tekrardan `pengBiscoe` verisini kullanarak 2008 ve 2009 yıllarındaki verileri filtreleyelim.
+Bunun için yine birden fazla yol var ancak biz bu sefer `%in%` operatörünü kullanacağız.
+R'da `%in%` operatörü, birden fazla değerle filtreleme yapıldığında kullanılıyor.
+
+```{r}
+pengBiscoe |> filter(year %in% c(2008, 2009))
+```
+
+Bu iş de tamam!
+
+Sırada bir başka satır işlemi olan sıralama var.
+
+Mesela filtrelemeden önceki verimiz olan `dat` verisinin `bill_len` sütunuyla `arrange()` fonksiyonunu kullanalım.
+
+```{r}
+dat |> arrange(bill_len)
+```
+
+Eğer azalan bir sıralama istiyorsak değişkeni `desc()` fonksiyonu içinde yazmalı ya da değişkenin başına `-` eklemeliyiz.
+
+```{r}
+dat |> arrange(desc(bill_len))
+dat |> arrange(-bill_len)
+```
+
+Gördüğünüz gibi büyükten küçüğe bir şekilde sıraladık.
+
+Çoğu zaman sıralamaları birden fazla değişkenle yapmak isteyebiliriz.
+Bu durumda da diğer değişken isimlerini eklememiz gerekiyor.
+
+Öncelikle yıla göre, sonrasında da gaga uzunluğuna göre büyükten küçüğe sıralayalım.
+
+```{r}
+dat |> arrange(-year, -bill_len)
+```
+Son satır işlemi olarak da unique olan değerleri seçmeyi - silmeyi göreceğiz.
+Verimiz bunun için yeterince uygun değil ama bir uygulama yapalım.
+Eğer bir data.frame'de tekrar eden değerlerle ya da eşsiz değerlerle bir filtreleme yapmak istiyorsanız `distinct()` fonksiyonunu kullanabilirsiniz.
+
+Mesela verimizi, yalnızca eşsiz olan vücut kütlesi değerleri döndürmek istiyorsak aşağıdaki gibi filtreleyebiliriz.
+
+```{r}
+dat |> distinct(body_mass)
+```
+
+Eğer tüm değişkenleri korumak istersek `.keep.all` argümanını kullanabiliriz.
+
+```{r}
+dat |> distinct(body_mass, .keep_all=TRUE)
+```
+
+Tekrar eden değerleri döndürmek istediğimizde ise bir önceki yazıda bahsettiğim `duplicated()` fonksiyonunu `filter()` içinde kullanabilriz.
+
+```{r}
+dat |> filter(duplicated(body_mass))
+```
+
+### GRUP İŞLEMLERİ
+
+Şimdi gelelim `dplyr`'nin parladığı yere.
+Bu bölümde grup işlemlerini göreceğiz.
+Grup işlemleri özet istatistik tabloları oluşturmak için oldukça kullanışlı bir yöntem.
+Bu konuya aşina olmayanlar için Excel'deki (kendilerini hiç sevmem :)) pivot table'a oldukça benzediğini söyleyebilirim.
+
+Basit bir örnekle başlayalım.
+Diyelim ki ortalama bill_len'i hesaplamak istiyoruz.
+
+```{r}
+mean(dat$bill_len, na.rm=TRUE) # na.rm=TRUE kullanarak ortalama hesaplarken NA degerleri yok sayiyoruz.
+```
+
+Bunun için `mean()` fonksiyonunu kullanmamız yeterli.
+
+Ancak her bir grubun ortalamasını hesaplamak istiyorsak bunun için en iyi yöntem `data |> group_by() |> summarize()` fonksiyonlarını kullanmak olacaktır.
+Bu yöntem oldukça güçlü ancak bir kez grupladığımız veri, `ungroup()` yapmadığımız sürece grupluymuş gibi çalışabilir.
+Özellikle de birden çok grup olduğunda.
+Bu da hatalara yol açabilir.
+Bu sebeple bu kullanıma bir alternatif olarak geliştirilmiş `data |> summarize(by = )` yaklaşımı daha temiz.
+
+Her bir tür için ortamala gaga uzunluğunu öğrenmek istediğimizi varsayalım.
+
+```{r}
+dat |>
+    group_by(species) |>
+    summarize(mean_bill_len=mean(bill_len, na.rm=TRUE))
+```
+
+Gördüğünüz gibi hesapladık.
+Alternatif ve daha çok sevdiğim yöntem ise şu şekilde:
+
+```{r}
+dat |>
+    summarize(mean_bill_len = mean(bill_len, na.rm=TRUE), 
+              .by = species)
+```
+
+Diyelim ki hem ada hem de türler için ortalama hesaplamak istiyoruz.
+
+```{r}
+dat |>
+    summarize(mean_bill_len = mean(bill_len, na.rm=TRUE), 
+              .by = c(species, island))
+```
+
+Eğer tek bir gruba ve birden çok fonksiyona göre özet istatistik çıkartacaksanız aşağıdaki gibi yapabilirsiniz.
+
+```{r}
+dat |>
+    summarize(mean_bill_len = mean(bill_len, na.rm=TRUE), 
+              median_bill_len = median(bill_len, na.rm=TRUE),
+              .by = species)
+```
+
+Eğer birden fazla grup için birden fazla özet istatistik hesaplamak istiyorsanız da aşağıdaki gibi yapabilirsiniz.
+```{r}
+dat |>
+    summarize(mean_bill_len = mean(bill_len, na.rm=TRUE), 
+              median_bill_len = median(bill_len, na.rm=TRUE),
+              .by = c(species, island))
+```
+
+Girişte de bahsettiğim gibi `dplyr`'nin parladığı yer burası.
+`base R` ile de zor değil, `tapply` bu konuda çok daha esnek ve güçlü ancak `dplyr`, karmaşık gruplamalarda işleri kolaylaştırıyor.
+
+## 3. BİRAZ DA GRAFİK
+
+Birçok temel şey gördüğümüze göre şimdi verimizi görselleştirmeye başlayabiliriz.
+En heyecanlı kısımlardan birisi bu çünkü emeğinizin karşılığını aldığınızı somut bir göstergesi.
+Burada `ggplot2` paketini kullanacağız.
+Basit grafikler, esneklik ve hız için `base R` kullanışlı ancak işler karmaşıklaştıkça `ggplot2` daha kullanışlı hâle geliyor.
+`ggplot2`, otomatik lejant çizmesi, birçok varsayılan tema barındırması, ek paketler ve öğrenmek için çok sayıda kaynağa sahip olması gibi özelliklerle, R'daki en önemli veri görselleştirme paketi.
+
+`ggplot2` paketi ile, grafik özelliklerini katman katman belirtebiliyoruz.
+Öncelikle ggplot() fonksiyonuyla katmanlar ekleyebileceğimiz bir koordinat sistemi oluşturuyoruz ve ardından `geom_point()` ile nokta katmanı ekliyoruz.
+
+Ayrıntılı bir rehber için R for Data Science kitabının [veri görselleştirme bölümüne](https://tr.r4ds.hadley.nz/veri-g%C3%B6rselle%C5%9Ftirme.html) bakabilirsiniz.
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
+    geom_point()
+```
+
+Eksen başlıklarını değiştirelim.
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
+    geom_point() +
+    labs(x="Flipper Length [mm]", y="Bill Length [mm]")
+```
+
+Noktaların rengini kırmızı yapalım.
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
+    geom_point(colour="red") +
+    labs(x="Flipper Length [mm]", y="Bill Length [mm]")
+```
+
+Şimdi de renkleri `species` değişkenine göre belirleyelim.
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species)) +
+    geom_point() +
+    labs(x="Flipper Length [mm]", y="Bill Length [mm]")
+```
+
+Burada da nokta şekillerini de `species` değişkenine göre değiştiriyoruz.
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len, 
+                          colour=species, shape=species)) +
+    geom_point() +
+    labs(x="Flipper Length [mm]", y="Bill Length [mm]")
+```
+
+Şimdi de temayı değiştirelim.
+
+```{r}
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species, 
+                          shape=species)) +
+    geom_point() +
+    labs(x="Flipper Length [mm]", y="Bill Length [mm]", colour="Species",
+         shape="Species") +
+    theme_bw(base_size=16)
+```
+
+```
+
+Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.
+
+```{r}
+ggplot(data=penguins, aes(bill_dep)) + 
+    geom_histogram() +
+    labs(x="Bill Depth [mm]", 
+         y="Count",
+         title="Histogram of Bill Depth") +
+    theme_bw(base_size=16)
+```
+
+En ufak bir sorunuz bile olsa lütfen sormaktan çekinmeyin.
+
+Bilimle ve huzurla kalınız!
