@@ -408,7 +408,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>Merhabalar, blogun yeni yazısına hoş geldiniz.</strong> <strong>Takıldığınız ve anlamadığınız yerler olursa lütfen yorum yapmaya çekinmeyiniz.</strong> <strong>Ayrıca katkılarınızı ve eleştirilerinizi de bekliyorum. Keyifli okumalar.</strong></p>
 <p>Bir önceki yazıda penguins verisi ile <code>base R</code>’a bir giriş yapmış, birçok temel veri işini <code>base R</code> ile yapmayı anlatmıştım. Bu yazıda ise aynı işlemleri <code>{tidyverse}</code>’nin meşhur paketi <code>{dplyr}</code>’yi kullanarak yapacağız. Veri görselleştirme için ise <code>ggplot2</code> paketini kullanacağız. Bu sefer yazı daha kısa olacak. R kullanmaya yeni başlayanların, <code>tidyverse</code> öğrenmeden önce dilin temel kavramlarını öğrenmelerinin önemli olduğunu düşünüyorum. Bu sebeple öncelikle bir önceki yazıya ve o yazıda önerdiğim linklere bakmanızı öneririm.</p>
-<p>Daha önce de çok kez tekrar ettiğim gibi, <code>tidyverse</code>, veri bilimi için geliştirilmiş çok sayıda işlevsel paket barındıran bir paket koleksiyonu. <code>dplyr</code> ve daha genel olarak <code>tidyverse</code>, R dünyasının en çok kullandığı ve aynı zamanda üzerine en çok tartıştığı paketlerden. Bu konudaki görüşlerimi <a href="https://r-delisi.github.io/posts/dem/dem.html">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a> yazısında belirtmiştim. Son dönemde <code>base R</code> ağırlıklı bir R kullanımını tercih etsem de, gerektiğinde <code>data.table</code> ve <code>tidyverse</code> de kullanıyorum. “Kadim” <code>base R</code> vs.&nbsp;<code>tidyverse</code> ya da <code>tidyverse</code> vs.&nbsp;<code>data.table</code> savaşını alevlendirmeye de niyetim yok. :) Parsimoni ilkesi gereği basiti ve minimali seçmeyi, yaptığım analizlerin, yazdığım programların arkasında neler döndüğünü bilmeyi tercih ediyorum. İlginizi çekebileceğini düşündüğüm şu iki linki bırakıyor ve ardından yazıya başlıyorum; <a href="https://dirk.eddelbuettel.com/blog/2021/12/08/">Less Is More</a>, <a href="https://www.tinyverse.org/">tinyverse</a></p>
+<p>Daha önce de çok kez tekrar ettiğim gibi, <code>tidyverse</code>, veri bilimi için geliştirilmiş çok sayıda işlevsel paket barındıran bir paket koleksiyonu. <code>dplyr</code> ve daha genel olarak <code>tidyverse</code>, R dünyasının en çok kullandığı ve aynı zamanda üzerine en çok tartıştığı paketlerden. Bu konudaki görüşlerimi <a href="https://r-delisi.github.io/posts/dem/dem.html">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a> yazısında belirtmiştim. Son dönemde <code>base R</code> ağırlıklı bir R kullanımını tercih etsem de, gerektiğinde <code>data.table</code> ve <code>tidyverse</code> de kullanıyorum. “Kadim” <code>base R</code> vs.&nbsp;<code>tidyverse</code> ya da <code>tidyverse</code> vs.&nbsp;<code>data.table</code> savaşını alevlendirmeye de niyetim yok. :) Parsimoni ilkesi gereği basiti ve minimali seçmeyi, yaptığım analizlerin, yazdığım programların arkasında neler döndüğünü bilmeyi tercih ediyorum. İlginizi çekebileceğini düşündüğüm şu iki linki bırakıyor ve ardından yazıya başlıyorum; <a href="https://dirk.eddelbuettel.com/blog/2021/12/08/">Less Is More</a>, <a href="https://www.tinyverse.org/">tinyverse</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figs/penguins3.webp" class="img-fluid figure-img" style="width:50.0%"></p>
@@ -424,25 +424,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>penguins</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>penguins</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   species    island bill_len bill_dep flipper_len body_mass    sex year
 1   Adelie Torgersen     39.1     18.7         181      3750   male 2007
@@ -475,8 +461,8 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 <p>Gördüğünüz gibi birçok satır ve sütundan oluşan bir veri tablosu. Öncesinde R konsolunun kaç tane değer yazdıracağını ayarlamadıysanız veriyi bu şekilde çağırmak, tüm veri tablosunu konsola yazdıracaktır. Bu durum, büyük veri tablolarında istenmeyen bir durum. Bundan kaçınmak için önceki yazıda bahsettiğim gibi <code>head()</code> ve <code>tail()</code> fonksiyonlarını kullanabilirsiniz ancak ben bu sefer veriyi, bir tür <code>data.frame</code> yapısı olan <code>tibble</code>’ye dönüştüreceğim. <code>tidyverse</code> ile çalışırken <code>tibble</code> kullanmak daha rahat hissettiriyor.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(penguins)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>peng</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>peng <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(penguins)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>peng</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species island    bill_len bill_dep flipper_len body_mass sex     year
@@ -497,7 +483,7 @@ Attaching package: 'dplyr'</code></pre>
 <p>Gördüğünüz gibi <code>data.frame</code>’nin kaç değişken ve gözlemden oluştuğundan, sütunlardaki veri tiplerine kadar birçok bilgi ekrana basılıyor ve veri, daha kompakt bir hâlde görüntülenebiliyor. Ancak bir konuda da uyarmam gerekiyor. <code>tibble</code> veri yapısı, klasik data.frame’den farklı davranışlara sahip. Bu sebeple <code>tidyverse</code> fonksiyonları dışında <code>tibble</code> kullanırken dikkatli olmanızı, mümkünse <code>data.frame</code> kullanmanızı tavsiye ediyorum.</p>
 <p>Şimdi verinin yapısına daha ayrıntılı bakmak için <code>glimpse()</code> fonksiyonunu kullanalım. Bu fonksiyon, <code>base R</code>’daki <code>str()</code> ile aynı işleve sahip.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peng)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(peng)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -515,7 +501,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Şimdi basit olarak nasıl satır ve sütun seçeceğimize bakalım. Sütun seçmek için <code>select()</code> fonksiyonunu, indeksine göre satır seçmek için ise <code>slice()</code> fonksiyonunu kullacağız.</p>
 <p>İlk 6 satırı seçelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">slice</span>(peng, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">slice</span>(peng, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
   species island    bill_len bill_dep flipper_len body_mass sex     year
@@ -530,7 +516,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Şimdi de ilk iki sütunu ve ilk 10 satırı seçelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="fu">slice</span>(peng, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(<span class="fu">slice</span>(peng, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   species island   
@@ -545,9 +531,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p><code>[]</code> kullanımından daha karmaşık görünüyor. Özellikle de iç içe fonksiyonla yazıldığı zaman. Ancak bir yol daha var. İlk olarak <code>tidyverse</code> ile gelen ve ardından <code>base R</code>’a eklenen pipe - <code>|&gt;</code> operatörü ile veri işleme fonksiyonlarını birbirine bağlayabiliriz. Bu, en fazla birkaç satırdan oluşan pipeline’ler kurulduğu sürece daha okunaklı. Debugging’i zorlaştırsa da kısa ve iyi yazılmış pipeline’ler ile veri analizi daha kolay hâle geliyor.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   species island   
@@ -562,7 +548,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Çok uzun olmayan pipe’leri tek satır hâlinde de yazabiliriz. Tek satırda 80 karakteri geçmemeyi kural hâline getirirseniz kodlarınız da daha okunaklı olacaktır.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   species island   
@@ -578,7 +564,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Gördüğünüz gibi sütun isimlerini kullanırken ne tırnak içerisinde yazdık, ne de <code>c()</code> ile bir vektör oluşturduk. İşte <code>dplyr</code> burada bir sihir yapıyor. Bir tür <a href="https://adv-r.hadley.nz/metaprogramming.html">metaprogramming</a> hilesi. Buna Non-Standard Evaluation (NSE) deniliyor. Ya da <code>tidyverse</code>’nin geliştirdiği versiyonuyla <a href="https://dplyr.tidyverse.org/articles/programming.html">tidy evaluation</a>. Veri analizi yaparken işleri oldukça kolaylaştıran bu sihir, programlama yaparken tam bir kâbusa dönüşebilir.</p>
 <p>Şimdi de <code>species</code> değişkeni için kaç adet eşsiz (unique) değer olduğuna bakalım. Diğer kategorik değişkenler için de aynı yöntemi kullanabilirsiniz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">distinct</span>(species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">distinct</span>(species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 1
   species  
@@ -591,7 +577,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p><code>base R</code>’daki <code>unique()</code> fonksiyonuyla benzer işleve sahip <code>distinct()</code> fonksiyonunu kullandık. Bu fonksiyon, eşsiz değerleri bir <code>tibble</code> olarak döndürdü.</p>
 <p>Şimdi de bu eşsiz değerlerin sıklık tablosuna bakalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   species       n
@@ -602,7 +588,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   island        n
@@ -615,7 +601,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Tek tek faktör değişkenlerimizin sıklık tablosuna baktığımıza göre şimdi de, iki farklı değişken kullanarak bakabiliriz.</p>
 <p>Hangi adada hangi türden kaç tane penguen mevcut?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">count</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
   species   island        n
@@ -635,7 +621,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Şimdi bir veri analizi - veri bilimi iş akışının en mühim kısımlarından olan veri cambazlığını nasıl yapabileceğimize bakacağız. Bunun için Hadley Wickham’ın <a href="https://r4ds.hadley.nz/">R for Data Science</a> - <a href="https://tr.r4ds.hadley.nz/">İlk baskının TR çevirisi</a> kitabında anlattığı şekliyle <code>sütun</code>, <code>satır</code> ve <code>grup</code> işlemlerini yapacağız. Gerçek dünya verileriyle uğraştığımızda bu kısım, bir veri bilimi iş akışının genellikle büyük çoğunluğunu oluşturuyor.</p>
 <p>Bu bölümde yine palmerpenguins datasını kullanacağız ama bu sefer ham olan versiyonunu. Verinin ham hâlini kullanarak <code>penguins</code>’teki son hâline ulaşmaya çalışacağız. Bu veriye erişmek için <code>penguins_raw</code> yazabilirsiniz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>penguins_raw</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>penguins_raw</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   studyName Sample Number                             Species Region    Island
 1    PAL0708             1 Adelie Penguin (Pygoscelis adeliae) Anvers Torgersen
@@ -702,8 +688,8 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Öncelikle <code>tibble</code>’ye çevirelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(penguins_raw)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>raw</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(penguins_raw)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>raw</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 17
    studyName `Sample Number` Species         Region Island Stage `Individual ID`
@@ -727,7 +713,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Şimdi veriye hızlıca göz atalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(raw)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(raw)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 17
@@ -751,7 +737,7 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(raw)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(raw)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  studyName         Sample Number      Species             Region         
  Length:344         Min.   :  1.00   Length:344         Length:344        
@@ -807,11 +793,11 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 <p><code>penguins</code> verisi 8 değişkenden oluşuyordu ancak <code>penguins_raw</code> verisi 17 değişkenden oluşuyor.</p>
 <p>Öncelikle <code>penguins</code>’te olan değişkenlerin bizim için önemli olduğunu varsayalım ve onları seçelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> raw <span class="sc">|&gt;</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"Island"</span>, <span class="st">"Date Egg"</span>, <span class="st">"Culmen Length (mm)"</span>, </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Culmen Depth (mm)"</span>, <span class="st">"Flipper Length (mm)"</span>, </span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Body Mass (g)"</span>, <span class="st">"Sex"</span>))</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> raw <span class="sc">|&gt;</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="fu">c</span>(<span class="st">"Species"</span>, <span class="st">"Island"</span>, <span class="st">"Date Egg"</span>, <span class="st">"Culmen Length (mm)"</span>, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Culmen Depth (mm)"</span>, <span class="st">"Flipper Length (mm)"</span>, </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Body Mass (g)"</span>, <span class="st">"Sex"</span>))</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    Species            Island `Date Egg` `Culmen Length (mm)` `Culmen Depth (mm)`
@@ -833,7 +819,7 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 </div>
 <p>Gördüğünüz gibi seçeceğimiz sütunun isimlerini tırnak içerisinde, bir vektör olarak da verebiliriz. Hatta <code>Culmen Length (mm)</code> gibi boşluk, parantez gibi karakterler içeren isimleri bu şekilde vermek daha sağlıklı.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -851,9 +837,9 @@ $ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "M
 <p>Camel case kullanılan isimler, büyük harfle başlayan isimler, birimler, boşluklar derken standart olmayan birçok şey var. Buradaki isimleri, orijinal veriye sadık kalarak değiştireceğiz.</p>
 <p>Biraz adlandırma stillerinden bahsetmek gerekirse; ben, zaman zaman tidy style guide’da belirtildiği gibi snake_case kullanmayı tercih ediyorum. Zaman zamansa camelCase. Bunun tek bir doğrusu yok, önemli olan okunaklı, tutarlı ve kolay hata ayıklanabilen kodlar yazmak. R için çok sayıda style guide mevcut. Şuradaki linkleri incelemenizi öneririm; <a href="https://google.github.io/styleguide/Rguide.html">Google</a>, <a href="https://style.tidyverse.org/">tidy</a>, <a href="https://bioconductor.github.io/bioc_mentorship_docs/style-guide.html">bioconductor</a>, <a href="https://github.com/matloff/R-Style-Guide">Norm Matloff</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"island"</span>, <span class="st">"year"</span>, <span class="st">"bill_len"</span>, <span class="st">"bill_dep"</span>, </span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">"flipper_len"</span>, <span class="st">"body_mass"</span>, <span class="st">"sex"</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"island"</span>, <span class="st">"year"</span>, <span class="st">"bill_len"</span>, <span class="st">"bill_dep"</span>, </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">"flipper_len"</span>, <span class="st">"body_mass"</span>, <span class="st">"sex"</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species       island year       bill_len bill_dep flipper_len body_mass sex  
@@ -873,17 +859,17 @@ $ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "M
 </div>
 <p>Sütun isimlerini, <code>base R</code>’dan gelen <code>setNames()</code> fonksiyonuyla değiştirebileceğimiz gibi, <code>rename()</code> fonksiyonunu kullanarak da değiştirebiliriz. Ardından pipe ile bağlayarak sütunları <code>penguins</code> verisindeki sırayla sıralayalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">species=</span>Species, </span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">island=</span>Island, </span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">year=</span><span class="st">`</span><span class="at">Date Egg</span><span class="st">`</span>, </span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">bill_len=</span><span class="st">`</span><span class="at">Culmen Length (mm)</span><span class="st">`</span>, </span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">bill_dep=</span><span class="st">`</span><span class="at">Culmen Depth (mm)</span><span class="st">`</span>, </span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">flipper_len=</span><span class="st">`</span><span class="at">Flipper Length (mm)</span><span class="st">`</span>, </span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">body_mass=</span><span class="st">`</span><span class="at">Body Mass (g)</span><span class="st">`</span>, </span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span>Sex) <span class="sc">|&gt;</span> </span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(year, <span class="at">.after=</span>sex)</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">species=</span>Species, </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">island=</span>Island, </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">year=</span><span class="st">`</span><span class="at">Date Egg</span><span class="st">`</span>, </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">bill_len=</span><span class="st">`</span><span class="at">Culmen Length (mm)</span><span class="st">`</span>, </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">bill_dep=</span><span class="st">`</span><span class="at">Culmen Depth (mm)</span><span class="st">`</span>, </span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">flipper_len=</span><span class="st">`</span><span class="at">Flipper Length (mm)</span><span class="st">`</span>, </span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">body_mass=</span><span class="st">`</span><span class="at">Body Mass (g)</span><span class="st">`</span>, </span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span>Sex) <span class="sc">|&gt;</span> </span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(year, <span class="at">.after=</span>sex)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species       island bill_len bill_dep flipper_len body_mass sex   year      
@@ -907,7 +893,7 @@ $ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "M
 <p>İlk olarak yılla başlayalım. Tarihi yıla çevirmemiz lazım.</p>
 <p>İlk olarak klasik <code>$</code> operatörüyle erişelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>year</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>year</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] "2007-11-11" "2007-11-11" "2007-11-16" "2007-11-16" "2007-11-16"
   [6] "2007-11-16" "2007-11-15" "2007-11-15" "2007-11-09" "2007-11-09"
@@ -955,7 +941,7 @@ $ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "M
 <p>Gördüğünüz yıl vektöründen ay ve günü silmemiz gerekiyor. Bunu tarihle oynayarak da yapabiliriz, karakter vektörüne çevirip, yıldan sonrasını silerek de. Normal şartlarda ikincisi daha kolay olabilir ama şu an hâlihazırda verimiz <code>Date</code> tipinde olduğu için direkt yılı seçebiliriz. Tarihlerle uğraşmak ilk başlayanlar için biraz zor olabilir. <code>format()</code> fonksiyonunu kullanacağız, <code>"%Y"</code> ile yılı seçeceğiz. Onu da değiştirdiğimiz sütuna tekrardan atayacağız.</p>
 <p>Bunun için <code>mutate()</code> fonksiyonunu kullanacağız.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">format</span>(year, <span class="st">"%Y"</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">format</span>(year, <span class="st">"%Y"</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species            island bill_len bill_dep flipper_len body_mass sex   year 
@@ -977,11 +963,11 @@ $ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "M
 <p>İlk olarak tür isimlerini kısaltmamız lazım. En zor işlerden birisi bu! Özellikle de ilk başlayanlar için. <code>sub()</code> ve <code>gsub()</code> fonksiyonu, karakter vektöründeki seçtiğimiz kısmı, istediğimiz karakterle değiştirir. <code>sub()</code> sadece ilk esleşmeyi değiştirdiği için onu kullanacağız. <code>" .*"</code> ile boşluk sonrasındaki tüm karakterleri seçiyoruz ve <code>""</code> ile replace ediyoruz. Yani siliyoruz. Çünkü <code>""</code> içinde hiçbir şey yok. Bu da bize tür isimlerinin boşluktan önceki kısmını veriyor tıpkı <code>penguins</code> verisinde olduğu gibi.</p>
 <p>Bir önceki kod bloğunda yıl değişkenini düzenlemiş ama herhangi bir nesneye atamamıştık. Şimdi tüm işlemleri bir arada yapalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">format</span>(year, <span class="st">"%Y"</span>), </span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">species=</span><span class="fu">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, dat<span class="sc">$</span>species), </span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">tolower</span>(dat<span class="sc">$</span>sex))</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">format</span>(year, <span class="st">"%Y"</span>), </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">species=</span><span class="fu">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, dat<span class="sc">$</span>species), </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">tolower</span>(dat<span class="sc">$</span>sex))</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species island    bill_len bill_dep flipper_len body_mass sex    year 
@@ -1002,14 +988,14 @@ $ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "M
 <p>Bu işlemler için <code>tidyverse</code> içindeki <code>lubridate</code> ve <code>stringr</code> paketlerini de kullanabiliriz ama amacım temel veri manipülasyonu işlemlerini göstermek olduğundan bu yazıda <code>dplyr</code> dışında paket kullanmak istemiyorum.</p>
 <p>Şu an <code>penguins</code> verisiyle aynı veriye sahibiz!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(penguins, <span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(penguins, <span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
 </div>
 </div>
 <p>Aaa! Değilmişiz! Fark ne acaba?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -1024,7 +1010,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(<span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(<span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -1040,14 +1026,14 @@ $ year        &lt;chr&gt; "2007", "2007", "2007", "2007", "2007", "2007", "2007"
 </div>
 <p>Gördüğünüz gibi sütun tipleri birbirinden farklı. Onları da değiştirelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">species=</span><span class="fu">as.factor</span>(species), </span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">island=</span><span class="fu">as.factor</span>(island),</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">flipper_len=</span><span class="fu">as.integer</span>(flipper_len), </span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">body_mass=</span><span class="fu">as.integer</span>(body_mass), </span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">as.factor</span>(sex), </span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">year=</span><span class="fu">as.integer</span>(year))</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">species=</span><span class="fu">as.factor</span>(species), </span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">island=</span><span class="fu">as.factor</span>(island),</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">flipper_len=</span><span class="fu">as.integer</span>(flipper_len), </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">body_mass=</span><span class="fu">as.integer</span>(body_mass), </span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">as.factor</span>(sex), </span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">year=</span><span class="fu">as.integer</span>(year))</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dat)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -1063,7 +1049,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Değişmesi gereken tüm sütunları tek tek değiştirdik.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(penguins, <span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(penguins, <span class="fu">as.data.frame</span>(dat))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
@@ -1076,11 +1062,11 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p><code>penguins_raw</code> verisini, <code>penguins</code> verisiyle eş bir hâle getirdiğimize göre hedefimize ulaştık ama bu yazının amacına ulaşması için satır ve grup işlemlerini de görmemiz gerekiyor. Sütunlarını düzenlediğimiz <code>dat</code> nesnesi üzerinde biraz oynayalım.</p>
 <p>Şimdi yalnızca Biscoe adasındaki penguenleri incelediğimizi varsayalım. Verimizi Biscoe adasına göre filtreleyeceğiz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(island <span class="sc">==</span> <span class="st">"Biscoe"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(island <span class="sc">==</span> <span class="st">"Biscoe"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Gördüğünüz gibi Biscoe adasındaki penguenleri seçtik ve <code>pengBiscoe</code> isimli bir nesneye atadık.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pengBiscoe)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pengBiscoe)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island       bill_len        bill_dep    
  Adelie   : 44   Biscoe   :168   Min.   :34.50   Min.   :13.10  
@@ -1102,7 +1088,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Verinin özet istatistiklerine göz attığımızda bazı <code>NA</code> (Not Available - eksik değer) değerlerin olduğunu görüyoruz. Bu değerleri istemediğimizi ve onlardan kurtulmak istediğimizi varsayalım. Bunun için yine filtreleme yapabiliriz. <code>is.na()</code> ile NA olanların <code>TRUE</code> dönmesini sağladık ve ardından filtreledik.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(sex))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(sex))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 8
   species island bill_len bill_dep flipper_len body_mass sex    year
@@ -1116,8 +1102,8 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>NA değerleri seçmiş olduk ancak biz NA değerleri seçmek değil, silmek istiyorduk. Burada <code>!</code> operatörünü kullanacağız. Bu operatörümüz, bize “o” olmayan sonucu döndürecek.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="ot">&lt;-</span> pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sex))</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>pengBiscoe</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="ot">&lt;-</span> pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sex))</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>pengBiscoe</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 163 × 8
    species island bill_len bill_dep flipper_len body_mass sex     year
@@ -1137,7 +1123,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Bu işlemi <code>dplyr 1.2.0</code> versiyonu ile gelen <code>filter_out()</code> fonksiyonuyla da yapabiliriz. Her bir eylem için yeni bir fonksiyon oluşturmanın bilişsel yük yarattığını düşünüyorum. Aynı zamanda paketin API’sinin sürekli değişmesiyle de tekrarlanabilirlik zarar görüyor. Bunu daha önce <code>mutate_at()</code>, <code>gather()</code> vb. çok sayıda fonksiyonda gördük. Ancak yine de bilmekte fayda var.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter_out</span>(<span class="fu">is.na</span>(sex))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter_out</span>(<span class="fu">is.na</span>(sex))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 163 × 8
    species island bill_len bill_dep flipper_len body_mass sex     year
@@ -1158,7 +1144,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Evet şu an NA değerlere sahip olmayan <code>sex</code> değişkenine göre bir filtreleme yaptık.</p>
 <p>Veriye tekrardan göz atalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pengBiscoe)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pengBiscoe)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island       bill_len        bill_dep    
  Adelie   : 44   Biscoe   :163   Min.   :34.50   Min.   :13.10  
@@ -1179,9 +1165,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Tüm NA değerlerden kurtulmuşuz. Çünkü <code>bill_len</code>, <code>bill_dep</code>, <code>flipper_len</code> ve <code>body_mass</code> değişkenlerindeki tek NA değeri 272. satırdaydı ve bu satırdaki <code>sex</code> değeri de NA olduğu için o gidince hepsi gitmiş.</p>
 <p>Şimdi 48 mm’den daha küçük <code>bill_len</code> ve 5000 g’den daha büyük <code>body_mass</code> değerlerine göre filtrelememiz gerektiğini düşünelim. Eğer birden fazla değişkene göre filtreleme yapmamız gerekiyorsa <code>ve</code> için <code>&amp;</code> operatörünü, <code>veya</code> için ise <code>|</code> operatörünü kullanıyoruz. <code>filter()</code> fonksiyonunda <code>ve</code> için <code>,</code> de kullanabiliriz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>hs <span class="ot">&lt;-</span> pengBiscoe <span class="sc">|&gt;</span> <span class="co"># hs: heavy-short penguenler</span></span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bill_len <span class="sc">&lt;</span> <span class="dv">48</span> <span class="sc">&amp;</span> body_mass <span class="sc">&gt;</span> <span class="dv">5000</span>)</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>hs</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>hs <span class="ot">&lt;-</span> pengBiscoe <span class="sc">|&gt;</span> <span class="co"># hs: heavy-short penguenler</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bill_len <span class="sc">&lt;</span> <span class="dv">48</span> <span class="sc">&amp;</span> body_mass <span class="sc">&gt;</span> <span class="dv">5000</span>)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>hs</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 17 × 8
    species island bill_len bill_dep flipper_len body_mass sex     year
@@ -1208,27 +1194,27 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Gördüğünüz gibi filtreledik. Yalnızca Biscoe adasındaki Gentoo türü penguenlerin bir kısmı bu boyutlara sahipmiş.</p>
 <p>Filtrelediğimiz veriyi bir grafikte görelim. Ama öncesinde ilk yazıdaki gibi alt alta iki farklı grafik çizmek için <code>patchwork</code> paketini kurmamız ve R’a yüklememiz gerekiyor. Bu, en kolay yöntem.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>pengBiscoe, <span class="fu">aes</span>(bill_len, body_mass)) <span class="sc">+</span></span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>,          <span class="co"># diktortgen ekledik</span></span>
-<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin=</span><span class="fu">min</span>(hs<span class="sc">$</span>bill_len) <span class="sc">-</span> <span class="fl">0.2</span>,</span>
-<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmax=</span><span class="fu">max</span>(hs<span class="sc">$</span>bill_len) <span class="sc">+</span> <span class="fl">0.2</span>,</span>
-<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin=</span><span class="fu">min</span>(hs<span class="sc">$</span>body_mass) <span class="sc">-</span> <span class="dv">20</span>,</span>
-<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymax=</span><span class="fu">max</span>(hs<span class="sc">$</span>body_mass) <span class="sc">+</span> <span class="dv">50</span>,</span>
-<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">"red"</span>,   <span class="co"># cerceve rengi</span></span>
-<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="cn">NA</span>,       <span class="co"># icini bos biraktik</span></span>
-<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">linewidth=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="co"># cizgi kalinligi (eski adi: size)</span></span>
-<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length [mm]"</span>,</span>
-<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Body Mass [g]"</span>)</span>
-<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>hs, <span class="fu">aes</span>(bill_len, body_mass)) <span class="sc">+</span></span>
-<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length [mm]"</span>,</span>
-<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Body Mass [g]"</span>)</span>
-<span id="cb74-20"><a href="#cb74-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-21"><a href="#cb74-21" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>pengBiscoe, <span class="fu">aes</span>(bill_len, body_mass)) <span class="sc">+</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>,          <span class="co"># diktortgen ekledik</span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin=</span><span class="fu">min</span>(hs<span class="sc">$</span>bill_len) <span class="sc">-</span> <span class="fl">0.2</span>,</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmax=</span><span class="fu">max</span>(hs<span class="sc">$</span>bill_len) <span class="sc">+</span> <span class="fl">0.2</span>,</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin=</span><span class="fu">min</span>(hs<span class="sc">$</span>body_mass) <span class="sc">-</span> <span class="dv">20</span>,</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymax=</span><span class="fu">max</span>(hs<span class="sc">$</span>body_mass) <span class="sc">+</span> <span class="dv">50</span>,</span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">"red"</span>,   <span class="co"># cerceve rengi</span></span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="cn">NA</span>,       <span class="co"># icini bos biraktik</span></span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">linewidth=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="co"># cizgi kalinligi (eski adi: size)</span></span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length [mm]"</span>,</span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Body Mass [g]"</span>)</span>
+<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>hs, <span class="fu">aes</span>(bill_len, body_mass)) <span class="sc">+</span></span>
+<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length [mm]"</span>,</span>
+<span id="cb70-19"><a href="#cb70-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Body Mass [g]"</span>)</span>
+<span id="cb70-20"><a href="#cb70-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-21"><a href="#cb70-21" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">/</span> p2</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1240,7 +1226,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Grafik, filtrelediğimiz değerleri daha iyi görmenizi sağlamıştır diye düşünüyorum.</p>
 <p>Şimdi de tekrardan <code>pengBiscoe</code> verisini kullanarak 2008 ve 2009 yıllarındaki verileri filtreleyelim. Bunun için yine birden fazla yol var ancak biz bu sefer <code>%in%</code> operatörünü kullanacağız. R’da <code>%in%</code> operatörü, birden fazla değerle filtreleme yapıldığında kullanılıyor.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2008</span>, <span class="dv">2009</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>pengBiscoe <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2008</span>, <span class="dv">2009</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 120 × 8
    species island bill_len bill_dep flipper_len body_mass sex     year
@@ -1262,7 +1248,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Sırada bir başka satır işlemi olan sıralama var.</p>
 <p>Mesela filtrelemeden önceki verimiz olan <code>dat</code> verisinin <code>bill_len</code> sütunuyla <code>arrange()</code> fonksiyonunu kullanalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species island    bill_len bill_dep flipper_len body_mass sex     year
@@ -1282,7 +1268,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Eğer azalan bir sıralama istiyorsak değişkeni <code>desc()</code> fonksiyonu içinde yazmalı ya da değişkenin başına <code>-</code> eklemeliyiz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(bill_len))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(bill_len))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species   island bill_len bill_dep flipper_len body_mass sex     year
@@ -1299,7 +1285,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 10 Chinstrap Dream      52.8     20           205      4550 male    2008
 # ℹ 334 more rows</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species   island bill_len bill_dep flipper_len body_mass sex     year
@@ -1321,7 +1307,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Çoğu zaman sıralamaları birden fazla değişkenle yapmak isteyebiliriz. Bu durumda da diğer değişken isimlerini eklememiz gerekiyor.</p>
 <p>Öncelikle yıla göre, sonrasında da gaga uzunluğuna göre büyükten küçüğe sıralayalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>year, <span class="sc">-</span>bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>year, <span class="sc">-</span>bill_len)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8
    species   island bill_len bill_dep flipper_len body_mass sex    year
@@ -1342,7 +1328,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Son satır işlemi olarak da unique olan değerleri seçmeyi - silmeyi göreceğiz. Verimiz bunun için yeterince uygun değil ama bir uygulama yapalım. Eğer bir data.frame’de tekrar eden değerlerle ya da eşsiz değerlerle bir filtreleme yapmak istiyorsanız <code>distinct()</code> fonksiyonunu kullanabilirsiniz.</p>
 <p>Mesela verimizi, yalnızca eşsiz olan vücut kütlesi değerleri döndürmek istiyorsak aşağıdaki gibi filtreleyebiliriz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">distinct</span>(body_mass)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">distinct</span>(body_mass)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 95 × 1
    body_mass
@@ -1362,7 +1348,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Eğer tüm değişkenleri korumak istersek <code>.keep.all</code> argümanını kullanabiliriz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">distinct</span>(body_mass, <span class="at">.keep_all=</span><span class="cn">TRUE</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">distinct</span>(body_mass, <span class="at">.keep_all=</span><span class="cn">TRUE</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 95 × 8
    species island    bill_len bill_dep flipper_len body_mass sex     year
@@ -1382,7 +1368,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Tekrar eden değerleri döndürmek istediğimizde ise bir önceki yazıda bahsettiğim <code>duplicated()</code> fonksiyonunu <code>filter()</code> içinde kullanabilriz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">duplicated</span>(body_mass))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">duplicated</span>(body_mass))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 249 × 8
    species island    bill_len bill_dep flipper_len body_mass sex     year
@@ -1406,7 +1392,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Şimdi gelelim <code>dplyr</code>’nin parladığı yere. Bu bölümde grup işlemlerini göreceğiz. Grup işlemleri özet istatistik tabloları oluşturmak için oldukça kullanışlı bir yöntem. Bu konuya aşina olmayanlar için Excel’deki (kendilerini hiç sevmem :)) pivot table’a oldukça benzediğini söyleyebilirim.</p>
 <p>Basit bir örnekle başlayalım. Diyelim ki ortalama bill_len’i hesaplamak istiyoruz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dat<span class="sc">$</span>bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="co"># na.rm=TRUE kullanarak ortalama hesaplarken NA degerleri yok sayiyoruz.</span></span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(dat<span class="sc">$</span>bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="co"># na.rm=TRUE kullanarak ortalama hesaplarken NA degerleri yok sayiyoruz.</span></span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 43.92193</code></pre>
 </div>
@@ -1415,9 +1401,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>Ancak her bir grubun ortalamasını hesaplamak istiyorsak bunun için en iyi yöntem <code>data |&gt; group_by() |&gt; summarize()</code> fonksiyonlarını kullanmak olacaktır. Bu yöntem oldukça güçlü ancak bir kez grupladığımız veri, <code>ungroup()</code> yapmadığımız sürece grupluymuş gibi çalışabilir. Özellikle de birden çok grup olduğunda. Bu da hatalara yol açabilir. Bu sebeple bu kullanıma bir alternatif olarak geliştirilmiş <code>data |&gt; summarize(by = )</code> yaklaşımı daha temiz.</p>
 <p>Her bir tür için ortamala gaga uzunluğunu öğrenmek istediğimizi varsayalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len=</span><span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len=</span><span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   species   mean_bill_len
@@ -1429,9 +1415,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Gördüğünüz gibi hesapladık. Alternatif ve daha çok sevdiğim yöntem ise şu şekilde:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
-<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
-<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   species   mean_bill_len
@@ -1443,9 +1429,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Diyelim ki hem ada hem de türler için ortalama hesaplamak istiyoruz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> <span class="fu">c</span>(species, island))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> <span class="fu">c</span>(species, island))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
   species   island    mean_bill_len
@@ -1459,10 +1445,10 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Eğer tek bir gruba ve birden çok fonksiyona göre özet istatistik çıkartacaksanız aşağıdaki gibi yapabilirsiniz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
-<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">median_bill_len =</span> <span class="fu">median</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
-<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">median_bill_len =</span> <span class="fu">median</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> species)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   species   mean_bill_len median_bill_len
@@ -1474,10 +1460,10 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Eğer birden fazla grup için birden fazla özet istatistik hesaplamak istiyorsanız da aşağıdaki gibi yapabilirsiniz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
-<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">median_bill_len =</span> <span class="fu">median</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
-<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> <span class="fu">c</span>(species, island))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>dat <span class="sc">|&gt;</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">mean_bill_len =</span> <span class="fu">mean</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">median_bill_len =</span> <span class="fu">median</span>(bill_len, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">.by =</span> <span class="fu">c</span>(species, island))</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 4
   species   island    mean_bill_len median_bill_len
@@ -1498,8 +1484,8 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p><code>ggplot2</code> paketi ile, grafik özelliklerini katman katman belirtebiliyoruz. Öncelikle ggplot() fonksiyonuyla katmanlar ekleyebileceğimiz bir koordinat sistemi oluşturuyoruz ve ardından <code>geom_point()</code> ile nokta katmanı ekliyoruz.</p>
 <p>Ayrıntılı bir rehber için R for Data Science kitabının <a href="https://tr.r4ds.hadley.nz/veri-g%C3%B6rselle%C5%9Ftirme.html">veri görselleştirme bölümüne</a> bakabilirsiniz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1510,9 +1496,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Eksen başlıklarını değiştirelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1523,9 +1509,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Noktaların rengini kırmızı yapalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
-<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">colour=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len)) <span class="sc">+</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">colour=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1536,9 +1522,9 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Şimdi de renkleri <code>species</code> değişkenine göre belirleyelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, <span class="at">colour=</span>species)) <span class="sc">+</span></span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, <span class="at">colour=</span>species)) <span class="sc">+</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1549,10 +1535,10 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Burada da nokta şekillerini de <code>species</code> değişkenine göre değiştiriyoruz.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, </span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colour=</span>species, <span class="at">shape=</span>species)) <span class="sc">+</span></span>
-<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, </span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colour=</span>species, <span class="at">shape=</span>species)) <span class="sc">+</span></span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1563,12 +1549,12 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Şimdi de temayı değiştirelim.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, <span class="at">colour=</span>species, </span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">shape=</span>species)) <span class="sc">+</span></span>
-<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>, <span class="at">colour=</span><span class="st">"Species"</span>,</span>
-<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">shape=</span><span class="st">"Species"</span>) <span class="sc">+</span></span>
-<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">16</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(<span class="at">x=</span>flipper_len, <span class="at">y=</span>bill_len, <span class="at">colour=</span>species, </span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">shape=</span>species)) <span class="sc">+</span></span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length [mm]"</span>, <span class="at">y=</span><span class="st">"Bill Length [mm]"</span>, <span class="at">colour=</span><span class="st">"Species"</span>,</span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">shape=</span><span class="st">"Species"</span>) <span class="sc">+</span></span>
+<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">16</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1579,12 +1565,12 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(bill_dep)) <span class="sc">+</span> </span>
-<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Depth [mm]"</span>, </span>
-<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">y=</span><span class="st">"Count"</span>,</span>
-<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">title=</span><span class="st">"Histogram of Bill Depth"</span>) <span class="sc">+</span></span>
-<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">16</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(bill_dep)) <span class="sc">+</span> </span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Depth [mm]"</span>, </span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">y=</span><span class="st">"Count"</span>,</span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">title=</span><span class="st">"Histogram of Bill Depth"</span>) <span class="sc">+</span></span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">16</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
