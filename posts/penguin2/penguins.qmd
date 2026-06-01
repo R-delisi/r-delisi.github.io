@@ -119,7 +119,7 @@ peng |> slice(1:10) |> select(species, island)
 Gördüğünüz gibi sütun isimlerini kullanırken ne tırnak içerisinde yazdık, ne de `c()` ile bir vektör oluşturduk.
 İşte `dplyr` burada bir sihir yapıyor.
 Bir tür [metaprogramming](https://adv-r.hadley.nz/metaprogramming.html) hilesi.
-Buna Non-Standard Evaluation (NSE) deniliyor.
+Buna [Non-Standard Evaluation (NSE)](https://developer.r-project.org/nonstandard-eval.pdf) deniliyor.
 Ya da `tidyverse`'nin geliştirdiği versiyonuyla [tidy evaluation](https://dplyr.tidyverse.org/articles/programming.html).
 Veri analizi yaparken işleri oldukça kolaylaştıran bu sihir, programlama yaparken tam bir kâbusa dönüşebilir.
 
