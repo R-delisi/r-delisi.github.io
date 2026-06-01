@@ -2,7 +2,7 @@
 title: "PENGUINS VERİSİ İLE DPLYR'YE GİRİŞ"
 author: "Mehmet Göktuğ ÖZTÜRK"
 format: html
-date: 2026-05-14
+date: 2026-06-01
 description: "dplyr ile Veri Cambazlığı"
 categories:
   - R
@@ -421,7 +421,7 @@ library(patchwork)
 
 p1 <- ggplot(data=pengBiscoe, aes(bill_len, body_mass)) +
   geom_point() +
-  annotate("rect",          # diktortgen ekledik
+  annotate("rect",        # diktortgen ekledik
            xmin=min(hs$bill_len) - 0.2,
            xmax=max(hs$bill_len) + 0.2,
            ymin=min(hs$body_mass) - 20,

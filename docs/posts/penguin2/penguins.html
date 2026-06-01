@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Mehmet Göktuğ ÖZTÜRK">
-<meta name="dcterms.date" content="2026-05-14">
 <meta name="description" content="dplyr ile Veri Cambazlığı">
 
 <title>PENGUINS VERİSİ İLE DPLYR’YE GİRİŞ – R DELİSİ</title>
@@ -388,7 +387,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Yayınlanma Tarihi</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14 May 2026</p>
+      <p class="date">1 Haz 2026</p>
     </div>
   </div>
   
@@ -1198,7 +1197,7 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>pengBiscoe, <span class="fu">aes</span>(bill_len, body_mass)) <span class="sc">+</span></span>
 <span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>,          <span class="co"># diktortgen ekledik</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>,        <span class="co"># diktortgen ekledik</span></span>
 <span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin=</span><span class="fu">min</span>(hs<span class="sc">$</span>bill_len) <span class="sc">-</span> <span class="fl">0.2</span>,</span>
 <span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmax=</span><span class="fu">max</span>(hs<span class="sc">$</span>bill_len) <span class="sc">+</span> <span class="fl">0.2</span>,</span>
 <span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin=</span><span class="fu">min</span>(hs<span class="sc">$</span>body_mass) <span class="sc">-</span> <span class="dv">20</span>,</span>
