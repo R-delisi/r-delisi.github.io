@@ -163,7 +163,7 @@ Gördüğünüz gibi iki değişkeni de kullanarak bunu öğrenebiliyoruz.
 Şu ana kadar bir önceki yazının işleyişini takip ederek, temel kavramlara değindik.
 
 Şimdi bir veri analizi - veri bilimi iş akışının en mühim kısımlarından olan veri cambazlığını nasıl yapabileceğimize bakacağız.
-Bunun için Hadley Wickham'ın [R for Data Science](https://r4ds.hadley.nz/) - [İlk baskının TR çevirisi](https://tr.r4ds.hadley.nz/) kitabında anlattığı şekliyle `sütun`, `satır` ve `grup` işlemlerini yapacağız.
+Bunun için Hadley Wickham'ın [R for Data Science](https://r4ds.hadley.nz/) - [ilk baskının TR çevirisi](https://tr.r4ds.hadley.nz/) kitabında anlattığı şekliyle `sütun`, `satır` ve `grup` işlemlerini yapacağız.
 Gerçek dünya verileriyle uğraştığımızda bu kısım, bir veri bilimi iş akışının genellikle büyük çoğunluğunu oluşturuyor.
 
 R4DS, `{tidyverse}` temelleri için oldukça sağlam!
