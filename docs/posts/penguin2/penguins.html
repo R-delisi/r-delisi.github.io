@@ -978,8 +978,8 @@ $ Sex                   &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "M
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> </span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">format</span>(year, <span class="st">"%Y"</span>), </span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">species=</span><span class="fu">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, dat<span class="sc">$</span>species), </span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">tolower</span>(dat<span class="sc">$</span>sex))</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">species=</span><span class="fu">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, species), </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">sex=</span><span class="fu">tolower</span>(sex))</span>
 <span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>dat</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 344 × 8

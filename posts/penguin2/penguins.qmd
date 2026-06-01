@@ -302,8 +302,8 @@ Bir önceki kod bloğunda yıl değişkenini düzenlemiş ama herhangi bir nesne
 ```{r}
 dat <- dat |> 
     mutate(year=format(year, "%Y"), 
-           species=sub(" .*", "", dat$species), 
-           sex=tolower(dat$sex))
+           species=sub(" .*", "", species), 
+           sex=tolower(sex))
 dat
 ```
 
