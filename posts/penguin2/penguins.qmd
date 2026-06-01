@@ -642,6 +642,26 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species,
     theme_bw(base_size=16)
 ```
 
+```{r}
+#| warning: false
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species, 
+                          shape=species)) +
+    geom_point() +
+    labs(x="Flipper Length [mm]", y="Bill Length [mm]", colour="Species",
+         shape="Species") +
+    theme_minimal(base_size=16)
+```
+
+```{r}
+#| warning: false
+ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species, 
+                          shape=species)) +
+    geom_point() +
+    labs(x="Flipper Length [mm]", y="Bill Length [mm]", colour="Species",
+         shape="Species") +
+    theme_classic(base_size=16)
+```
+
 Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.
 
 ```{r}
