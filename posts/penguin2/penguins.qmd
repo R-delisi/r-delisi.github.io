@@ -580,6 +580,7 @@ Basit grafikler, esneklik ve hız için `base R` kullanışlı ancak işler karm
 Ayrıntılı bir rehber için R for Data Science kitabının [veri görselleştirme bölümüne](https://tr.r4ds.hadley.nz/veri-g%C3%B6rselle%C5%9Ftirme.html) bakabilirsiniz.
 
 ```{r}
+#| warning: false
 ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
     geom_point()
 ```
@@ -587,6 +588,7 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
 Eksen başlıklarını değiştirelim.
 
 ```{r}
+#| warning: false
 ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
     geom_point() +
     labs(x="Flipper Length [mm]", y="Bill Length [mm]")
@@ -595,6 +597,7 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
 Noktaların rengini kırmızı yapalım.
 
 ```{r}
+#| warning: false
 ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
     geom_point(colour="red") +
     labs(x="Flipper Length [mm]", y="Bill Length [mm]")
@@ -603,6 +606,7 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len)) +
 Şimdi de renkleri `species` değişkenine göre belirleyelim.
 
 ```{r}
+#| warning: false
 ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species)) +
     geom_point() +
     labs(x="Flipper Length [mm]", y="Bill Length [mm]")
@@ -611,6 +615,7 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species)) +
 Burada da nokta şekillerini de `species` değişkenine göre değiştiriyoruz.
 
 ```{r}
+#| warning: false
 ggplot(data=penguins, aes(x=flipper_len, y=bill_len, 
                           colour=species, shape=species)) +
     geom_point() +
@@ -620,6 +625,7 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len,
 Şimdi de temayı değiştirelim.
 
 ```{r}
+#| warning: false
 ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species, 
                           shape=species)) +
     geom_point() +
@@ -631,6 +637,7 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species,
 Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.
 
 ```{r}
+#| warning: false
 ggplot(data=penguins, aes(bill_dep)) + 
     geom_histogram() +
     labs(x="Bill Depth [mm]", 
