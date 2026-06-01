@@ -628,8 +628,6 @@ ggplot(data=penguins, aes(x=flipper_len, y=bill_len, colour=species,
     theme_bw(base_size=16)
 ```
 
-```
-
 Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.
 
 ```{r}

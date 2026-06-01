@@ -1600,19 +1600,14 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 </div>
-<pre><code>
-Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.
-
-
-::: {.cell}
-
-```{.r .cell-code}
-ggplot(data=penguins, aes(bill_dep)) + 
-    geom_histogram() +
-    labs(x="Bill Depth [mm]", 
-         y="Count",
-         title="Histogram of Bill Depth") +
-    theme_bw(base_size=16)</code></pre>
+<p>Son olarak da basit bir histogram çizip, verimizin dağılımına bakalım.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>penguins, <span class="fu">aes</span>(bill_dep)) <span class="sc">+</span> </span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Depth [mm]"</span>, </span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">y=</span><span class="st">"Count"</span>,</span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">title=</span><span class="st">"Histogram of Bill Depth"</span>) <span class="sc">+</span></span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size=</span><span class="dv">16</span>)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
 </div>
@@ -1627,7 +1622,7 @@ ggplot(data=penguins, aes(bill_dep)) +
 </figure>
 </div>
 </div>
-<p>:::</p>
+</div>
 <p>En ufak bir sorunuz bile olsa lütfen sormaktan çekinmeyin.</p>
 <p>Bilimle ve huzurla kalınız!</p>
 
