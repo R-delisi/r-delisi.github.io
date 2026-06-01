@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  resources:
+      - "googlea82cc3371151aa74.html"
 
 lang: tr
 date-format: "D MMM YYYY"
