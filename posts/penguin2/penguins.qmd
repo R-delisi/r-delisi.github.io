@@ -93,7 +93,7 @@ slice(peng, 1:6)
 Şimdi de ilk iki sütunu ve ilk 10 satırı seçelim.
 
 ```{r}
-select(slice(peng, 1:6), 1:2)
+select(slice(peng, 1:10), 1:2)
 ```
 
 `[]` kullanımından daha karmaşık görünüyor.
@@ -105,7 +105,7 @@ Debugging'i zorlaştırsa da kısa ve iyi yazılmış pipeline'ler ile veri anal
 
 ```{r}
 peng |>
-    slice(1:6) |>
+    slice(1:10) |>
     select(1:2)
 ```
 
