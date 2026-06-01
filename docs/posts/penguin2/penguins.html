@@ -555,17 +555,21 @@ $ year        &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Çok uzun olmayan pipe’leri tek satır hâlinde de yazabiliriz. Tek satırda 80 karakteri geçmemeyi kural hâline getirirseniz kodlarınız da daha okunaklı olacaktır.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>peng <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(species, island)</span></code><button title="Panoya Kopyala" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 2
-  species island   
-  &lt;fct&gt;   &lt;fct&gt;    
-1 Adelie  Torgersen
-2 Adelie  Torgersen
-3 Adelie  Torgersen
-4 Adelie  Torgersen
-5 Adelie  Torgersen
-6 Adelie  Torgersen</code></pre>
+<pre><code># A tibble: 10 × 2
+   species island   
+   &lt;fct&gt;   &lt;fct&gt;    
+ 1 Adelie  Torgersen
+ 2 Adelie  Torgersen
+ 3 Adelie  Torgersen
+ 4 Adelie  Torgersen
+ 5 Adelie  Torgersen
+ 6 Adelie  Torgersen
+ 7 Adelie  Torgersen
+ 8 Adelie  Torgersen
+ 9 Adelie  Torgersen
+10 Adelie  Torgersen</code></pre>
 </div>
 </div>
 <p>Gördüğünüz gibi sütun isimlerini kullanırken ne tırnak içerisinde yazdık, ne de <code>c()</code> ile bir vektör oluşturduk. İşte <code>dplyr</code> burada bir sihir yapıyor. Bir tür <a href="https://adv-r.hadley.nz/metaprogramming.html">metaprogramming</a> hilesi. Buna Non-Standard Evaluation (NSE) deniliyor. Ya da <code>tidyverse</code>’nin geliştirdiği versiyonuyla <a href="https://dplyr.tidyverse.org/articles/programming.html">tidy evaluation</a>. Veri analizi yaparken işleri oldukça kolaylaştıran bu sihir, programlama yaparken tam bir kâbusa dönüşebilir.</p>

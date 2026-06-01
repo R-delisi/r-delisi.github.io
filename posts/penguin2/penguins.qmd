@@ -113,7 +113,7 @@ peng |>
 Tek satırda 80 karakteri geçmemeyi kural hâline getirirseniz kodlarınız da daha okunaklı olacaktır.
 
 ```{r}
-peng |> slice(1:6) |> select(species, island)
+peng |> slice(1:10) |> select(species, island)
 ```
 
 Gördüğünüz gibi sütun isimlerini kullanırken ne tırnak içerisinde yazdık, ne de `c()` ile bir vektör oluşturduk.
