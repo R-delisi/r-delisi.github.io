@@ -38,10 +38,8 @@ website:
 format:
   html:
     theme: 
-      light: flatly
-      dark: darkly
-    mainfont: Inconsolata
-    fontsize: 1rem
+      sandstone
+    mainfont: Inter
     css: styles.css
     toc: true
 

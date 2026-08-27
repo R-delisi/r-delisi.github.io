@@ -5,7 +5,7 @@ about:
   template: jolla
   links:
     - icon: mastodon
-      text: mastodon
+      text: Mastodon
       href: https://ecoevo.social/@mehmet_goktu
     - icon: bluesky
       text: Bluesky
