@@ -1,44 +1,56 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "posts/"
+    - "!en/"
   resources:
-      - "googlea82cc3371151aa74.html"
+    - "googlea82cc3371151aa74.html"
 
 lang: tr
 date-format: "D MMM YYYY"
 
 website:
   title: "R DELİSİ"
-  description: "Açık ve Tekrarlanabilir Bilim"
+  site-url: "https://r-delisi.github.io/"
+  description: "R Delisi — Mehmet Göktuğ Öztürk tarafından hazırlanan R, GIS, mekânsal analiz, veri bilimi ve açık bilim yazıları."
   favicon: "favicon.webp"
   search: true
+
   navbar:
     pinned: true
+
     left:
       - href: index.qmd
         text: Blog
-      - about.qmd
+      - href: about.qmd
+        text: Hakkında
+
     right:
-      - icon: 'mastodon'
-        href: 'https://ecoevo.social/@mehmet_goktu'
-      - icon: 'github'
-        href: "https://github.com/mehmetgoktug"
-      - icon: 'linkedin'
-        href: "https://www.linkedin.com/in/mehmetgoktug/"
-  page-footer: 
+      - text: EN
+        href: /en/
+
+      - icon: mastodon
+        href: https://ecoevo.social/@mehmet_goktu
+      - icon: github
+        href: https://github.com/mehmetgoktug
+      - icon: linkedin
+        href: https://www.linkedin.com/in/mehmetgoktug/
+
+  page-footer:
     center: R Delisi - 2026
+
   twitter-card: true
   open-graph: true
+
   comments:
     utterances:
-      repo: 'R-delisi/r-delisi.github.io'
+      repo: R-delisi/r-delisi.github.io
 
 format:
   html:
-    theme: 
-      sandstone
+    theme: sandstone
     mainfont: Inter
     css: styles.css
     toc: true
-
-

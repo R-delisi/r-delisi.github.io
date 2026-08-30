@@ -112,11 +112,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ I – R DELİSİ">
 <meta property="og:description" content="R ile Kuş Verilerinin Analizi">
-<meta property="og:image" content="figs/preview.webp">
+<meta property="og:image" content="https://r-delisi.github.io/posts/ebird_R/figs/preview.webp">
 <meta property="og:site_name" content="R DELİSİ">
 <meta name="twitter:title" content="R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ I – R DELİSİ">
 <meta name="twitter:description" content="R ile Kuş Verilerinin Analizi">
-<meta name="twitter:image" content="figs/preview.webp">
+<meta name="twitter:image" content="https://r-delisi.github.io/posts/ebird_R/figs/preview.webp">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -143,10 +143,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">Hakkımda</span></a>
+<span class="menu-text">Hakkında</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../en/"> 
+<span class="menu-text">EN</span></a>
+  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://ecoevo.social/@mehmet_goktu"> <i class="bi bi-mastodon" role="img">
 </i> 
@@ -783,7 +787,7 @@ $ geometry          &lt;GEOMETRY [°]&gt; POINT (32.87976 39.96636), MULTIPOINT 
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/r-delisi\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
