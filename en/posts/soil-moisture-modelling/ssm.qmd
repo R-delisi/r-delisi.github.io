@@ -31,7 +31,7 @@ Finally, here we are. :)
 
 This post is about a hackathon.
 
-Two weeks ago, we attended the OpenGeoHub Foundation Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. 
+Two weeks ago, we attended the [OpenGeoHub Foundation](https://opengeohub.org/) Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. 
 It was a wonderful experience once again — I also attended the summer school in Poznań in 2023.
 
 As part of the summer school, we had to complete a hackathon project. 
