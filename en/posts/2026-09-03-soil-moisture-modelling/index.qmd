@@ -1,0 +1,469 @@
+---
+title: "Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03"
+author: "Mehmet Göktuğ Öztürk"
+date: 2026-09-03
+format:
+  html:
+    toc: true
+    fig-width: 12
+    fig-height: 9
+bibliography: references.bib
+link-citations: true
+description: "Modelling Monthly Soil Surface Water Content"
+execute:
+  warning: false
+  message: false
+  cache: true
+categories:
+  - R
+  - spatial data science
+  - remote sensing
+  - GIS
+  - r-spatial
+  - machine learning
+---
+
+Hello, and welcome to my first blog post in English!
+
+I have already been writing a Turkish blog about R, ecology, and spatial data science, and for a while I have been thinking about starting an English version as well.
+
+Finally, here we are. :)
+
+This post is about a hackathon.
+
+Two weeks ago, we attended the [OpenGeoHub Foundation](https://opengeohub.org/) Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. 
+It was a wonderful experience once again — I also attended the summer school in Poznań in 2023.
+
+As part of the summer school, we had to complete a hackathon project. 
+I selected the topic [Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03](https://www.kaggle.com/competitions/modeling-monthly-soil-surface-water-content) and, fortunately, managed to finish it.
+
+My submission was not the top-ranked one, and I think there are some issues with the modelling approach. 
+Still, I wanted to share it here, discuss what worked and what did not, and reflect on what I would improve next time. 
+I have also made a few changes to the original notebook for this blog post.
+
+I am still developing my experience with spatial machine-learning workflows, so I do not consider this analysis a definitive solution.
+There may be aspects of the modelling and validation strategy that could be improved. 
+I would therefore be very interested in comments, alternative approaches, and suggestions from readers with more experience in this area.
+
+Enjoy the read!
+
+
+# Introduction
+
+Soil moisture in the uppermost soil layer mediates infiltration, evapotranspiration and runoff, and it responds quickly to rainfall and to the atmospheric demand for water.
+Mapping how it varies from month to month is valuable for a range of environmental applications, but direct measurements are sparse in space.
+A common strategy is to learn a statistical relationship between in-situ measurements and spatially exhaustive covariates — satellite imagery, and climate reanalysis — and then to apply that relationship where no measurements exist [@hengl2018rf].
+
+The objective here is to predict monthly soil surface water content, denoted `sswc_m`, for a set of stations on MODIS tile h18v03.
+The model quality is judged by the root-mean-square error ($RMSE$) on the hidden test stations.
+
+# Data
+
+## Station observations
+
+The training and test tables share the same structure.
+Each row is one station-month and carries the station coordinates (`x`, `y`), a set of MODIS-derived predictors, and a year-month label (`YEARMON`).
+The training table additionally contains the response `sswc_m`.
+
+```{r}
+#| label: load-data
+#| message: false
+#| warning: false
+library("dplyr")
+library("tidyr")
+library("tidymodels")
+library("terra")
+library("sf")
+library("ecmwfr")
+library("ranger")
+library("patchwork")
+
+tidymodels_prefer()
+```
+
+```{r}
+# Options
+options(scipen=999)
+ggplot2::theme_set(ggplot2::theme_bw(base_family="Inter", base_size=16))
+```
+
+```{r}
+train <- read.csv("data/input/train.csv")
+train <- train[!names(train) %in% c("X", "Unnamed..0")]
+train <- `names<-`(train, tolower(names(train)))
+
+test <- read.csv("data/input/test.csv")
+test <- test[!names(test) %in% c("X", "row_id", "cluster")]
+test <- `names<-`(test, tolower(names(test)))
+
+prep_features <- function(df) {
+    df$year <- as.integer(substr(df$yearmon, 1, 4))
+    df$month <- as.integer(substr(df$yearmon, 6, 7))
+    df$month_sin <- sin(2 * pi * df$month / 12)
+    df$month_cos <- cos(2 * pi * df$month / 12)
+    df$loc_id <- paste(df$x, df$y, sep="_")
+    
+    df
+}
+
+train <- prep_features(train)
+test <- prep_features(test)
+```
+
+```{r}
+str(train)
+```
+
+```{r}
+str(test)
+```
+
+## ERA5-Land precipitation and soil moisture
+
+ERA5-Land provides hourly and monthly land-surface fields at roughly 9 km resolution from 1950 onward [@munoz2021era5land], derived from the ERA5 reanalysis [@hersbach2020era5].
+It covers the full 2001–2024 study period, which makes it a natural match for this problem.
+We retrieve two monthly variables over the tile's bounding box: total precipitation and volumetric soil water in the top layer (`swvl1` in $\mathrm{m^3\,m^{-3}}$, which is closely related to the response variable and provides a physically meaningful predictor).
+Downloads use the `ecmwfr` interface to the Copernicus Climate Data Store [@ecmwfr2023].
+
+```{r}
+#| label: era5-download
+#| eval: true
+#| message: false
+#| warning: false
+era_path <- "data/input/era5land_monthly_2001_2024.nc"
+dir.create(dirname(era_path), showWarnings=FALSE, recursive=TRUE)
+
+if (!file.exists(era_path)) {
+    Sys.setenv(R_KEYRING_BACKEND="env")
+    options(keyring_backend="env")
+    rc <- readLines(path.expand("~/.cdsapirc"))
+    wf_set_key(key=substr(rc[2], 6, 41))
+    
+    request <- list(
+        dataset_short_name="reanalysis-era5-land-monthly-means",
+        product_type="monthly_averaged_reanalysis",
+        variable=c("total_precipitation", "volumetric_soil_water_layer_1"),
+        year=as.character(2001:2024),
+        month=sprintf("%02d", 1:12),
+        time="00:00",
+        area=c(65, -10, 50, 25), # N, W, S, E
+        data_format="netcdf",
+        download_format="unarchived",
+        target=basename(era_path)
+    )
+    wf_request(request, transfer=TRUE, path=dirname(era_path), time_out=1800, 
+               retry=30, verbose=TRUE)
+}
+```
+
+The reanalysis grid is sampled at every station.
+Because ERA5-Land is defined on land cells only, coastal stations fall on masked (water) cells and would otherwise return missing values for all months.
+We snap those stations to the nearest land cell before extracting, which removes the gaps without discarding stations.
+The previous month's precipitation is then formed per station as a one-month lag; only the first month of each series (January 2001) is left undefined and is median-imputed later.
+
+```{r}
+#| label: era5-extract
+#| cache: true
+
+sinu <- "+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +a=6371007.181 +b=6371007.181 +units=m +no_defs"
+
+era5 <- rast(era_path)
+
+# Unique stations across train and test, projected to the reanalysis CRS
+locs <- bind_rows(
+    distinct(train, loc_id, x, y),
+    distinct(test, loc_id, x, y)
+) |>
+    distinct(loc_id, x, y)
+locs_v <- vect(locs, geom=c("x", "y"), crs=sinu) |> project("EPSG:4326")
+
+ex <- terra::extract(era5, locs_v, ID = FALSE)
+ex$loc_id <- locs$loc_id
+
+# Snap water-cell stations to the nearest land cell (static land mask)
+na_idx <- which(is.na(ex[["swvl1_1"]]))
+if (length(na_idx) > 0) {
+    land_xy <- xyFromCell(era5, which(!is.na(values(era5[[1]], mat = FALSE))))
+    na_ll <- crds(locs_v[na_idx])
+    snap_xy <- t(vapply(seq_len(nrow(na_ll)), function(i) {
+        d <- (land_xy[, 1] - na_ll[i, 1])^2 + (land_xy[, 2] - na_ll[i, 2])^2 # euclidean distance
+        land_xy[which.min(d), ]
+    }, numeric(2)))
+    patch <- terra::extract(era5, snap_xy)
+    if ("ID" %in% names(patch)) patch$ID <- NULL
+    
+    ex[na_idx, names(era5)] <- patch[, names(era5)]
+}
+
+# Reshape to (station, month) and build the one-month precipitation lag
+months_seq <- format(seq(as.Date("2001-01-01"), 
+                         as.Date("2024-12-01"), 
+                         by="month"), 
+                     "%Y-%m")
+era5_cov <- ex |>
+    pivot_longer(-loc_id, names_to="layer", values_to="value") |>
+    mutate(
+        var=sub("_[0-9]+$", "", layer), 
+        idx=as.integer(sub("^.*_", "", layer)), 
+        yearmon=months_seq[idx]
+    ) |>
+    select(loc_id, yearmon, var, value) |>
+    pivot_wider(names_from=var, values_from=value) |>
+    rename(era5_precip=tp, era5_swvl1=swvl1) |>
+    arrange(loc_id, yearmon) |>
+    group_by(loc_id) |>
+    mutate(era5_precip_lag1=dplyr::lag(era5_precip)) |>
+    ungroup()
+
+colSums(is.na(era5_cov))
+```
+
+Before modelling, it is worth checking whether the reanalysis data are temporally aligned with the response. 
+@fig-era5 compares the seasonal cycles of ERA5-Land top-layer soil water and the response variable. 
+The two series show similar seasonal patterns, providing a useful sanity check for temporal alignment.
+
+The two series are standardized to z-scores to facilitate comparison of their seasonal patterns despite their different scales.
+
+```{r}
+#| label: fig-era5
+#| fig-cap: "Seasonal cycles of the target soil water content and ERA5-Land top-layer soil water, standardized as z-scores. Their similar seasonal patterns provide a useful sanity check for temporal alignment."
+#| fig-width: 12
+#| fig-height: 8
+
+train2 <- train |> left_join(era5_cov, by=c("loc_id", "yearmon"))
+
+train2 |>
+    mutate(month=as.integer(substr(yearmon, 6, 7))) |>
+    group_by(month) |>
+    summarise(`sswc_m (target)`=mean(sswc_m, na.rm=TRUE),
+              `ERA5-Land swvl1`=mean(era5_swvl1, na.rm=TRUE),
+              .groups="drop") |>
+    mutate(across(-month, \(x) as.numeric(scale(x)))) |>
+    pivot_longer(-month, names_to="variable", values_to="z") |>
+    ggplot(aes(month, z, colour=variable)) +
+    geom_line(linewidth=1) +
+    geom_point() +
+    scale_x_continuous(breaks=1:12) +
+    labs(x="Month", y="Standardized monthly mean (z-score)", colour=NULL)
+```
+
+There are missing values in `dlst`, `dlst.95`, `nlst`, `nlst.95`, and `era5_precip_lag1` variables.
+Missing values are median-imputed in the model.
+
+## Exploratory analysis
+
+Two patterns stand out and motivate the modelling choices.
+The left panel of @fig-eda shows that the test stations are interspersed among the training stations rather than forming a separate block, so the relevant validation scenario is prediction at scattered new sites within the same region.
+The right panel shows the seasonal cycle of the response: soil water content is highest in winter and reaches a clear minimum in June–July, when evapotranspiration is greatest.
+This seasonal signal is strong and smooth, which is why an encoding of the month is included from the outset.
+
+```{r}
+#| label: fig-eda
+#| fig-cap: "Left: training (blue) and test (red) stations share the same region, so the test set represents new, interspersed locations. Right: the monthly mean of the response shows a pronounced seasonal cycle with a mid-summer minimum."
+#| fig-width: 14
+#| fig-height: 7
+
+world <- maps::map("world", plot=FALSE, fill=TRUE) |>
+    st_as_sf() |>
+    st_geometry()
+
+all_locs <- bind_rows(
+    train |> distinct(loc_id, x, y),
+    test |> distinct(loc_id, x, y)
+) |>
+    distinct(loc_id, x, y)
+
+loc_sf <- st_as_sf(all_locs, coords=c("x", "y"), crs=sinu)
+
+aoi_sinu <- loc_sf |>
+    st_union() |>
+    st_convex_hull() |>
+    st_buffer(30000) |>
+    st_as_sf()
+
+aoi_ext <- ext(vect(aoi_sinu))
+
+bb <- vect(aoi_ext, crs=sinu) |> project("EPSG:4326") |> st_bbox()
+
+dt_sf <- bind_rows(
+    mutate(train[c("x", "y")], set="train"),
+    mutate(test[c("x", "y")], set="test")
+) |>
+    st_as_sf(coords=c("x", "y"), crs=sinu)
+dt_sf <- dt_sf[!duplicated(dt_sf$geometry), ]
+p_space <- ggplot() +
+    geom_sf(data=world) +
+    geom_sf(data=dt_sf, aes(colour=set), size=0.7, alpha=0.7) +
+    scale_colour_manual(values=c(train="steelblue", test="firebrick")) +
+    coord_sf(xlim=bb[c(1, 3)], ylim=bb[c(2, 4)]) +
+    labs(title="Spatial hold-out design", x=NULL, y=NULL) +
+    theme(panel.background=element_rect(fill="lightblue"),
+          legend.background=element_rect(fill="white", colour=NA),
+          legend.key=element_rect(fill="white", colour=NA))
+
+p_season <- train |>
+    group_by(month) |>
+    summarise(mean_sswc=mean(sswc_m), .groups="drop") |>
+    ggplot(aes(month, mean_sswc)) +
+    geom_line(linewidth=1) +
+    geom_point() +
+    scale_x_continuous(breaks=1:12) +
+    labs(title="Seasonal cycle of the response", x="Month", y="Mean sswc_m")
+
+p_space + p_season
+```
+
+# Cross-validation design
+
+Because the test stations are new locations, a random split of the station-month rows would place records from the same station in both the training and the assessment folds.
+The strong within-station similarity would then leak into validation and produce an optimistic error estimate that does not reflect performance at genuinely new sites [@roberts2017cv; @meyer2018].
+We therefore use *location-blocked* cross-validation: whole stations are assigned to folds, so that no station contributes rows to both sides of a split.
+This mirrors the competition's own train/test design.
+
+The same folds and the same metric set are reused for every model so that comparisons are fair.
+$RMSE$ is the competition metric and our primary criterion; we also report the coefficient of determination ($R^2$) and the mean absolute error ($MAE$).
+
+```{r}
+#| label: resamples
+set.seed(123)
+folds <- group_vfold_cv(train2, group=loc_id, v=10)
+metrics <- metric_set(rmse, rsq, mae)
+```
+
+# Models
+
+## Random forest
+
+The first substantive model is a random forest, which handles nonlinear responses and predictor interactions with little tuning and is a strong default for tabular environmental data [@breiman2001; @hengl2018rf].
+We use the `ranger` engine [@wright2017ranger] with 500 trees.
+Missing values are median-imputed inside the recipe.
+
+The full set of predictors used in the model is:
+
+**Location and time**
+
+- `x`, `y`: station coordinates (in the sinusoidal MODIS grid CRS)
+- `year`, `month`: calendar year and month
+- `month_sin`, `month_cos`: cyclical (sine/cosine) encoding of month, used so the model can learn a smooth seasonal cycle without treating December and January as far apart
+
+**MODIS-derived covariates** (see the [MODIS LST tutorial](https://codeberg.org/opengeohub/MODIS_LST_trend_analysis_tutorial) for details)
+
+- `dlst`: day-time mean monthly land surface temperature (LST)
+- `nlst`: night-time mean monthly LST
+- `dlst.95`: upper 95th percentile of monthly day-time temperatures
+- `nlst.95`: upper 95th percentile of monthly night-time temperatures
+- `geom`: geometric temperature monthly
+- `evi`: Enhanced Vegetation Index, based on the MODIS monthly product
+
+**ERA5-Land covariates** (added independently, see the [ERA5-Land section](#era5-land-precipitation-and-soil-moisture) above)
+
+- `era5_swvl1`: monthly volumetric soil water in the top layer
+- `era5_precip`: mean daily precipitation for the month
+- `era5_precip_lag1`: one-month lag of the monthly mean daily precipitation
+
+```{r}
+#| label: rf
+#| cache: true
+rec <- recipe(sswc_m ~ x + y + dlst + dlst.95 + nlst + nlst.95 + geom + evi + 
+                  year + month + month_sin + month_cos + era5_swvl1 + 
+                  era5_precip + era5_precip_lag1, 
+              data=train2) |>
+    step_impute_median(dlst, dlst.95, nlst, nlst.95, era5_precip_lag1)
+
+rf_spec <- rand_forest(trees=500) |>
+    set_engine("ranger", num.threads=7, seed=123) |>
+    set_mode("regression")
+
+wf_rf <- workflow() |> add_recipe(rec) |> add_model(rf_spec)
+
+res_rf <- fit_resamples(wf_rf, resamples=folds, metrics=metrics)
+collect_metrics(res_rf)
+```
+
+The random forest achieves a location-blocked cross-validated $RMSE$ of approximately 34.8 and an $R^2$ of approximately 0.48 at held-out locations. This is a reasonable starting point, but the modest $R^2$ signals that much of the station-to-station variability is not captured by the provided predictors.
+
+# Results and Discussion
+
+```{r}
+set.seed(123)
+
+final_fit <- fit(wf_rf, data=train2)
+```
+
+```{r}
+test2 <- test |>
+    mutate(.row_order=row_number()) |>
+    left_join(era5_cov, by=c("loc_id", "yearmon")) |>
+    arrange(.row_order)
+```
+
+```{r}
+pred_test <- predict(final_fit, new_data=test2)
+test2$pred <- pred_test$.pred
+```
+
+```{r}
+submission <- read.csv("data/input/sample_submission.csv")
+
+stopifnot(nrow(submission) == nrow(test2))
+
+submission$sswc_m <- test2$pred
+```
+
+```{r}
+dir.create("data/output", showWarnings=FALSE, recursive=TRUE)
+write.csv(submission, "data/output/submission_rf.csv", row.names=FALSE, 
+          quote=FALSE)
+```
+
+The final model is the random forest with the MODIS, and ERA5-Land predictors.
+It is refitted on the entire training set and applied to the test stations.
+The submission is written by copying the sample submission and replacing its response column, which guarantees that the row order and identifiers match the grader exactly.
+
+Because the MODIS predictors are only available at the station points, the predictions are shown as station maps rather than a continuous surface; producing a gridded map would require the MODIS temperature and vegetation layers for the whole tile.
+@fig-maps contrasts a winter and a summer month at the test stations and reproduces the expected seasonal pattern, with markedly wetter soils in January than in July.
+
+```{r}
+#| label: fig-maps
+#| fig-cap: "Predicted monthly soil surface water content at the test stations for a representative winter month (January 2020) and summer month (July 2020)."
+#| fig-width: 12
+#| fig-height: 6
+test2 |>
+    filter(yearmon %in% c("2020-01", "2020-07")) |>
+    ggplot(aes(x, y, colour=pred)) +
+    geom_point(size=1.2) +
+    scale_colour_viridis_c(name="sswc_m") +
+    facet_wrap(~yearmon) +
+    coord_equal() +
+    labs(x=NULL, y=NULL)
+```
+
+This prediction task is actually quite challenging because the data have both spatial and temporal structure, and the validation strategy should account for potential spatial and temporal autocorrelation.
+By blocking folds by station identity, we partially avoid the overly optimistic scores that a naive random split could produce. 
+This also makes the validation setup more similar to the hidden test set, where predictions are required for unseen stations.
+
+However, station-based blocking does not necessarily guarantee spatial independence between folds. 
+Multiple stations may still fall within the same or neighbouring grid cells, especially given the relatively coarse resolution of some predictors. 
+A more rigorous approach could therefore involve spatial thinning and spatial cross-validation methods such as block cross-validation or kNNDM cross-validation [@gmd-17-5897-2024].
+
+In addition, including spatial coordinates improved predictive performance, suggesting that geographic location contains information that is not fully captured by the MODIS and ERA5-Land covariates. However, the coarse spatial resolution of ERA5-Land may limit its ability to represent fine-scale differences among locations.
+
+Also, using spatial coordinates directly as covariates may not be an ideal modelling strategy.
+A better approach could be to account for spatial dependence more explicitly using methods such as RFsp, RFSI, RandomForestsGLS or spatialRF [@hengl2018rf; @rs12101687; @nowosad2025].
+
+The most promising next steps would be to include covariates that vary at the station scale and plausibly influence water retention, such as soil texture and organic carbon from products like SoilGrids, land-cover classes, and higher-resolution satellite soil-moisture products where temporal coverage allows.
+
+On the modelling side, gradient-boosted trees may outperform random forests, while more systematic feature engineering could also help improve predictive performance.
+
+# Reproducibility {.unnumbered}
+
+**Note on the use of AI tools:** I used large language models as supporting tools during the preparation of this post, mainly for language editing, code style and debugging suggestions, and occasional methodological feedback. 
+The analysis workflow, modelling decisions, and the majority of the code were developed by me. 
+I reviewed, revised, and reran the complete notebook multiple times, and I take full responsibility for the final content, code, interpretations, and any remaining errors.
+
+```{r}
+#| label: session
+#| code-fold: true
+sessionInfo()
+```
+

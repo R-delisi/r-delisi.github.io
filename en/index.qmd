@@ -1,8 +1,9 @@
 ---
 listing:
+  contents:
+    - "posts/**/index.qmd"
   feed:
     language: en
-  contents: posts
   sort: "date desc"
   type: default
   categories: true

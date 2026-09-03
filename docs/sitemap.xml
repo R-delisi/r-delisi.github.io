@@ -1,39 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://r-delisi.github.io/tr/posts/penguin2/penguins.html</loc>
-    <lastmod>2026-08-27T17:22:11.571Z</lastmod>
+    <loc>https://r-delisi.github.io/posts/2026-06-01-penguins-dplyr/index.html</loc>
+    <lastmod>2026-09-03T19:26:46.863Z</lastmod>
   </url>
   <url>
-    <loc>https://r-delisi.github.io/tr/posts/ebird_R_2/ebird_r_2.html</loc>
-    <lastmod>2026-08-27T17:19:00.601Z</lastmod>
-  </url>
-  <url>
-    <loc>https://r-delisi.github.io/tr/posts/dem2/dem2.html</loc>
-    <lastmod>2026-08-27T17:18:16.900Z</lastmod>
-  </url>
-  <url>
-    <loc>https://r-delisi.github.io/tr/index.html</loc>
-    <lastmod>2026-08-27T20:00:05.806Z</lastmod>
-  </url>
-  <url>
-    <loc>https://r-delisi.github.io/tr/about.html</loc>
-    <lastmod>2026-08-30T15:09:10.604Z</lastmod>
-  </url>
-  <url>
-    <loc>https://r-delisi.github.io/tr/posts/dem/dem.html</loc>
+    <loc>https://r-delisi.github.io/posts/2025-03-03-dem-tr/index.html</loc>
     <lastmod>2026-08-27T16:19:56.660Z</lastmod>
   </url>
   <url>
-    <loc>https://r-delisi.github.io/tr/posts/ebird_R/ebird_r.html</loc>
-    <lastmod>2026-08-27T17:07:33.384Z</lastmod>
-  </url>
-  <url>
-    <loc>https://r-delisi.github.io/tr/posts/penguin/penguins.html</loc>
-    <lastmod>2026-08-27T17:21:52.094Z</lastmod>
+    <loc>https://r-delisi.github.io/posts/2023-12-10-ebird-reg/index.html</loc>
+    <lastmod>2026-08-27T17:19:00.601Z</lastmod>
   </url>
   <url>
     <loc>https://r-delisi.github.io/index.html</loc>
-    <lastmod>2026-08-27T20:00:05.806Z</lastmod>
+    <lastmod>2026-09-03T19:25:03.354Z</lastmod>
+  </url>
+  <url>
+    <loc>https://r-delisi.github.io/about.html</loc>
+    <lastmod>2026-08-30T15:09:10.604Z</lastmod>
+  </url>
+  <url>
+    <loc>https://r-delisi.github.io/posts/2023-09-27-ebird-tr/index.html</loc>
+    <lastmod>2026-09-03T19:30:26.776Z</lastmod>
+  </url>
+  <url>
+    <loc>https://r-delisi.github.io/posts/2025-03-03-dem-reg/index.html</loc>
+    <lastmod>2026-08-27T17:18:16.900Z</lastmod>
+  </url>
+  <url>
+    <loc>https://r-delisi.github.io/posts/2025-12-15-penguins-base/index.html</loc>
+    <lastmod>2026-08-27T17:21:52.094Z</lastmod>
   </url>
 </urlset>
