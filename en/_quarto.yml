@@ -9,7 +9,6 @@ website:
   title: "R DELİSİ"
   description: "Open and Reproducible Science"
   site-url: "https://r-delisi.github.io/en/"
-  site-path: "/en/"
   search: true
 
   navbar:
