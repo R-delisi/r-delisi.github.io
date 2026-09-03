@@ -519,348 +519,42 @@ font-style: inherit;">verbose=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">TRUE</span>)</span>
 <span id="cb8-24">}</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |                                                                      |   1%
-  |                                                                            
-  |=                                                                     |   1%
-  |                                                                            
-  |=                                                                     |   2%
-  |                                                                            
-  |==                                                                    |   2%
-  |                                                                            
-  |==                                                                    |   3%
-  |                                                                            
-  |===                                                                   |   4%
-  |                                                                            
-  |===                                                                   |   5%
-  |                                                                            
-  |====                                                                  |   5%
-  |                                                                            
-  |====                                                                  |   6%
-  |                                                                            
-  |=====                                                                 |   7%
-  |                                                                            
-  |=====                                                                 |   8%
-  |                                                                            
-  |======                                                                |   8%
-  |                                                                            
-  |======                                                                |   9%
-  |                                                                            
-  |=======                                                               |   9%
-  |                                                                            
-  |=======                                                               |  10%
-  |                                                                            
-  |=======                                                               |  11%
-  |                                                                            
-  |========                                                              |  11%
-  |                                                                            
-  |========                                                              |  12%
-  |                                                                            
-  |=========                                                             |  12%
-  |                                                                            
-  |=========                                                             |  13%
-  |                                                                            
-  |==========                                                            |  14%
-  |                                                                            
-  |==========                                                            |  15%
-  |                                                                            
-  |===========                                                           |  15%
-  |                                                                            
-  |===========                                                           |  16%
-  |                                                                            
-  |============                                                          |  16%
-  |                                                                            
-  |============                                                          |  17%
-  |                                                                            
-  |============                                                          |  18%
-  |                                                                            
-  |=============                                                         |  18%
-  |                                                                            
-  |=============                                                         |  19%
-  |                                                                            
-  |==============                                                        |  20%
-  |                                                                            
-  |==============                                                        |  21%
-  |                                                                            
-  |===============                                                       |  21%
-  |                                                                            
-  |===============                                                       |  22%
-  |                                                                            
-  |================                                                      |  22%
-  |                                                                            
-  |================                                                      |  23%
-  |                                                                            
-  |=================                                                     |  24%
-  |                                                                            
-  |=================                                                     |  25%
-  |                                                                            
-  |==================                                                    |  25%
-  |                                                                            
-  |==================                                                    |  26%
-  |                                                                            
-  |===================                                                   |  27%
-  |                                                                            
-  |===================                                                   |  28%
-  |                                                                            
-  |====================                                                  |  28%
-  |                                                                            
-  |====================                                                  |  29%
-  |                                                                            
-  |=====================                                                 |  29%
-  |                                                                            
-  |=====================                                                 |  30%
-  |                                                                            
-  |=====================                                                 |  31%
-  |                                                                            
-  |======================                                                |  31%
-  |                                                                            
-  |======================                                                |  32%
-  |                                                                            
-  |=======================                                               |  32%
-  |                                                                            
-  |=======================                                               |  33%
-  |                                                                            
-  |=======================                                               |  34%
-  |                                                                            
-  |========================                                              |  34%
-  |                                                                            
-  |========================                                              |  35%
-  |                                                                            
-  |=========================                                             |  35%
-  |                                                                            
-  |=========================                                             |  36%
-  |                                                                            
-  |==========================                                            |  37%
-  |                                                                            
-  |==========================                                            |  38%
-  |                                                                            
-  |===========================                                           |  38%
-  |                                                                            
-  |===========================                                           |  39%
-  |                                                                            
-  |============================                                          |  39%
-  |                                                                            
-  |============================                                          |  40%
-  |                                                                            
-  |============================                                          |  41%
-  |                                                                            
-  |=============================                                         |  41%
-  |                                                                            
-  |=============================                                         |  42%
-  |                                                                            
-  |==============================                                        |  42%
-  |                                                                            
-  |==============================                                        |  43%
-  |                                                                            
-  |==============================                                        |  44%
-  |                                                                            
-  |===============================                                       |  44%
-  |                                                                            
-  |===============================                                       |  45%
-  |                                                                            
-  |================================                                      |  45%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |=================================                                     |  46%
-  |                                                                            
-  |=================================                                     |  47%
-  |                                                                            
-  |=================================                                     |  48%
-  |                                                                            
-  |==================================                                    |  48%
-  |                                                                            
-  |==================================                                    |  49%
-  |                                                                            
-  |===================================                                   |  49%
-  |                                                                            
-  |===================================                                   |  50%
-  |                                                                            
-  |====================================                                  |  51%
-  |                                                                            
-  |====================================                                  |  52%
-  |                                                                            
-  |=====================================                                 |  52%
-  |                                                                            
-  |=====================================                                 |  53%
-  |                                                                            
-  |======================================                                |  54%
-  |                                                                            
-  |======================================                                |  55%
-  |                                                                            
-  |=======================================                               |  55%
-  |                                                                            
-  |=======================================                               |  56%
-  |                                                                            
-  |========================================                              |  57%
-  |                                                                            
-  |========================================                              |  58%
-  |                                                                            
-  |=========================================                             |  58%
-  |                                                                            
-  |=========================================                             |  59%
-  |                                                                            
-  |==========================================                            |  60%
-  |                                                                            
-  |==========================================                            |  61%
-  |                                                                            
-  |===========================================                           |  61%
-  |                                                                            
-  |===========================================                           |  62%
-  |                                                                            
-  |============================================                          |  62%
-  |                                                                            
-  |============================================                          |  63%
-  |                                                                            
-  |=============================================                         |  64%
-  |                                                                            
-  |=============================================                         |  65%
-  |                                                                            
-  |==============================================                        |  65%
-  |                                                                            
-  |==============================================                        |  66%
-  |                                                                            
-  |===============================================                       |  67%
-  |                                                                            
-  |===============================================                       |  68%
-  |                                                                            
-  |================================================                      |  68%
-  |                                                                            
-  |================================================                      |  69%
-  |                                                                            
-  |=================================================                     |  69%
-  |                                                                            
-  |=================================================                     |  70%
-  |                                                                            
-  |==================================================                    |  71%
-  |                                                                            
-  |==================================================                    |  72%
-  |                                                                            
-  |===================================================                   |  72%
-  |                                                                            
-  |===================================================                   |  73%
-  |                                                                            
-  |====================================================                  |  74%
-  |                                                                            
-  |====================================================                  |  75%
-  |                                                                            
-  |=====================================================                 |  75%
-  |                                                                            
-  |=====================================================                 |  76%
-  |                                                                            
-  |======================================================                |  77%
-  |                                                                            
-  |======================================================                |  78%
-  |                                                                            
-  |=======================================================               |  78%
-  |                                                                            
-  |=======================================================               |  79%
-  |                                                                            
-  |========================================================              |  79%
-  |                                                                            
-  |========================================================              |  80%
-  |                                                                            
-  |=========================================================             |  81%
-  |                                                                            
-  |=========================================================             |  82%
-  |                                                                            
-  |==========================================================            |  82%
-  |                                                                            
-  |==========================================================            |  83%
-  |                                                                            
-  |===========================================================           |  84%
-  |                                                                            
-  |===========================================================           |  85%
-  |                                                                            
-  |============================================================          |  85%
-  |                                                                            
-  |============================================================          |  86%
-  |                                                                            
-  |=============================================================         |  87%
-  |                                                                            
-  |=============================================================         |  88%
-  |                                                                            
-  |==============================================================        |  88%
-  |                                                                            
-  |==============================================================        |  89%
-  |                                                                            
-  |===============================================================       |  89%
-  |                                                                            
-  |===============================================================       |  90%
-  |                                                                            
-  |===============================================================       |  91%
-  |                                                                            
-  |================================================================      |  91%
-  |                                                                            
-  |================================================================      |  92%
-  |                                                                            
-  |=================================================================     |  92%
-  |                                                                            
-  |=================================================================     |  93%
-  |                                                                            
-  |==================================================================    |  94%
-  |                                                                            
-  |==================================================================    |  95%
-  |                                                                            
-  |===================================================================   |  95%
-  |                                                                            
-  |===================================================================   |  96%
-  |                                                                            
-  |====================================================================  |  97%
-  |                                                                            
-  |====================================================================  |  98%
-  |                                                                            
-  |===================================================================== |  98%
-  |                                                                            
-  |===================================================================== |  99%
-  |                                                                            
-  |======================================================================|  99%
-  |                                                                            
-  |======================================================================| 100%</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "data/input/era5land_monthly_2001_2024.nc"</code></pre>
-</div>
 </div>
 <p>The reanalysis grid is sampled at every station. Because ERA5-Land is defined on land cells only, coastal stations fall on masked (water) cells and would otherwise return missing values for all months. We snap those stations to the nearest land cell before extracting, which removes the gaps without discarding stations. The previous month’s precipitation is then formed per station as a one-month lag; only the first month of each series (January 2001) is left undefined and is median-imputed later.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">sinu <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">sinu <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +a=6371007.181 +b=6371007.181 +units=m +no_defs"</span></span>
-<span id="cb11-2"></span>
-<span id="cb11-3">era5 <span class="ot" style="color: #003B4F;
+<span id="cb9-2"></span>
+<span id="cb9-3">era5 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rast</span>(era_path)</span>
-<span id="cb11-4"></span>
-<span id="cb11-5"><span class="co" style="color: #5E5E5E;
+<span id="cb9-4"></span>
+<span id="cb9-5"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Unique stations across train and test, projected to the reanalysis CRS</span></span>
-<span id="cb11-6">locs <span class="ot" style="color: #003B4F;
+<span id="cb9-6">locs <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">bind_rows</span>(</span>
-<span id="cb11-7">    <span class="fu" style="color: #4758AB;
+<span id="cb9-7">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">distinct</span>(train, loc_id, x, y),</span>
-<span id="cb11-8">    <span class="fu" style="color: #4758AB;
+<span id="cb9-8">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">distinct</span>(test, loc_id, x, y)</span>
-<span id="cb11-9">) <span class="sc" style="color: #5E5E5E;
+<span id="cb9-9">) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-10">    <span class="fu" style="color: #4758AB;
+<span id="cb9-10">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">distinct</span>(loc_id, x, y)</span>
-<span id="cb11-11">locs_v <span class="ot" style="color: #003B4F;
+<span id="cb9-11">locs_v <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -881,8 +575,8 @@ background-color: null;
 font-style: inherit;">project</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"EPSG:4326"</span>)</span>
-<span id="cb11-12"></span>
-<span id="cb11-13">ex <span class="ot" style="color: #003B4F;
+<span id="cb9-12"></span>
+<span id="cb9-13">ex <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> terra<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -893,18 +587,18 @@ background-color: null;
 font-style: inherit;">ID =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">FALSE</span>)</span>
-<span id="cb11-14">ex<span class="sc" style="color: #5E5E5E;
+<span id="cb9-14">ex<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>loc_id <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> locs<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>loc_id</span>
-<span id="cb11-15"></span>
-<span id="cb11-16"><span class="co" style="color: #5E5E5E;
+<span id="cb9-15"></span>
+<span id="cb9-16"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Snap water-cell stations to the nearest land cell (static land mask)</span></span>
-<span id="cb11-17">na_idx <span class="ot" style="color: #003B4F;
+<span id="cb9-17">na_idx <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -913,7 +607,7 @@ background-color: null;
 font-style: inherit;">is.na</span>(ex[[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"swvl1_1"</span>]]))</span>
-<span id="cb11-18"><span class="cf" style="color: #003B4F;
+<span id="cb9-18"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
@@ -923,7 +617,7 @@ background-color: null;
 font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>) {</span>
-<span id="cb11-19">    land_xy <span class="ot" style="color: #003B4F;
+<span id="cb9-19">    land_xy <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -942,12 +636,12 @@ background-color: null;
 font-style: inherit;">mat =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">FALSE</span>))))</span>
-<span id="cb11-20">    na_ll <span class="ot" style="color: #003B4F;
+<span id="cb9-20">    na_ll <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">crds</span>(locs_v[na_idx])</span>
-<span id="cb11-21">    snap_xy <span class="ot" style="color: #003B4F;
+<span id="cb9-21">    snap_xy <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -961,7 +655,7 @@ font-style: inherit;">nrow</span>(na_ll)), <span class="cf" style="color: #003B4
 background-color: null;
 font-weight: bold;
 font-style: inherit;">function</span>(i) {</span>
-<span id="cb11-22">        d <span class="ot" style="color: #003B4F;
+<span id="cb9-22">        d <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> (land_xy[, <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -988,22 +682,22 @@ background-color: null;
 font-style: inherit;">2</span> <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># euclidean distance</span></span>
-<span id="cb11-23">        land_xy[<span class="fu" style="color: #4758AB;
+<span id="cb9-23">        land_xy[<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">which.min</span>(d), ]</span>
-<span id="cb11-24">    }, <span class="fu" style="color: #4758AB;
+<span id="cb9-24">    }, <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">numeric</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span>)))</span>
-<span id="cb11-25">    patch <span class="ot" style="color: #003B4F;
+<span id="cb9-25">    patch <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> terra<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">extract</span>(era5, snap_xy)</span>
-<span id="cb11-26">    <span class="cf" style="color: #003B4F;
+<span id="cb9-26">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">if</span> (<span class="st" style="color: #20794D;
@@ -1019,20 +713,20 @@ background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">NULL</span></span>
-<span id="cb11-27">    </span>
-<span id="cb11-28">    ex[na_idx, <span class="fu" style="color: #4758AB;
+<span id="cb9-27">    </span>
+<span id="cb9-28">    ex[na_idx, <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">names</span>(era5)] <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> patch[, <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">names</span>(era5)]</span>
-<span id="cb11-29">}</span>
-<span id="cb11-30"></span>
-<span id="cb11-31"><span class="co" style="color: #5E5E5E;
+<span id="cb9-29">}</span>
+<span id="cb9-30"></span>
+<span id="cb9-31"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Reshape to (station, month) and build the one-month precipitation lag</span></span>
-<span id="cb11-32">months_seq <span class="ot" style="color: #003B4F;
+<span id="cb9-32">months_seq <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1043,25 +737,25 @@ background-color: null;
 font-style: inherit;">as.Date</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"2001-01-01"</span>), </span>
-<span id="cb11-33">                         <span class="fu" style="color: #4758AB;
+<span id="cb9-33">                         <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">as.Date</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"2024-12-01"</span>), </span>
-<span id="cb11-34">                         <span class="at" style="color: #657422;
+<span id="cb9-34">                         <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">by=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"month"</span>), </span>
-<span id="cb11-35">                     <span class="st" style="color: #20794D;
+<span id="cb9-35">                     <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"%Y-%m"</span>)</span>
-<span id="cb11-36">era5_cov <span class="ot" style="color: #003B4F;
+<span id="cb9-36">era5_cov <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> ex <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-37">    <span class="fu" style="color: #4758AB;
+<span id="cb9-37">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pivot_longer</span>(<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1076,10 +770,10 @@ background-color: null;
 font-style: inherit;">"value"</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-38">    <span class="fu" style="color: #4758AB;
+<span id="cb9-38">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mutate</span>(</span>
-<span id="cb11-39">        <span class="at" style="color: #657422;
+<span id="cb9-39">        <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">var=</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1088,7 +782,7 @@ background-color: null;
 font-style: inherit;">"_[0-9]+$"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">""</span>, layer), </span>
-<span id="cb11-40">        <span class="at" style="color: #657422;
+<span id="cb9-40">        <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">idx=</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1099,18 +793,18 @@ background-color: null;
 font-style: inherit;">"^.*_"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">""</span>, layer)), </span>
-<span id="cb11-41">        <span class="at" style="color: #657422;
+<span id="cb9-41">        <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">yearmon=</span>months_seq[idx]</span>
-<span id="cb11-42">    ) <span class="sc" style="color: #5E5E5E;
+<span id="cb9-42">    ) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-43">    <span class="fu" style="color: #4758AB;
+<span id="cb9-43">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">select</span>(loc_id, yearmon, var, value) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-44">    <span class="fu" style="color: #4758AB;
+<span id="cb9-44">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pivot_wider</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1119,7 +813,7 @@ background-color: null;
 font-style: inherit;">values_from=</span>value) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-45">    <span class="fu" style="color: #4758AB;
+<span id="cb9-45">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rename</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1128,17 +822,17 @@ background-color: null;
 font-style: inherit;">era5_swvl1=</span>swvl1) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-46">    <span class="fu" style="color: #4758AB;
+<span id="cb9-46">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">arrange</span>(loc_id, yearmon) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-47">    <span class="fu" style="color: #4758AB;
+<span id="cb9-47">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">group_by</span>(loc_id) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-48">    <span class="fu" style="color: #4758AB;
+<span id="cb9-48">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1149,11 +843,11 @@ background-color: null;
 font-style: inherit;">lag</span>(era5_precip)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb11-49">    <span class="fu" style="color: #4758AB;
+<span id="cb9-49">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ungroup</span>()</span>
-<span id="cb11-50"></span>
-<span id="cb11-51"><span class="fu" style="color: #4758AB;
+<span id="cb9-50"></span>
+<span id="cb9-51"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">colSums</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1168,7 +862,7 @@ era5_precip_lag1
 <p>Before modelling, it is worth checking whether the reanalysis data are temporally aligned with the response. Figure&nbsp;1 compares the seasonal cycles of ERA5-Land top-layer soil water and the response variable. The two series show similar seasonal patterns, providing a useful sanity check for temporal alignment.</p>
 <p>The two series are standardized to z-scores to facilitate comparison of their seasonal patterns despite their different scales.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">train2 <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">train2 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> train <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1183,11 +877,11 @@ background-color: null;
 font-style: inherit;">"loc_id"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"yearmon"</span>))</span>
-<span id="cb13-2"></span>
-<span id="cb13-3">train2 <span class="sc" style="color: #5E5E5E;
+<span id="cb11-2"></span>
+<span id="cb11-3">train2 <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb13-4">    <span class="fu" style="color: #4758AB;
+<span id="cb11-4">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1202,12 +896,12 @@ background-color: null;
 font-style: inherit;">7</span>))) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb13-5">    <span class="fu" style="color: #4758AB;
+<span id="cb11-5">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">group_by</span>(month) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb13-6">    <span class="fu" style="color: #4758AB;
+<span id="cb11-6">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">summarise</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -1224,7 +918,7 @@ background-color: null;
 font-style: inherit;">na.rm=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">TRUE</span>),</span>
-<span id="cb13-7">              <span class="st" style="color: #20794D;
+<span id="cb11-7">              <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">`</span><span class="at" style="color: #657422;
 background-color: null;
@@ -1239,14 +933,14 @@ background-color: null;
 font-style: inherit;">na.rm=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">TRUE</span>),</span>
-<span id="cb13-8">              <span class="at" style="color: #657422;
+<span id="cb11-8">              <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.groups=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"drop"</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb13-9">    <span class="fu" style="color: #4758AB;
+<span id="cb11-9">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mutate</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1259,7 +953,7 @@ background-color: null;
 font-style: inherit;">scale</span>(x)))) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb13-10">    <span class="fu" style="color: #4758AB;
+<span id="cb11-10">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pivot_longer</span>(<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1274,7 +968,7 @@ background-color: null;
 font-style: inherit;">"z"</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb13-11">    <span class="fu" style="color: #4758AB;
+<span id="cb11-11">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1283,7 +977,7 @@ background-color: null;
 font-style: inherit;">colour=</span>variable)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb13-12">    <span class="fu" style="color: #4758AB;
+<span id="cb11-12">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_line</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1292,12 +986,12 @@ background-color: null;
 font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb13-13">    <span class="fu" style="color: #4758AB;
+<span id="cb11-13">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_point</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb13-14">    <span class="fu" style="color: #4758AB;
+<span id="cb11-14">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1310,7 +1004,7 @@ background-color: null;
 font-style: inherit;">12</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb13-15">    <span class="fu" style="color: #4758AB;
+<span id="cb11-15">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1344,7 +1038,7 @@ Figure&nbsp;1: Seasonal cycles of the target soil water content and ERA5-Land to
 <h2 class="anchored" data-anchor-id="exploratory-analysis">Exploratory analysis</h2>
 <p>Two patterns stand out and motivate the modelling choices. The left panel of Figure&nbsp;2 shows that the test stations are interspersed among the training stations rather than forming a separate block, so the relevant validation scenario is prediction at scattered new sites within the same region. The right panel shows the seasonal cycle of the response: soil water content is highest in winter and reaches a clear minimum in June–July, when evapotranspiration is greatest. This seasonal signal is strong and smooth, which is why an encoding of the month is included from the outset.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">world <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">world <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> maps<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1363,38 +1057,38 @@ background-color: null;
 font-style: inherit;">TRUE</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-2">    <span class="fu" style="color: #4758AB;
+<span id="cb12-2">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_as_sf</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-3">    <span class="fu" style="color: #4758AB;
+<span id="cb12-3">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_geometry</span>()</span>
-<span id="cb14-4"></span>
-<span id="cb14-5">all_locs <span class="ot" style="color: #003B4F;
+<span id="cb12-4"></span>
+<span id="cb12-5">all_locs <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">bind_rows</span>(</span>
-<span id="cb14-6">    train <span class="sc" style="color: #5E5E5E;
+<span id="cb12-6">    train <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">distinct</span>(loc_id, x, y),</span>
-<span id="cb14-7">    test <span class="sc" style="color: #5E5E5E;
+<span id="cb12-7">    test <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">distinct</span>(loc_id, x, y)</span>
-<span id="cb14-8">) <span class="sc" style="color: #5E5E5E;
+<span id="cb12-8">) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-9">    <span class="fu" style="color: #4758AB;
+<span id="cb12-9">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">distinct</span>(loc_id, x, y)</span>
-<span id="cb14-10"></span>
-<span id="cb14-11">loc_sf <span class="ot" style="color: #003B4F;
+<span id="cb12-10"></span>
+<span id="cb12-11">loc_sf <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1409,42 +1103,42 @@ background-color: null;
 font-style: inherit;">"y"</span>), <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">crs=</span>sinu)</span>
-<span id="cb14-12"></span>
-<span id="cb14-13">aoi_sinu <span class="ot" style="color: #003B4F;
+<span id="cb12-12"></span>
+<span id="cb12-13">aoi_sinu <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> loc_sf <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-14">    <span class="fu" style="color: #4758AB;
+<span id="cb12-14">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_union</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-15">    <span class="fu" style="color: #4758AB;
+<span id="cb12-15">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_convex_hull</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-16">    <span class="fu" style="color: #4758AB;
+<span id="cb12-16">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_buffer</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">30000</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-17">    <span class="fu" style="color: #4758AB;
+<span id="cb12-17">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_as_sf</span>()</span>
-<span id="cb14-18"></span>
-<span id="cb14-19">aoi_ext <span class="ot" style="color: #003B4F;
+<span id="cb12-18"></span>
+<span id="cb12-19">aoi_ext <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ext</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">vect</span>(aoi_sinu))</span>
-<span id="cb14-20"></span>
-<span id="cb14-21">bb <span class="ot" style="color: #003B4F;
+<span id="cb12-20"></span>
+<span id="cb12-21">bb <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1461,13 +1155,13 @@ background-color: null;
 font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_bbox</span>()</span>
-<span id="cb14-22"></span>
-<span id="cb14-23">dt_sf <span class="ot" style="color: #003B4F;
+<span id="cb12-22"></span>
+<span id="cb12-23">dt_sf <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">bind_rows</span>(</span>
-<span id="cb14-24">    <span class="fu" style="color: #4758AB;
+<span id="cb12-24">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mutate</span>(train[<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1480,7 +1174,7 @@ background-color: null;
 font-style: inherit;">set=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"train"</span>),</span>
-<span id="cb14-25">    <span class="fu" style="color: #4758AB;
+<span id="cb12-25">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mutate</span>(test[<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1493,10 +1187,10 @@ background-color: null;
 font-style: inherit;">set=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"test"</span>)</span>
-<span id="cb14-26">) <span class="sc" style="color: #5E5E5E;
+<span id="cb12-26">) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-27">    <span class="fu" style="color: #4758AB;
+<span id="cb12-27">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">st_as_sf</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1509,7 +1203,7 @@ background-color: null;
 font-style: inherit;">"y"</span>), <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">crs=</span>sinu)</span>
-<span id="cb14-28">dt_sf <span class="ot" style="color: #003B4F;
+<span id="cb12-28">dt_sf <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> dt_sf[<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1518,21 +1212,21 @@ background-color: null;
 font-style: inherit;">duplicated</span>(dt_sf<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>geometry), ]</span>
-<span id="cb14-29">p_space <span class="ot" style="color: #003B4F;
+<span id="cb12-29">p_space <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-30">    <span class="fu" style="color: #4758AB;
+<span id="cb12-30">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_sf</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">data=</span>world) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-31">    <span class="fu" style="color: #4758AB;
+<span id="cb12-31">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_sf</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1551,7 +1245,7 @@ background-color: null;
 font-style: inherit;">0.7</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-32">    <span class="fu" style="color: #4758AB;
+<span id="cb12-32">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">scale_colour_manual</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1568,7 +1262,7 @@ background-color: null;
 font-style: inherit;">"firebrick"</span>)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-33">    <span class="fu" style="color: #4758AB;
+<span id="cb12-33">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">coord_sf</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1589,7 +1283,7 @@ background-color: null;
 font-style: inherit;">4</span>)]) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-34">    <span class="fu" style="color: #4758AB;
+<span id="cb12-34">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1606,7 +1300,7 @@ background-color: null;
 font-style: inherit;">NULL</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-35">    <span class="fu" style="color: #4758AB;
+<span id="cb12-35">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1617,7 +1311,7 @@ background-color: null;
 font-style: inherit;">fill=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"lightblue"</span>),</span>
-<span id="cb14-36">          <span class="at" style="color: #657422;
+<span id="cb12-36">          <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">legend.background=</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1630,7 +1324,7 @@ background-color: null;
 font-style: inherit;">colour=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">NA</span>),</span>
-<span id="cb14-37">          <span class="at" style="color: #657422;
+<span id="cb12-37">          <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">legend.key=</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1643,18 +1337,18 @@ background-color: null;
 font-style: inherit;">colour=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">NA</span>))</span>
-<span id="cb14-38"></span>
-<span id="cb14-39">p_season <span class="ot" style="color: #003B4F;
+<span id="cb12-38"></span>
+<span id="cb12-39">p_season <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> train <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-40">    <span class="fu" style="color: #4758AB;
+<span id="cb12-40">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">group_by</span>(month) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-41">    <span class="fu" style="color: #4758AB;
+<span id="cb12-41">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1667,14 +1361,14 @@ background-color: null;
 font-style: inherit;">"drop"</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb14-42">    <span class="fu" style="color: #4758AB;
+<span id="cb12-42">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">aes</span>(month, mean_sswc)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-43">    <span class="fu" style="color: #4758AB;
+<span id="cb12-43">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_line</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1683,12 +1377,12 @@ background-color: null;
 font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-44">    <span class="fu" style="color: #4758AB;
+<span id="cb12-44">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_point</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-45">    <span class="fu" style="color: #4758AB;
+<span id="cb12-45">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">scale_x_continuous</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1701,7 +1395,7 @@ background-color: null;
 font-style: inherit;">12</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb14-46">    <span class="fu" style="color: #4758AB;
+<span id="cb12-46">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1716,8 +1410,8 @@ background-color: null;
 font-style: inherit;">y=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Mean sswc_m"</span>)</span>
-<span id="cb14-47"></span>
-<span id="cb14-48">p_space <span class="sc" style="color: #5E5E5E;
+<span id="cb12-47"></span>
+<span id="cb12-48">p_space <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> p_season</span></code></pre></div></div>
 <div class="cell-output-display">
@@ -1740,12 +1434,12 @@ Figure&nbsp;2: Left: training (blue) and test (red) stations share the same regi
 <p>Because the test stations are new locations, a random split of the station-month rows would place records from the same station in both the training and the assessment folds. The strong within-station similarity would then leak into validation and produce an optimistic error estimate that does not reflect performance at genuinely new sites <span class="citation" data-cites="roberts2017cv meyer2018">(Roberts et al. 2017; Meyer et al. 2018)</span>. We therefore use <em>location-blocked</em> cross-validation: whole stations are assigned to folds, so that no station contributes rows to both sides of a split. This mirrors the competition’s own train/test design.</p>
 <p>The same folds and the same metric set are reused for every model so that comparisons are fair. <img src="https://latex.codecogs.com/png.latex?RMSE"> is the competition metric and our primary criterion; we also report the coefficient of determination (<img src="https://latex.codecogs.com/png.latex?R%5E2">) and the mean absolute error (<img src="https://latex.codecogs.com/png.latex?MAE">).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">123</span>)</span>
-<span id="cb15-2">folds <span class="ot" style="color: #003B4F;
+<span id="cb13-2">folds <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1756,7 +1450,7 @@ background-color: null;
 font-style: inherit;">v=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>)</span>
-<span id="cb15-3">metrics <span class="ot" style="color: #003B4F;
+<span id="cb13-3">metrics <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1791,7 +1485,7 @@ font-style: inherit;">metric_set</span>(rmse, rsq, mae)</span></code></pre></div
 <li><code>era5_precip_lag1</code>: one-month lag of the monthly mean daily precipitation</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">rec <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">rec <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1818,7 +1512,7 @@ background-color: null;
 font-style: inherit;">+</span> evi <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> </span>
-<span id="cb16-2">                  year <span class="sc" style="color: #5E5E5E;
+<span id="cb14-2">                  year <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> month <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1829,23 +1523,23 @@ background-color: null;
 font-style: inherit;">+</span> era5_swvl1 <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> </span>
-<span id="cb16-3">                  era5_precip <span class="sc" style="color: #5E5E5E;
+<span id="cb14-3">                  era5_precip <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> era5_precip_lag1, </span>
-<span id="cb16-4">              <span class="at" style="color: #657422;
+<span id="cb14-4">              <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">data=</span>train2) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb16-5">    <span class="fu" style="color: #4758AB;
+<span id="cb14-5">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">step_impute_median</span>(dlst, dlst<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">.95</span>, nlst, nlst<span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">.95</span>, era5_precip_lag1)</span>
-<span id="cb16-6"></span>
-<span id="cb16-7">rf_spec <span class="ot" style="color: #003B4F;
+<span id="cb14-6"></span>
+<span id="cb14-7">rf_spec <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1856,7 +1550,7 @@ background-color: null;
 font-style: inherit;">500</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb16-8">    <span class="fu" style="color: #4758AB;
+<span id="cb14-8">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set_engine</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -1871,13 +1565,13 @@ background-color: null;
 font-style: inherit;">123</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb16-9">    <span class="fu" style="color: #4758AB;
+<span id="cb14-9">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set_mode</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"regression"</span>)</span>
-<span id="cb16-10"></span>
-<span id="cb16-11">wf_rf <span class="ot" style="color: #003B4F;
+<span id="cb14-10"></span>
+<span id="cb14-11">wf_rf <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1890,8 +1584,8 @@ background-color: null;
 font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">add_model</span>(rf_spec)</span>
-<span id="cb16-12"></span>
-<span id="cb16-13">res_rf <span class="ot" style="color: #003B4F;
+<span id="cb14-12"></span>
+<span id="cb14-13">res_rf <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1900,7 +1594,7 @@ background-color: null;
 font-style: inherit;">resamples=</span>folds, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">metrics=</span>metrics)</span>
-<span id="cb16-14"><span class="fu" style="color: #4758AB;
+<span id="cb14-14"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">collect_metrics</span>(res_rf)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
@@ -1918,13 +1612,13 @@ font-style: inherit;">collect_metrics</span>(res_rf)</span></code></pre></div></
 <section id="results-and-discussion" class="level1">
 <h1>Results and Discussion</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">123</span>)</span>
-<span id="cb18-2"></span>
-<span id="cb18-3">final_fit <span class="ot" style="color: #003B4F;
+<span id="cb16-2"></span>
+<span id="cb16-3">final_fit <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1933,12 +1627,12 @@ background-color: null;
 font-style: inherit;">data=</span>train2)</span></code></pre></div></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1">test2 <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">test2 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> test <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb19-2">    <span class="fu" style="color: #4758AB;
+<span id="cb17-2">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -1947,7 +1641,7 @@ background-color: null;
 font-style: inherit;">row_number</span>()) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb19-3">    <span class="fu" style="color: #4758AB;
+<span id="cb17-3">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">left_join</span>(era5_cov, <span class="at" style="color: #657422;
 background-color: null;
@@ -1960,19 +1654,19 @@ background-color: null;
 font-style: inherit;">"yearmon"</span>)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb19-4">    <span class="fu" style="color: #4758AB;
+<span id="cb17-4">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">arrange</span>(.row_order)</span></code></pre></div></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1">pred_test <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1">pred_test <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">predict</span>(final_fit, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">new_data=</span>test2)</span>
-<span id="cb20-2">test2<span class="sc" style="color: #5E5E5E;
+<span id="cb18-2">test2<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>pred <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -1981,15 +1675,15 @@ background-color: null;
 font-style: inherit;">$</span>.pred</span></code></pre></div></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1">submission <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1">submission <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">read.csv</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"data/input/sample_submission.csv"</span>)</span>
-<span id="cb21-2"></span>
-<span id="cb21-3"><span class="fu" style="color: #4758AB;
+<span id="cb19-2"></span>
+<span id="cb19-3"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">stopifnot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1998,8 +1692,8 @@ background-color: null;
 font-style: inherit;">==</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">nrow</span>(test2))</span>
-<span id="cb21-4"></span>
-<span id="cb21-5">submission<span class="sc" style="color: #5E5E5E;
+<span id="cb19-4"></span>
+<span id="cb19-5">submission<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>sswc_m <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -2008,7 +1702,7 @@ background-color: null;
 font-style: inherit;">$</span>pred</span></code></pre></div></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">dir.create</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -2021,7 +1715,7 @@ background-color: null;
 font-style: inherit;">recursive=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">TRUE</span>)</span>
-<span id="cb22-2"><span class="fu" style="color: #4758AB;
+<span id="cb20-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">write.csv</span>(submission, <span class="st" style="color: #20794D;
 background-color: null;
@@ -2030,7 +1724,7 @@ background-color: null;
 font-style: inherit;">row.names=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">FALSE</span>, </span>
-<span id="cb22-3">          <span class="at" style="color: #657422;
+<span id="cb20-3">          <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">quote=</span><span class="cn" style="color: #8f5902;
 background-color: null;
@@ -2039,10 +1733,10 @@ font-style: inherit;">FALSE</span>)</span></code></pre></div></div>
 <p>The final model is the random forest with the MODIS, and ERA5-Land predictors. It is refitted on the entire training set and applied to the test stations. The submission is written by copying the sample submission and replacing its response column, which guarantees that the row order and identifiers match the grader exactly.</p>
 <p>Because the MODIS predictors are only available at the station points, the predictions are shown as station maps rather than a continuous surface; producing a gridded map would require the MODIS temperature and vegetation layers for the whole tile. Figure&nbsp;3 contrasts a winter and a summer month at the test stations and reproduces the expected seasonal pattern, with markedly wetter soils in January than in July.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1">test2 <span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1">test2 <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb23-2">    <span class="fu" style="color: #4758AB;
+<span id="cb21-2">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">filter</span>(yearmon <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -2055,7 +1749,7 @@ background-color: null;
 font-style: inherit;">"2020-07"</span>)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span></span>
-<span id="cb23-3">    <span class="fu" style="color: #4758AB;
+<span id="cb21-3">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2064,7 +1758,7 @@ background-color: null;
 font-style: inherit;">colour=</span>pred)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb23-4">    <span class="fu" style="color: #4758AB;
+<span id="cb21-4">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -2073,7 +1767,7 @@ background-color: null;
 font-style: inherit;">1.2</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb23-5">    <span class="fu" style="color: #4758AB;
+<span id="cb21-5">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">scale_colour_viridis_c</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -2082,19 +1776,19 @@ background-color: null;
 font-style: inherit;">"sswc_m"</span>) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb23-6">    <span class="fu" style="color: #4758AB;
+<span id="cb21-6">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">~</span>yearmon) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb23-7">    <span class="fu" style="color: #4758AB;
+<span id="cb21-7">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">coord_equal</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span></span>
-<span id="cb23-8">    <span class="fu" style="color: #4758AB;
+<span id="cb21-8">    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
 background-color: null;
@@ -2131,7 +1825,7 @@ Figure&nbsp;3: Predicted monthly soil surface water content at the test stations
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sessionInfo</span>()</span></code></pre></div></div>
 </details>
