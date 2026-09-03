@@ -13,7 +13,7 @@ date-format: "D MMM YYYY"
 
 website:
   title: "R DELİSİ"
-  site-url: "https://r-delisi.github.io/"
+  site-url: "https://r-delisi.github.io/tr"
   description: "R Delisi — Mehmet Göktuğ Öztürk tarafından hazırlanan R, GIS, mekânsal analiz, veri bilimi ve açık bilim yazıları."
   favicon: "favicon.webp"
   search: true
