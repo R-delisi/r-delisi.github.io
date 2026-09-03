@@ -31,7 +31,7 @@ Finally, here we are. :)
 
 This post is about a hackathon.
 
-Two weeks ago, we attended the [OpenGeoHub Foundation](https://opengeohub.org/) Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. 
+Tree weeks ago, we attended the [OpenGeoHub Foundation](https://opengeohub.org/) Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. 
 It was a wonderful experience once again — I also attended the summer school in Poznań in 2023.
 
 As part of the summer school, we had to complete a hackathon project. 
@@ -177,13 +177,13 @@ locs <- bind_rows(
     distinct(loc_id, x, y)
 locs_v <- vect(locs, geom=c("x", "y"), crs=sinu) |> project("EPSG:4326")
 
-ex <- terra::extract(era5, locs_v, ID = FALSE)
+ex <- terra::extract(era5, locs_v, ID=FALSE)
 ex$loc_id <- locs$loc_id
 
 # Snap water-cell stations to the nearest land cell (static land mask)
 na_idx <- which(is.na(ex[["swvl1_1"]]))
 if (length(na_idx) > 0) {
-    land_xy <- xyFromCell(era5, which(!is.na(values(era5[[1]], mat = FALSE))))
+    land_xy <- xyFromCell(era5, which(!is.na(values(era5[[1]], mat=FALSE))))
     na_ll <- crds(locs_v[na_idx])
     snap_xy <- t(vapply(seq_len(nrow(na_ll)), function(i) {
         d <- (land_xy[, 1] - na_ll[i, 1])^2 + (land_xy[, 2] - na_ll[i, 2])^2 # euclidean distance

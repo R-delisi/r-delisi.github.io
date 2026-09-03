@@ -25,7 +25,7 @@
 <p>I have already been writing a Turkish blog about R, ecology, and spatial data science, and for a while I have been thinking about starting an English version as well.</p>
 <p>Finally, here we are. :)</p>
 <p>This post is about a hackathon.</p>
-<p>Two weeks ago, we attended the <a href="https://opengeohub.org/">OpenGeoHub Foundation</a> Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. It was a wonderful experience once again — I also attended the summer school in Poznań in 2023.</p>
+<p>Tree weeks ago, we attended the <a href="https://opengeohub.org/">OpenGeoHub Foundation</a> Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. It was a wonderful experience once again — I also attended the summer school in Poznań in 2023.</p>
 <p>As part of the summer school, we had to complete a hackathon project. I selected the topic <a href="https://www.kaggle.com/competitions/modeling-monthly-soil-surface-water-content">Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03</a> and, fortunately, managed to finish it.</p>
 <p>My submission was not the top-ranked one, and I think there are some issues with the modelling approach. Still, I wanted to share it here, discuss what worked and what did not, and reflect on what I would improve next time. I have also made a few changes to the original notebook for this blog post.</p>
 <p>I am still developing my experience with spatial machine-learning workflows, so I do not consider this analysis a definitive solution. There may be aspects of the modelling and validation strategy that could be improved. I would therefore be very interested in comments, alternative approaches, and suggestions from readers with more experience in this area.</p>
@@ -584,7 +584,7 @@ font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">extract</span>(era5, locs_v, <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">ID =</span> <span class="cn" style="color: #8f5902;
+font-style: inherit;">ID=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">FALSE</span>)</span>
 <span id="cb9-14">ex<span class="sc" style="color: #5E5E5E;
@@ -633,7 +633,7 @@ font-style: inherit;">values</span>(era5[[<span class="dv" style="color: #AD0000
 background-color: null;
 font-style: inherit;">1</span>]], <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">mat =</span> <span class="cn" style="color: #8f5902;
+font-style: inherit;">mat=</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">FALSE</span>))))</span>
 <span id="cb9-20">    na_ll <span class="ot" style="color: #003B4F;
