@@ -29,7 +29,7 @@ website:
 
     right:
       - text: EN
-        href: /en/
+        href: "https://r-delisi.github.io/en/"
 
       - icon: mastodon
         href: https://ecoevo.social/@mehmet_goktu

@@ -22,7 +22,7 @@ website:
 
     right:
       - text: TR
-        href: /
+        href: "https://r-delisi.github.io/"
 
       - icon: mastodon
         href: https://ecoevo.social/@mehmet_goktu
