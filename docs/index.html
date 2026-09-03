@@ -82,9 +82,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -198,7 +198,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Kategoriler</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">Hepsi <span class="quarto-category-count">(0)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Kategoriler</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">Hepsi <span class="quarto-category-count">(6)</span></div><div class="category" data-category="YmFzZSUyMFI=">base R <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Y2FzZV9zdHVkeQ==">case_study <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZHBseXI=">dplyr <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2lz">gis <span class="quarto-category-count">(4)</span></div><div class="category" data-category="cGFsbWVycGVuZ3VpbnM=">palmerpenguins <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(6)</span></div><div class="category" data-category="ci1zcGF0aWFs">r-spatial <span class="quarto-category-count">(4)</span></div><div class="category" data-category="dGlkeXZlcnNl">tidyverse <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -211,7 +211,220 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ2RwbHlyJTJDdGlkeXZlcnNlJTJDcGFsbWVycGVuZ3VpbnM=" data-listing-date-sort="1780261200000" data-listing-file-modified-sort="1787851331571" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2960">
+<div class="thumbnail"><a href="./posts/penguin2/penguins.html" class="no-external">
 
+<p class="card-img-top"><img loading='lazy' src="posts/penguin2/figs/penguins.webp"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/penguin2/penguins.html" class="no-external">PENGUINS VERİSİ İLE DPLYR’YE GİRİŞ</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('ZHBseXI='); return false;">dplyr</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('dGlkeXZlcnNl'); return false;">tidyverse</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('cGFsbWVycGVuZ3VpbnM='); return false;">palmerpenguins</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/penguin2/penguins.html" class="no-external">
+<p>dplyr ile Veri Cambazlığı</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/penguin2/penguins.html" class="no-external">
+<div class="listing-date">
+1 Haz 2026
+</div>
+<div class="listing-author">
+Mehmet Göktuğ ÖZTÜRK
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ2Jhc2UlMjBSJTJDcGFsbWVycGVuZ3VpbnM=" data-listing-date-sort="1765746000000" data-listing-file-modified-sort="1787851312094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3803">
+<div class="thumbnail"><a href="./posts/penguin/penguins.html" class="no-external">
+
+<p class="card-img-top"><img loading='lazy' src="posts/penguin/figs/penguins.webp"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/penguin/penguins.html" class="no-external">PENGUINS VERİSİ İLE BASE R’A GİRİŞ</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('YmFzZSUyMFI='); return false;">base R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('cGFsbWVycGVuZ3VpbnM='); return false;">palmerpenguins</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/penguin/penguins.html" class="no-external">
+<p>Base R ile Veri Cambazlığı</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/penguin/penguins.html" class="no-external">
+<div class="listing-date">
+15 Ara 2025
+</div>
+<div class="listing-author">
+Mehmet Göktuğ ÖZTÜRK
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1741554000000" data-listing-file-modified-sort="1787851096900" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1704">
+<div class="thumbnail"><a href="./posts/dem2/dem2.html" class="no-external">
+
+<p class="card-img-top"><img loading='lazy' src="posts/dem2/figs/preview.webp"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/dem2/dem2.html" class="no-external">R İLE TOPOGRAFİK VERİ İNDİRME 2 - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('YmFzZSUyMFI='); return false;">base R</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/dem2/dem2.html" class="no-external">
+<p>R ile Topografik Veri İndirme 2</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/dem2/dem2.html" class="no-external">
+<div class="listing-date">
+10 Mar 2025
+</div>
+<div class="listing-author">
+Mehmet Göktuğ ÖZTÜRK
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Jhc2UlMjBS" data-listing-date-sort="1740949200000" data-listing-file-modified-sort="1787847596660" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2027">
+<div class="thumbnail"><a href="./posts/dem/dem.html" class="no-external">
+
+<p class="card-img-top"><img loading='lazy' src="posts/dem/figs/preview.webp"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/dem/dem.html" class="no-external">R İLE TOPOGRAFIK VERİ İNDİRME - DEM VERİSİ İNDİRME VE GÖRSELLEŞTİRME</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('YmFzZSUyMFI='); return false;">base R</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/dem/dem.html" class="no-external">
+<p>R ile Topografik Veri İndirme</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/dem/dem.html" class="no-external">
+<div class="listing-date">
+3 Mar 2025
+</div>
+<div class="listing-author">
+Mehmet Göktuğ ÖZTÜRK
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1702155600000" data-listing-file-modified-sort="1787851140601" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1625">
+<div class="thumbnail"><a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">
+
+<p class="card-img-top"><img loading='lazy' src="posts/ebird_R_2/figs/preview.webp"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ II</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Y2FzZV9zdHVkeQ=='); return false;">case_study</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">
+<p>R ile Kuş Verilerinin Analizi II</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/ebird_R_2/ebird_r_2.html" class="no-external">
+<div class="listing-date">
+10 Ara 2023
+</div>
+<div class="listing-author">
+Mehmet Göktuğ ÖZTÜRK
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="UiUyQ2dpcyUyQ3Itc3BhdGlhbCUyQ2Nhc2Vfc3R1ZHk=" data-listing-date-sort="1695762000000" data-listing-file-modified-sort="1787850453384" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2049">
+<div class="thumbnail"><a href="./posts/ebird_R/ebird_r.html" class="no-external">
+
+<p class="card-img-top"><img loading='lazy' src="posts/ebird_R/figs/preview.webp"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/ebird_R/ebird_r.html" class="no-external">R VE KUŞLAR - eBird VERİLERİNİN R İLE ANALİZİ I</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Z2lz'); return false;">gis</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('ci1zcGF0aWFs'); return false;">r-spatial</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Y2FzZV9zdHVkeQ=='); return false;">case_study</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/ebird_R/ebird_r.html" class="no-external">
+<p>R ile Kuş Verilerinin Analizi</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/ebird_R/ebird_r.html" class="no-external">
+<div class="listing-date">
+27 Eyl 2023
+</div>
+<div class="listing-author">
+Mehmet Göktuğ ÖZTÜRK
+</div>
+</a>
+</div>
+</div>
 </div>
 <div class="listing-no-matching d-none">Eşleşen öğe yok</div>
 </div></main> <!-- /main -->

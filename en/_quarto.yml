@@ -24,7 +24,7 @@ website:
 
     right:
       - text: TR
-        href: /tr/
+        href: /
 
       - icon: mastodon
         href: https://ecoevo.social/@mehmet_goktu
