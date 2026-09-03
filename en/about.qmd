@@ -1,0 +1,40 @@
+---
+title: "About Me"
+image: profile.webp
+about:
+  template: jolla
+  links:
+    - icon: mastodon
+      text: Mastodon
+      href: https://ecoevo.social/@mehmet_goktu
+    - icon: bluesky
+      text: Bluesky
+      href: https://bsky.app/profile/mehmetgoktug.bsky.social
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/mehmetgoktug/
+    - icon: github
+      text: Github
+      href: https://github.com/mehmetgoktug
+comments: false
+---
+
+Hi, I’m Mehmet Göktuğ Öztürk.
+
+Since childhood, I have been fascinated by nature, the dynamics that shape it, and understanding why things occur where they do. 
+This curiosity led me first to biology and ecology, and later to geographic information systems, remote sensing, and spatial data analysis.
+
+After graduating from the Department of Biology at Hacettepe University, I completed my MSc in Ecology, where I studied the spatio-temporal patterns of lightning-induced wildfires. 
+I am currently continuing my PhD studies in the same department.
+
+R is one of the main tools I use when working with spatial data. My workflows involve raster and vector processing, remote sensing, spatial statistics, machine learning, data visualization, and reproducible analysis, using R alongside Python, Bash, GDAL, and various GIS tools.
+
+The idea of starting a blog first came to me through Ozan Mert Göktürk and his well-known blog [havadelisi](https://havadelisi.com), from which I learned a great deal about science communication in one’s native language and about blogging culture. 
+As my interests developed over the years, I decided to shape this blog around R.
+
+On R Delisi, I mainly share content about R, Python, GIS, and spatial data science. 
+Using real-world data from ecology, biogeography, climate, and meteorology, I explore examples of analysis, modelling, and visualization.
+
+Here’s to plenty of discussion and learning together.
+
+Stay with science, and stay at peace.

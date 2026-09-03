@@ -1,0 +1,47 @@
+project:
+  type: website
+  output-dir: ../docs/en
+
+lang: en
+date-format: "D MMM YYYY"
+
+website:
+  title: "R DELİSİ"
+  description: "Open and Reproducible Science"
+  search: true
+
+  navbar:
+    pinned: true
+
+    left:
+      - href: index.qmd
+        text: Blog
+      - href: about.qmd
+        text: About
+
+    right:
+      - text: TR
+        href: /
+
+      - icon: mastodon
+        href: https://ecoevo.social/@mehmet_goktu
+      - icon: github
+        href: https://github.com/mehmetgoktug
+      - icon: linkedin
+        href: https://www.linkedin.com/in/mehmetgoktug/
+
+  page-footer:
+    center: R Delisi - 2026
+
+  twitter-card: true
+  open-graph: true
+
+  comments:
+    utterances:
+      repo: R-delisi/r-delisi.github.io
+
+format:
+  html:
+    theme: sandstone
+    mainfont: Inter
+    toc: true

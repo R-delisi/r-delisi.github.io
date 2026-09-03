@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Mehmet Göktuğ Öztürk">
+<meta name="description" content="Modelling Monthly Soil Surface Water Content">
+
+<title>Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03 – R DELİSİ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-906762f8fc54eec01e65754faf42a754.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03 – R DELİSİ">
+<meta property="og:description" content="Modelling Monthly Soil Surface Water Content">
+<meta property="og:image" content="ssm_files/figure-html/fig-era5-1.png">
+<meta property="og:site_name" content="R DELİSİ">
+<meta name="twitter:title" content="Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03 – R DELİSİ">
+<meta name="twitter:description" content="Modelling Monthly Soil Surface Water Content">
+<meta name="twitter:image" content="ssm_files/figure-html/fig-era5-1.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">R DELİSİ</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../"> 
+<span class="menu-text">TR</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://ecoevo.social/@mehmet_goktu"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/mehmetgoktug"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/mehmetgoktug/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
+  <ul class="collapse">
+  <li><a href="#station-observations" id="toc-station-observations" class="nav-link" data-scroll-target="#station-observations">Station observations</a></li>
+  <li><a href="#era5-land-precipitation-and-soil-moisture" id="toc-era5-land-precipitation-and-soil-moisture" class="nav-link" data-scroll-target="#era5-land-precipitation-and-soil-moisture">ERA5-Land precipitation and soil moisture</a></li>
+  <li><a href="#exploratory-analysis" id="toc-exploratory-analysis" class="nav-link" data-scroll-target="#exploratory-analysis">Exploratory analysis</a></li>
+  </ul></li>
+  <li><a href="#cross-validation-design" id="toc-cross-validation-design" class="nav-link" data-scroll-target="#cross-validation-design">Cross-validation design</a></li>
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a>
+  <ul class="collapse">
+  <li><a href="#random-forest" id="toc-random-forest" class="nav-link" data-scroll-target="#random-forest">Random forest</a></li>
+  </ul></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
+  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility">Reproducibility</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">spatial data science</div>
+    <div class="quarto-category">remote sensing</div>
+    <div class="quarto-category">GIS</div>
+    <div class="quarto-category">r-spatial</div>
+    <div class="quarto-category">machine learning</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Modelling Monthly Soil Surface Water Content
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Mehmet Göktuğ Öztürk </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">3 Sep 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Hello, and welcome to my first blog post in English!</p>
+<p>I have already been writing a Turkish blog about R, ecology, and spatial data science, and for a while I have been thinking about starting an English version as well.</p>
+<p>Finally, here we are. :)</p>
+<p>This post is about a hackathon.</p>
+<p>Two weeks ago, we attended the OpenGeoHub Foundation Earth Observation Summer School 2026 at Istanbul Technical University in İstanbul. It was a wonderful experience once again — I also attended the summer school in Poznań in 2023.</p>
+<p>As part of the summer school, we had to complete a hackathon project. I selected the topic <a href="https://www.kaggle.com/competitions/modeling-monthly-soil-surface-water-content">Modelling Monthly Soil Surface Water Content over MODIS Tile h18v03</a> and, fortunately, managed to finish it.</p>
+<p>My submission was not the top-ranked one, and I think there are some issues with the modelling approach. Still, I wanted to share it here, discuss what worked and what did not, and reflect on what I would improve next time. I have also made a few changes to the original notebook for this blog post.</p>
+<p>I am still developing my experience with spatial machine-learning workflows, so I do not consider this analysis a definitive solution. There may be aspects of the modelling and validation strategy that could be improved. I would therefore be very interested in comments, alternative approaches, and suggestions from readers with more experience in this area.</p>
+<p>Enjoy the read!</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>Soil moisture in the uppermost soil layer mediates infiltration, evapotranspiration and runoff, and it responds quickly to rainfall and to the atmospheric demand for water. Mapping how it varies from month to month is valuable for a range of environmental applications, but direct measurements are sparse in space. A common strategy is to learn a statistical relationship between in-situ measurements and spatially exhaustive covariates — satellite imagery, and climate reanalysis — and then to apply that relationship where no measurements exist <span class="citation" data-cites="hengl2018rf">(<a href="#ref-hengl2018rf" role="doc-biblioref">Hengl et al. 2018</a>)</span>.</p>
+<p>The objective here is to predict monthly soil surface water content, denoted <code>sswc_m</code>, for a set of stations on MODIS tile h18v03. The model quality is judged by the root-mean-square error (<span class="math inline">\(RMSE\)</span>) on the hidden test stations.</p>
+</section>
+<section id="data" class="level1">
+<h1>Data</h1>
+<section id="station-observations" class="level2">
+<h2 class="anchored" data-anchor-id="station-observations">Station observations</h2>
+<p>The training and test tables share the same structure. Each row is one station-month and carries the station coordinates (<code>x</code>, <code>y</code>), a set of MODIS-derived predictors, and a year-month label (<code>YEARMON</code>). The training table additionally contains the response <code>sswc_m</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyr"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidymodels"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"terra"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"sf"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ecmwfr"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ranger"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"patchwork"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Options</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>(<span class="at">base_family=</span><span class="st">"Inter"</span>, <span class="at">base_size=</span><span class="dv">16</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/input/train.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> train[<span class="sc">!</span><span class="fu">names</span>(train) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"Unnamed..0"</span>)]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="st">`</span><span class="at">names&lt;-</span><span class="st">`</span>(train, <span class="fu">tolower</span>(<span class="fu">names</span>(train)))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/input/test.csv"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> test[<span class="sc">!</span><span class="fu">names</span>(test) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"row_id"</span>, <span class="st">"cluster"</span>)]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="st">`</span><span class="at">names&lt;-</span><span class="st">`</span>(test, <span class="fu">tolower</span>(<span class="fu">names</span>(test)))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>prep_features <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">substr</span>(df<span class="sc">$</span>yearmon, <span class="dv">1</span>, <span class="dv">4</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">substr</span>(df<span class="sc">$</span>yearmon, <span class="dv">6</span>, <span class="dv">7</span>))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>month_sin <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> df<span class="sc">$</span>month <span class="sc">/</span> <span class="dv">12</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>month_cos <span class="ot">&lt;-</span> <span class="fu">cos</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> df<span class="sc">$</span>month <span class="sc">/</span> <span class="dv">12</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    df<span class="sc">$</span>loc_id <span class="ot">&lt;-</span> <span class="fu">paste</span>(df<span class="sc">$</span>x, df<span class="sc">$</span>y, <span class="at">sep=</span><span class="st">"_"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">prep_features</span>(train)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">prep_features</span>(test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   154594 obs. of  15 variables:
+ $ x        : num  192611 192611 192611 192611 192611 ...
+ $ y        : num  5685001 5685001 5685001 5685001 5685001 ...
+ $ dlst     : num  2796 2762 2790 2853 2918 ...
+ $ dlst.95  : num  2822 2768 2797 2900 2943 ...
+ $ nlst     : num  2744 2737 2745 2749 2799 ...
+ $ nlst.95  : num  2759 2772 2764 2786 2815 ...
+ $ geom     : int  -31 -51 -37 0 60 121 170 190 178 136 ...
+ $ evi      : int  1594 1592 1554 1721 2435 2770 2777 2559 2268 2585 ...
+ $ sswc_m   : num  133 123 122 104 121 ...
+ $ yearmon  : chr  "2005-12" "2006-01" "2006-02" "2006-03" ...
+ $ year     : int  2005 2006 2006 2006 2006 2006 2006 2006 2006 2006 ...
+ $ month    : int  12 1 2 3 4 5 6 7 8 9 ...
+ $ month_sin: num  -0.000000000000000245 0.499999999999999944 0.866025403784438597 1 0.866025403784438708 ...
+ $ month_cos: num  1 0.8660254037844387076 0.500000000000000111 0.0000000000000000612 -0.499999999999999778 ...
+ $ loc_id   : chr  "192610.797746353_5685001.46987854" "192610.797746353_5685001.46987854" "192610.797746353_5685001.46987854" "192610.797746353_5685001.46987854" ...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   73998 obs. of  14 variables:
+ $ x        : num  118207 118207 118207 118207 118207 ...
+ $ y        : num  5836536 5836536 5836536 5836536 5836536 ...
+ $ dlst     : num  2797 2817 2881 2919 2954 ...
+ $ dlst.95  : num  2819 2819 2914 2949 2978 ...
+ $ nlst     : num  2752 2766 2766 2782 2834 ...
+ $ nlst.95  : num  2754 2792 2793 2800 2853 ...
+ $ geom     : int  -62 -48 -9 51 113 162 183 171 128 68 ...
+ $ evi      : int  2367 2382 2654 3119 3288 3359 3555 3493 3258 3087 ...
+ $ yearmon  : chr  "2001-01" "2001-02" "2001-03" "2001-04" ...
+ $ year     : int  2001 2001 2001 2001 2001 2001 2001 2001 2001 2001 ...
+ $ month    : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ month_sin: num  0.5 0.866 1 0.866 0.5 ...
+ $ month_cos: num  0.8660254037844387076 0.500000000000000111 0.0000000000000000612 -0.499999999999999778 -0.8660254037844387076 ...
+ $ loc_id   : chr  "118206.773972219_5836535.61571117" "118206.773972219_5836535.61571117" "118206.773972219_5836535.61571117" "118206.773972219_5836535.61571117" ...</code></pre>
+</div>
+</div>
+</section>
+<section id="era5-land-precipitation-and-soil-moisture" class="level2">
+<h2 class="anchored" data-anchor-id="era5-land-precipitation-and-soil-moisture">ERA5-Land precipitation and soil moisture</h2>
+<p>ERA5-Land provides hourly and monthly land-surface fields at roughly 9 km resolution from 1950 onward <span class="citation" data-cites="munoz2021era5land">(<a href="#ref-munoz2021era5land" role="doc-biblioref"><span class="nocase">Muñoz-Sabater et al.</span> 2021</a>)</span>, derived from the ERA5 reanalysis <span class="citation" data-cites="hersbach2020era5">(<a href="#ref-hersbach2020era5" role="doc-biblioref"><span class="nocase">Hersbach et al.</span> 2020</a>)</span>. It covers the full 2001–2024 study period, which makes it a natural match for this problem. We retrieve two monthly variables over the tile’s bounding box: total precipitation and volumetric soil water in the top layer (<code>swvl1</code> in <span class="math inline">\(\mathrm{m^3\,m^{-3}}\)</span>, which is closely related to the response variable and provides a physically meaningful predictor). Downloads use the <code>ecmwfr</code> interface to the Copernicus Climate Data Store <span class="citation" data-cites="ecmwfr2023">(<a href="#ref-ecmwfr2023" role="doc-biblioref">Hufkens et al. 2023</a>)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>era_path <span class="ot">&lt;-</span> <span class="st">"data/input/era5land_monthly_2001_2024.nc"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="fu">dirname</span>(era_path), <span class="at">showWarnings=</span><span class="cn">FALSE</span>, <span class="at">recursive=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(era_path)) {</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Sys.setenv</span>(<span class="at">R_KEYRING_BACKEND=</span><span class="st">"env"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">options</span>(<span class="at">keyring_backend=</span><span class="st">"env"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    rc <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">path.expand</span>(<span class="st">"~/.cdsapirc"</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wf_set_key</span>(<span class="at">key=</span><span class="fu">substr</span>(rc[<span class="dv">2</span>], <span class="dv">6</span>, <span class="dv">41</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    request <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">dataset_short_name=</span><span class="st">"reanalysis-era5-land-monthly-means"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">product_type=</span><span class="st">"monthly_averaged_reanalysis"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">variable=</span><span class="fu">c</span>(<span class="st">"total_precipitation"</span>, <span class="st">"volumetric_soil_water_layer_1"</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">year=</span><span class="fu">as.character</span>(<span class="dv">2001</span><span class="sc">:</span><span class="dv">2024</span>),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">month=</span><span class="fu">sprintf</span>(<span class="st">"%02d"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>),</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">time=</span><span class="st">"00:00"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">area=</span><span class="fu">c</span>(<span class="dv">65</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">25</span>), <span class="co"># N, W, S, E</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">data_format=</span><span class="st">"netcdf"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">download_format=</span><span class="st">"unarchived"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">target=</span><span class="fu">basename</span>(era_path)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wf_request</span>(request, <span class="at">transfer=</span><span class="cn">TRUE</span>, <span class="at">path=</span><span class="fu">dirname</span>(era_path), <span class="at">time_out=</span><span class="dv">1800</span>, </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>               <span class="at">retry=</span><span class="dv">30</span>, <span class="at">verbose=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The reanalysis grid is sampled at every station. Because ERA5-Land is defined on land cells only, coastal stations fall on masked (water) cells and would otherwise return missing values for all months. We snap those stations to the nearest land cell before extracting, which removes the gaps without discarding stations. The previous month’s precipitation is then formed per station as a one-month lag; only the first month of each series (January 2001) is left undefined and is median-imputed later.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sinu <span class="ot">&lt;-</span> <span class="st">"+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +a=6371007.181 +b=6371007.181 +units=m +no_defs"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>era5 <span class="ot">&lt;-</span> <span class="fu">rast</span>(era_path)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Unique stations across train and test, projected to the reanalysis CRS</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>(train, loc_id, x, y),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>(test, loc_id, x, y)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>(loc_id, x, y)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>locs_v <span class="ot">&lt;-</span> <span class="fu">vect</span>(locs, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="at">crs=</span>sinu) <span class="sc">|&gt;</span> <span class="fu">project</span>(<span class="st">"EPSG:4326"</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ex <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(era5, locs_v, <span class="at">ID =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ex<span class="sc">$</span>loc_id <span class="ot">&lt;-</span> locs<span class="sc">$</span>loc_id</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Snap water-cell stations to the nearest land cell (static land mask)</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>na_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">is.na</span>(ex[[<span class="st">"swvl1_1"</span>]]))</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(na_idx) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    land_xy <span class="ot">&lt;-</span> <span class="fu">xyFromCell</span>(era5, <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">values</span>(era5[[<span class="dv">1</span>]], <span class="at">mat =</span> <span class="cn">FALSE</span>))))</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    na_ll <span class="ot">&lt;-</span> <span class="fu">crds</span>(locs_v[na_idx])</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    snap_xy <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">vapply</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(na_ll)), <span class="cf">function</span>(i) {</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        d <span class="ot">&lt;-</span> (land_xy[, <span class="dv">1</span>] <span class="sc">-</span> na_ll[i, <span class="dv">1</span>])<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (land_xy[, <span class="dv">2</span>] <span class="sc">-</span> na_ll[i, <span class="dv">2</span>])<span class="sc">^</span><span class="dv">2</span> <span class="co"># euclidean distance</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        land_xy[<span class="fu">which.min</span>(d), ]</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    }, <span class="fu">numeric</span>(<span class="dv">2</span>)))</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    patch <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(era5, snap_xy)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="st">"ID"</span> <span class="sc">%in%</span> <span class="fu">names</span>(patch)) patch<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    ex[na_idx, <span class="fu">names</span>(era5)] <span class="ot">&lt;-</span> patch[, <span class="fu">names</span>(era5)]</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Reshape to (station, month) and build the one-month precipitation lag</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>months_seq <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">"2001-01-01"</span>), </span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">as.Date</span>(<span class="st">"2024-12-01"</span>), </span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>                         <span class="at">by=</span><span class="st">"month"</span>), </span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"%Y-%m"</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>era5_cov <span class="ot">&lt;-</span> ex <span class="sc">|&gt;</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="sc">-</span>loc_id, <span class="at">names_to=</span><span class="st">"layer"</span>, <span class="at">values_to=</span><span class="st">"value"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">var=</span><span class="fu">sub</span>(<span class="st">"_[0-9]+$"</span>, <span class="st">""</span>, layer), </span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">idx=</span><span class="fu">as.integer</span>(<span class="fu">sub</span>(<span class="st">"^.*_"</span>, <span class="st">""</span>, layer)), </span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">yearmon=</span>months_seq[idx]</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(loc_id, yearmon, var, value) <span class="sc">|&gt;</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>var, <span class="at">values_from=</span>value) <span class="sc">|&gt;</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">era5_precip=</span>tp, <span class="at">era5_swvl1=</span>swvl1) <span class="sc">|&gt;</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(loc_id, yearmon) <span class="sc">|&gt;</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(loc_id) <span class="sc">|&gt;</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">era5_precip_lag1=</span>dplyr<span class="sc">::</span><span class="fu">lag</span>(era5_precip)) <span class="sc">|&gt;</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(era5_cov))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          loc_id          yearmon                e       era5_swvl1 
+               0                0                0                0 
+     era5_precip era5_precip_lag1 
+               0              915 </code></pre>
+</div>
+</div>
+<p>Before modelling, it is worth checking whether the reanalysis data are temporally aligned with the response. <a href="#fig-era5" class="quarto-xref">Figure&nbsp;1</a> compares the seasonal cycles of ERA5-Land top-layer soil water and the response variable. The two series show similar seasonal patterns, providing a useful sanity check for temporal alignment.</p>
+<p>The two series are standardized to z-scores to facilitate comparison of their seasonal patterns despite their different scales.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>train2 <span class="ot">&lt;-</span> train <span class="sc">|&gt;</span> <span class="fu">left_join</span>(era5_cov, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"loc_id"</span>, <span class="st">"yearmon"</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>train2 <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">month=</span><span class="fu">as.integer</span>(<span class="fu">substr</span>(yearmon, <span class="dv">6</span>, <span class="dv">7</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(month) <span class="sc">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="st">`</span><span class="at">sswc_m (target)</span><span class="st">`</span><span class="ot">=</span><span class="fu">mean</span>(sswc_m, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">`</span><span class="at">ERA5-Land swvl1</span><span class="st">`</span><span class="ot">=</span><span class="fu">mean</span>(era5_swvl1, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups=</span><span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>month, \(x) <span class="fu">as.numeric</span>(<span class="fu">scale</span>(x)))) <span class="sc">|&gt;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="sc">-</span>month, <span class="at">names_to=</span><span class="st">"variable"</span>, <span class="at">values_to=</span><span class="st">"z"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(month, z, <span class="at">colour=</span>variable)) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Month"</span>, <span class="at">y=</span><span class="st">"Standardized monthly mean (z-score)"</span>, <span class="at">colour=</span><span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-era5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-era5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ssm_files/figure-html/fig-era5-1.png" class="img-fluid figure-img" width="1152">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-era5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Seasonal cycles of the target soil water content and ERA5-Land top-layer soil water, standardized as z-scores. Their similar seasonal patterns provide a useful sanity check for temporal alignment.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>There are missing values in <code>dlst</code>, <code>dlst.95</code>, <code>nlst</code>, <code>nlst.95</code>, and <code>era5_precip_lag1</code> variables. Missing values are median-imputed in the model.</p>
+</section>
+<section id="exploratory-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-analysis">Exploratory analysis</h2>
+<p>Two patterns stand out and motivate the modelling choices. The left panel of <a href="#fig-eda" class="quarto-xref">Figure&nbsp;2</a> shows that the test stations are interspersed among the training stations rather than forming a separate block, so the relevant validation scenario is prediction at scattered new sites within the same region. The right panel shows the seasonal cycle of the response: soil water content is highest in winter and reaches a clear minimum in June–July, when evapotranspiration is greatest. This seasonal signal is strong and smooth, which is why an encoding of the month is included from the outset.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> maps<span class="sc">::</span><span class="fu">map</span>(<span class="st">"world"</span>, <span class="at">plot=</span><span class="cn">FALSE</span>, <span class="at">fill=</span><span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_geometry</span>()</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>all_locs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    train <span class="sc">|&gt;</span> <span class="fu">distinct</span>(loc_id, x, y),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    test <span class="sc">|&gt;</span> <span class="fu">distinct</span>(loc_id, x, y)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>(loc_id, x, y)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>loc_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(all_locs, <span class="at">coords=</span><span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="at">crs=</span>sinu)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>aoi_sinu <span class="ot">&lt;-</span> loc_sf <span class="sc">|&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_union</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_convex_hull</span>() <span class="sc">|&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_buffer</span>(<span class="dv">30000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>()</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>aoi_ext <span class="ot">&lt;-</span> <span class="fu">ext</span>(<span class="fu">vect</span>(aoi_sinu))</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>bb <span class="ot">&lt;-</span> <span class="fu">vect</span>(aoi_ext, <span class="at">crs=</span>sinu) <span class="sc">|&gt;</span> <span class="fu">project</span>(<span class="st">"EPSG:4326"</span>) <span class="sc">|&gt;</span> <span class="fu">st_bbox</span>()</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>dt_sf <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(train[<span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)], <span class="at">set=</span><span class="st">"train"</span>),</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(test[<span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)], <span class="at">set=</span><span class="st">"test"</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords=</span><span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="at">crs=</span>sinu)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>dt_sf <span class="ot">&lt;-</span> dt_sf[<span class="sc">!</span><span class="fu">duplicated</span>(dt_sf<span class="sc">$</span>geometry), ]</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>p_space <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data=</span>world) <span class="sc">+</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data=</span>dt_sf, <span class="fu">aes</span>(<span class="at">colour=</span>set), <span class="at">size=</span><span class="fl">0.7</span>, <span class="at">alpha=</span><span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="at">train=</span><span class="st">"steelblue"</span>, <span class="at">test=</span><span class="st">"firebrick"</span>)) <span class="sc">+</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_sf</span>(<span class="at">xlim=</span>bb[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)], <span class="at">ylim=</span>bb[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>)]) <span class="sc">+</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Spatial hold-out design"</span>, <span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"lightblue"</span>),</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"white"</span>, <span class="at">colour=</span><span class="cn">NA</span>),</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend.key=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"white"</span>, <span class="at">colour=</span><span class="cn">NA</span>))</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>p_season <span class="ot">&lt;-</span> train <span class="sc">|&gt;</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(month) <span class="sc">|&gt;</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">mean_sswc=</span><span class="fu">mean</span>(sswc_m), <span class="at">.groups=</span><span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(month, mean_sswc)) <span class="sc">+</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="at">linewidth=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Seasonal cycle of the response"</span>, <span class="at">x=</span><span class="st">"Month"</span>, <span class="at">y=</span><span class="st">"Mean sswc_m"</span>)</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>p_space <span class="sc">+</span> p_season</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-eda" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ssm_files/figure-html/fig-eda-1.png" class="img-fluid figure-img" width="1344">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Left: training (blue) and test (red) stations share the same region, so the test set represents new, interspersed locations. Right: the monthly mean of the response shows a pronounced seasonal cycle with a mid-summer minimum.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="cross-validation-design" class="level1">
+<h1>Cross-validation design</h1>
+<p>Because the test stations are new locations, a random split of the station-month rows would place records from the same station in both the training and the assessment folds. The strong within-station similarity would then leak into validation and produce an optimistic error estimate that does not reflect performance at genuinely new sites <span class="citation" data-cites="roberts2017cv meyer2018">(<a href="#ref-roberts2017cv" role="doc-biblioref">Roberts et al. 2017</a>; <a href="#ref-meyer2018" role="doc-biblioref">Meyer et al. 2018</a>)</span>. We therefore use <em>location-blocked</em> cross-validation: whole stations are assigned to folds, so that no station contributes rows to both sides of a split. This mirrors the competition’s own train/test design.</p>
+<p>The same folds and the same metric set are reused for every model so that comparisons are fair. <span class="math inline">\(RMSE\)</span> is the competition metric and our primary criterion; we also report the coefficient of determination (<span class="math inline">\(R^2\)</span>) and the mean absolute error (<span class="math inline">\(MAE\)</span>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>folds <span class="ot">&lt;-</span> <span class="fu">group_vfold_cv</span>(train2, <span class="at">group=</span>loc_id, <span class="at">v=</span><span class="dv">10</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(rmse, rsq, mae)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="models" class="level1">
+<h1>Models</h1>
+<section id="random-forest" class="level2">
+<h2 class="anchored" data-anchor-id="random-forest">Random forest</h2>
+<p>The first substantive model is a random forest, which handles nonlinear responses and predictor interactions with little tuning and is a strong default for tabular environmental data <span class="citation" data-cites="breiman2001 hengl2018rf">(<a href="#ref-breiman2001" role="doc-biblioref">Breiman 2001</a>; <a href="#ref-hengl2018rf" role="doc-biblioref">Hengl et al. 2018</a>)</span>. We use the <code>ranger</code> engine <span class="citation" data-cites="wright2017ranger">(<a href="#ref-wright2017ranger" role="doc-biblioref">Wright and Ziegler 2017</a>)</span> with 500 trees. Missing values are median-imputed inside the recipe.</p>
+<p>The full set of predictors used in the model is:</p>
+<p><strong>Location and time</strong></p>
+<ul>
+<li><code>x</code>, <code>y</code>: station coordinates (in the sinusoidal MODIS grid CRS)</li>
+<li><code>year</code>, <code>month</code>: calendar year and month</li>
+<li><code>month_sin</code>, <code>month_cos</code>: cyclical (sine/cosine) encoding of month, used so the model can learn a smooth seasonal cycle without treating December and January as far apart</li>
+</ul>
+<p><strong>MODIS-derived covariates</strong> (see the <a href="https://codeberg.org/opengeohub/MODIS_LST_trend_analysis_tutorial">MODIS LST tutorial</a> for details)</p>
+<ul>
+<li><code>dlst</code>: day-time mean monthly land surface temperature (LST)</li>
+<li><code>nlst</code>: night-time mean monthly LST</li>
+<li><code>dlst.95</code>: upper 95th percentile of monthly day-time temperatures</li>
+<li><code>nlst.95</code>: upper 95th percentile of monthly night-time temperatures</li>
+<li><code>geom</code>: geometric temperature monthly</li>
+<li><code>evi</code>: Enhanced Vegetation Index, based on the MODIS monthly product</li>
+</ul>
+<p><strong>ERA5-Land covariates</strong> (added independently, see the <a href="#era5-land-precipitation-and-soil-moisture">ERA5-Land section</a> above)</p>
+<ul>
+<li><code>era5_swvl1</code>: monthly volumetric soil water in the top layer</li>
+<li><code>era5_precip</code>: mean daily precipitation for the month</li>
+<li><code>era5_precip_lag1</code>: one-month lag of the monthly mean daily precipitation</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(sswc_m <span class="sc">~</span> x <span class="sc">+</span> y <span class="sc">+</span> dlst <span class="sc">+</span> dlst<span class="fl">.95</span> <span class="sc">+</span> nlst <span class="sc">+</span> nlst<span class="fl">.95</span> <span class="sc">+</span> geom <span class="sc">+</span> evi <span class="sc">+</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                  year <span class="sc">+</span> month <span class="sc">+</span> month_sin <span class="sc">+</span> month_cos <span class="sc">+</span> era5_swvl1 <span class="sc">+</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                  era5_precip <span class="sc">+</span> era5_precip_lag1, </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">data=</span>train2) <span class="sc">|&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">step_impute_median</span>(dlst, dlst<span class="fl">.95</span>, nlst, nlst<span class="fl">.95</span>, era5_precip_lag1)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>rf_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">trees=</span><span class="dv">500</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_engine</span>(<span class="st">"ranger"</span>, <span class="at">num.threads=</span><span class="dv">7</span>, <span class="at">seed=</span><span class="dv">123</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>wf_rf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> <span class="fu">add_recipe</span>(rec) <span class="sc">|&gt;</span> <span class="fu">add_model</span>(rf_spec)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>res_rf <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(wf_rf, <span class="at">resamples=</span>folds, <span class="at">metrics=</span>metrics)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(res_rf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 6
+  .metric .estimator   mean     n std_err .config        
+  &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          
+1 mae     standard   26.2      10  0.671  pre0_mod0_post0
+2 rmse    standard   34.8      10  1.58   pre0_mod0_post0
+3 rsq     standard    0.482    10  0.0155 pre0_mod0_post0</code></pre>
+</div>
+</div>
+<p>The random forest achieves a location-blocked cross-validated <span class="math inline">\(RMSE\)</span> of approximately 34.8 and an <span class="math inline">\(R^2\)</span> of approximately 0.48 at held-out locations. This is a reasonable starting point, but the modest <span class="math inline">\(R^2\)</span> signals that much of the station-to-station variability is not captured by the provided predictors.</p>
+</section>
+</section>
+<section id="results-and-discussion" class="level1">
+<h1>Results and Discussion</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>final_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(wf_rf, <span class="at">data=</span>train2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> test <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">.row_order=</span><span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(era5_cov, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"loc_id"</span>, <span class="st">"yearmon"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(.row_order)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pred_test <span class="ot">&lt;-</span> <span class="fu">predict</span>(final_fit, <span class="at">new_data=</span>test2)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>test2<span class="sc">$</span>pred <span class="ot">&lt;-</span> pred_test<span class="sc">$</span>.pred</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>submission <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/input/sample_submission.csv"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">nrow</span>(submission) <span class="sc">==</span> <span class="fu">nrow</span>(test2))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>submission<span class="sc">$</span>sswc_m <span class="ot">&lt;-</span> test2<span class="sc">$</span>pred</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"data/output"</span>, <span class="at">showWarnings=</span><span class="cn">FALSE</span>, <span class="at">recursive=</span><span class="cn">TRUE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(submission, <span class="st">"data/output/submission_rf.csv"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">quote=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The final model is the random forest with the MODIS, and ERA5-Land predictors. It is refitted on the entire training set and applied to the test stations. The submission is written by copying the sample submission and replacing its response column, which guarantees that the row order and identifiers match the grader exactly.</p>
+<p>Because the MODIS predictors are only available at the station points, the predictions are shown as station maps rather than a continuous surface; producing a gridded map would require the MODIS temperature and vegetation layers for the whole tile. <a href="#fig-maps" class="quarto-xref">Figure&nbsp;3</a> contrasts a winter and a summer month at the test stations and reproduces the expected seasonal pattern, with markedly wetter soils in January than in July.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>test2 <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(yearmon <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"2020-01"</span>, <span class="st">"2020-07"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(x, y, <span class="at">colour=</span>pred)) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_viridis_c</span>(<span class="at">name=</span><span class="st">"sswc_m"</span>) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>yearmon) <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-maps" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-maps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ssm_files/figure-html/fig-maps-1.png" class="img-fluid figure-img" width="1152">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-maps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Predicted monthly soil surface water content at the test stations for a representative winter month (January 2020) and summer month (July 2020).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This prediction task is actually quite challenging because the data have both spatial and temporal structure, and the validation strategy should account for potential spatial and temporal autocorrelation. By blocking folds by station identity, we partially avoid the overly optimistic scores that a naive random split could produce. This also makes the validation setup more similar to the hidden test set, where predictions are required for unseen stations.</p>
+<p>However, station-based blocking does not necessarily guarantee spatial independence between folds. Multiple stations may still fall within the same or neighbouring grid cells, especially given the relatively coarse resolution of some predictors. A more rigorous approach could therefore involve spatial thinning and spatial cross-validation methods such as block cross-validation or kNNDM cross-validation <span class="citation" data-cites="gmd-17-5897-2024">(<a href="#ref-gmd-17-5897-2024" role="doc-biblioref">Linnenbrink et al. 2024</a>)</span>.</p>
+<p>In addition, including spatial coordinates improved predictive performance, suggesting that geographic location contains information that is not fully captured by the MODIS and ERA5-Land covariates. However, the coarse spatial resolution of ERA5-Land may limit its ability to represent fine-scale differences among locations.</p>
+<p>Also, using spatial coordinates directly as covariates may not be an ideal modelling strategy. A better approach could be to account for spatial dependence more explicitly using methods such as RFsp, RFSI, RandomForestsGLS or spatialRF <span class="citation" data-cites="hengl2018rf rs12101687 nowosad2025">(<a href="#ref-hengl2018rf" role="doc-biblioref">Hengl et al. 2018</a>; <a href="#ref-rs12101687" role="doc-biblioref">Sekulić et al. 2020</a>; <a href="#ref-nowosad2025" role="doc-biblioref">Nowosad 2025</a>)</span>.</p>
+<p>The most promising next steps would be to include covariates that vary at the station scale and plausibly influence water retention, such as soil texture and organic carbon from products like SoilGrids, land-cover classes, and higher-resolution satellite soil-moisture products where temporal coverage allows.</p>
+<p>On the modelling side, gradient-boosted trees may outperform random forests, while more systematic feature engineering could also help improve predictive performance.</p>
+</section>
+<section id="reproducibility" class="level1 unnumbered">
+<h1 class="unnumbered">Reproducibility</h1>
+<p><strong>Note on the use of AI tools:</strong> I used large language models as supporting tools during the preparation of this post, mainly for language editing, code style and debugging suggestions, and occasional methodological feedback. The analysis workflow, modelling decisions, and the majority of the code were developed by me. I reviewed, revised, and reran the complete notebook multiple times, and I take full responsibility for the final content, code, interpretations, and any remaining errors.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.6.1 (2026-06-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 26.04.1 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=tr_TR.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=tr_TR.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=tr_TR.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=tr_TR.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Europe/Istanbul
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] patchwork_1.3.2    ranger_0.18.0      ecmwfr_2.0.3       sf_1.1-2          
+ [5] terra_1.9-46       yardstick_1.4.0    workflowsets_1.1.1 workflows_1.3.0   
+ [9] tune_2.1.0         tailor_0.1.0       rsample_1.3.2      recipes_1.4.0     
+[13] purrr_1.2.2        parsnip_1.6.0      modeldata_1.6.0    infer_1.1.0       
+[17] ggplot2_4.0.3      dials_1.4.4        scales_1.4.0       broom_1.0.13      
+[21] tidymodels_1.5.0   tidyr_1.3.2        dplyr_1.2.1       
+
+loaded via a namespace (and not attached):
+ [1] DBI_1.3.0           conflicted_1.2.0    rlang_1.3.0        
+ [4] magrittr_2.0.5      furrr_0.4.0         otel_0.2.0         
+ [7] e1071_1.7-17        compiler_4.6.1      vctrs_0.7.3        
+[10] maps_3.4.3          pkgconfig_2.0.3     fastmap_1.2.0      
+[13] backports_1.5.1     labeling_0.4.3      utf8_1.2.6         
+[16] rmarkdown_2.32      prodlim_2026.03.11  xfun_0.60          
+[19] cachem_1.1.0        jsonlite_2.0.0      parallel_4.6.1     
+[22] R6_2.6.1            RColorBrewer_1.1-3  parallelly_1.48.0  
+[25] rpart_4.1.27        lubridate_1.9.5     Rcpp_1.1.2         
+[28] knitr_1.51          future.apply_1.20.2 Matrix_1.7-6       
+[31] splines_4.6.1       nnet_7.3-21         timechange_0.4.0   
+[34] tidyselect_1.2.1    rstudioapi_0.19.0   dichromat_2.0-0.1  
+[37] yaml_2.3.12         timeDate_4052.112   codetools_0.2-20   
+[40] listenv_1.0.0       lattice_0.23-1      tibble_3.3.1       
+[43] withr_3.0.3         S7_0.2.2            evaluate_1.0.5     
+[46] future_1.75.0       survival_3.8-11     units_1.0-1        
+[49] proxy_0.4-29        pillar_1.11.1       KernSmooth_2.23-27 
+[52] generics_0.1.4      mirai_2.7.2         globals_0.19.1     
+[55] class_7.3-24        glue_1.8.1          tools_4.6.1        
+[58] data.table_1.18.6.1 gower_1.0.2         reactable_0.4.5    
+[61] grid_4.6.1          ipred_0.9-16        cli_3.6.6          
+[64] DiceDesign_1.10     viridisLite_0.4.3   lava_1.9.3         
+[67] gtable_0.3.6        digest_0.6.39       classInt_0.4-11    
+[70] nanonext_1.10.2     htmlwidgets_1.6.4   farver_2.1.2       
+[73] memoise_2.0.1       htmltools_0.5.9     lifecycle_1.0.5    
+[76] hardhat_1.4.3       httr_1.4.9          MASS_7.3-66        
+[79] sparsevctrs_0.3.6  </code></pre>
+</div>
+</div>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-breiman2001" class="csl-entry" role="listitem">
+Breiman, Leo. 2001. <span>“Random Forests.”</span> <em>Machine Learning</em> 45 (1): 5–32. <a href="https://doi.org/10.1023/A:1010933404324">https://doi.org/10.1023/A:1010933404324</a>.
+</div>
+<div id="ref-hengl2018rf" class="csl-entry" role="listitem">
+Hengl, Tomislav, Madlene Nussbaum, Marvin N. Wright, Gerard B. M. Heuvelink, and Benedikt Gräler. 2018. <span>“Random Forest as a Generic Framework for Predictive Modeling of Spatial and Spatio-Temporal Variables.”</span> <em>PeerJ</em> 6: e5518. <a href="https://doi.org/10.7717/peerj.5518">https://doi.org/10.7717/peerj.5518</a>.
+</div>
+<div id="ref-hersbach2020era5" class="csl-entry" role="listitem">
+<span class="nocase">Hersbach, Hans, Bill Bell, Paul Berrisford, et al.</span> 2020. <span>“The <span>ERA5</span> Global Reanalysis.”</span> <em>Quarterly Journal of the Royal Meteorological Society</em> 146 (730): 1999–2049. <a href="https://doi.org/10.1002/qj.3803">https://doi.org/10.1002/qj.3803</a>.
+</div>
+<div id="ref-ecmwfr2023" class="csl-entry" role="listitem">
+Hufkens, Koen, Reto Stauffer, and Elio Campitelli. 2023. <em>Ecmwfr: Interface to ’ECMWF’ and ’CDS’ Data Web Services</em>.
+</div>
+<div id="ref-gmd-17-5897-2024" class="csl-entry" role="listitem">
+Linnenbrink, J., C. Milà, M. Ludwig, and H. Meyer. 2024. <span>“kNNDM CV: <span class="math inline">\(k\)</span>-Fold Nearest-Neighbour Distance Matching Cross-Validation for Map Accuracy Estimation.”</span> <em>Geoscientific Model Development</em> 17 (15): 5897–912. <a href="https://doi.org/10.5194/gmd-17-5897-2024">https://doi.org/10.5194/gmd-17-5897-2024</a>.
+</div>
+<div id="ref-meyer2018" class="csl-entry" role="listitem">
+Meyer, Hanna, Christoph Reudenbach, Tomislav Hengl, Marwan Katurji, and Thomas Nauss. 2018. <span>“Improving Performance of Spatio-Temporal Machine Learning Models Using Forward Feature Selection and Target-Oriented Validation.”</span> <em>Environmental Modelling &amp; Software</em> 101: 1–9. <a href="https://doi.org/10.1016/j.envsoft.2017.12.001">https://doi.org/10.1016/j.envsoft.2017.12.001</a>.
+</div>
+<div id="ref-munoz2021era5land" class="csl-entry" role="listitem">
+<span class="nocase">Muñoz-Sabater, Joaquín, Emanuel Dutra, Anna Agustí-Panareda, et al.</span> 2021. <span>“<span>ERA5-Land</span>: A State-of-the-Art Global Reanalysis Dataset for Land Applications.”</span> <em>Earth System Science Data</em> 13 (9): 4349–83. <a href="https://doi.org/10.5194/essd-13-4349-2021">https://doi.org/10.5194/essd-13-4349-2021</a>.
+</div>
+<div id="ref-nowosad2025" class="csl-entry" role="listitem">
+Nowosad, Jakub. 2025. <span>“Specialized <span>R</span> Packages for Spatial Machine Learning: <span>An</span> Introduction to <span>RandomForestsGLS,</span> <span class="nocase">spatialRF,</span> and Meteo.”</span> June 25. <a href="https://geocompx.org/post/2025/sml-bp5/">https://geocompx.org/post/2025/sml-bp5/</a>.
+</div>
+<div id="ref-roberts2017cv" class="csl-entry" role="listitem">
+Roberts, David R., Volker Bahn, Simone Ciuti, et al. 2017. <span>“Cross-Validation Strategies for Data with Temporal, Spatial, Hierarchical, or Phylogenetic Structure.”</span> <em>Ecography</em> 40 (8): 913–29. <a href="https://doi.org/10.1111/ecog.02881">https://doi.org/10.1111/ecog.02881</a>.
+</div>
+<div id="ref-rs12101687" class="csl-entry" role="listitem">
+Sekulić, Aleksandar, Milan Kilibarda, Gerard B. M. Heuvelink, Mladen Nikolić, and Branislav Bajat. 2020. <span>“Random Forest Spatial Interpolation.”</span> <em>Remote Sensing</em> 12 (10). <a href="https://doi.org/10.3390/rs12101687">https://doi.org/10.3390/rs12101687</a>.
+</div>
+<div id="ref-wright2017ranger" class="csl-entry" role="listitem">
+Wright, Marvin N., and Andreas Ziegler. 2017. <span>“<span class="nocase">ranger</span>: A Fast Implementation of Random Forests for High Dimensional Data in <span>C++</span> and <span>R</span>.”</span> <em>Journal of Statistical Software</em> 77 (1): 1–17. <a href="https://doi.org/10.18637/jss.v077.i01">https://doi.org/10.18637/jss.v077.i01</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<script src="https://utteranc.es/client.js" repo="R-delisi/r-delisi.github.io" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>R Delisi - 2026</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
